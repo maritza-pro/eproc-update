@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProcurementResource\Pages;
+use App\Filament\Resources\ProcurementResource\RelationManagers\ItemsRelationManager;
 use App\Models\Procurement;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,9 +21,11 @@ class ProcurementResource extends Resource
 {
     use HasHexaLite;
 
+    protected static ?string $model = Procurement::class;
+
     protected static ?string $modelLabel = 'Procurement';
 
-    protected static ?string $model = Procurement::class;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationGroup = 'Procurement';
 
@@ -49,13 +52,17 @@ class ProcurementResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->required(),
+                                Forms\Components\Select::make('method')
+                                    ->required()
+                                    ->options(array_combine(Procurement::METHODS, Procurement::METHODS))
+                                    ->searchable(),
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->required()
+                                    ->beforeOrEqual('end_date'),
+                                Forms\Components\DatePicker::make('end_date')
+                                    ->afterOrEqual('start_date'),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
-                                Forms\Components\TextInput::make('method')
-                                    ->required(),
-                                Forms\Components\DatePicker::make('start_date')
-                                    ->required(),
-                                Forms\Components\DatePicker::make('end_date'),
                             ]),
                     ]),
             ]);
@@ -108,7 +115,7 @@ class ProcurementResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
         ];
     }
 

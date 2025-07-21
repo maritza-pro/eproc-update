@@ -61,7 +61,8 @@ class VendorResource extends Resource
                                     ->required(),
                                 Forms\Components\Select::make('user_id')
                                     ->relationship('user', 'name')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                             ]),
                     ]),
             ]);

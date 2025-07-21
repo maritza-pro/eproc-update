@@ -22,6 +22,8 @@ class BidItemResource extends Resource
 
     protected static ?string $modelLabel = 'Bid Item';
 
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $model = BidItem::class;
 
     protected static ?string $navigationGroup = 'Bidding';
@@ -49,10 +51,12 @@ class BidItemResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('bid_id')
                                     ->relationship('bid', 'id')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\Select::make('procurement_item_id')
                                     ->relationship('procurementItem', 'id')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\TextInput::make('unit_price')
                                     ->required()
                                     ->numeric(),
@@ -69,10 +73,13 @@ class BidItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('bid.id')
+                Tables\Columns\TextColumn::make('bid.vendor.company_name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('procurementItem.id')
+                Tables\Columns\TextColumn::make('bid.procurement.title')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('procurementItem.product.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit_price')

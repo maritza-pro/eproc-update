@@ -24,6 +24,8 @@ class ContractResource extends Resource
 
     protected static ?string $model = Contract::class;
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
@@ -49,10 +51,12 @@ class ContractResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('procurement_id')
                                     ->relationship('procurement', 'title')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\Select::make('vendor_id')
                                     ->relationship('vendor', 'id')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\TextInput::make('contract_number')
                                     ->required(),
                                 Forms\Components\DatePicker::make('signed_date')

@@ -24,6 +24,8 @@ class DocumentResource extends Resource
 
     protected static ?string $model = Document::class;
 
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';

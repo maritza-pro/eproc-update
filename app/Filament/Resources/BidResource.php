@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BidResource\Pages;
+use App\Filament\Resources\BidResource\RelationManagers\ItemsRelationManager;
 use App\Models\Bid;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -23,6 +24,8 @@ class BidResource extends Resource
     protected static ?string $modelLabel = 'Bid';
 
     protected static ?string $model = Bid::class;
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationGroup = 'Bidding';
 
@@ -49,14 +52,20 @@ class BidResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('vendor_id')
                                     ->relationship('vendor', 'id')
-                                    ->required(),
+                                    ->options(\App\Models\Vendor::pluck('company_name', 'id'))
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\Select::make('procurement_id')
                                     ->relationship('procurement', 'title')
-                                    ->required(),
+                                    ->options(\App\Models\Procurement::pluck('title', 'id'))
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\Textarea::make('notes')
                                     ->columnSpanFull(),
-                                Forms\Components\TextInput::make('status')
-                                    ->required(),
+                                Forms\Components\Select::make('status')
+                                    ->required()
+                                    ->options(array_combine(Bid::STATUSES, Bid::STATUSES))
+                                    ->default('draft'),
                             ]),
                     ]),
             ]);
@@ -66,7 +75,7 @@ class BidResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('vendor.id')
+                Tables\Columns\TextColumn::make('vendor.company_name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('procurement.title')
@@ -107,7 +116,7 @@ class BidResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
         ];
     }
 

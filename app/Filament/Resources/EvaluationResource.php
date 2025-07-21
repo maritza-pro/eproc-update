@@ -22,6 +22,8 @@ class EvaluationResource extends Resource
 
     protected static ?string $modelLabel = 'Evaluation';
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $model = Evaluation::class;
 
     protected static ?string $navigationGroup = 'Bidding';
@@ -49,7 +51,8 @@ class EvaluationResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('bid_id')
                                     ->relationship('bid', 'id')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\TextInput::make('technical_score')
                                     ->numeric(),
                                 Forms\Components\TextInput::make('price_score')

@@ -22,6 +22,8 @@ class ProcurementItemResource extends Resource
 
     protected static ?string $modelLabel = 'Procurement Item';
 
+    protected static ?int $navigationSort = 4;
+
     protected static ?string $model = ProcurementItem::class;
 
     protected static ?string $navigationGroup = 'Procurement';
@@ -49,10 +51,12 @@ class ProcurementItemResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('procurement_id')
                                     ->relationship('procurement', 'title')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\Select::make('product_id')
                                     ->relationship('product', 'name')
-                                    ->required(),
+                                    ->required()
+                                    ->searchable(),
                                 Forms\Components\TextInput::make('quantity')
                                     ->required()
                                     ->numeric(),

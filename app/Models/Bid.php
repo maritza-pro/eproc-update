@@ -14,6 +14,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Bid extends Model
 {
+    const string STATUS_DRAFT = 'draft';
+
     const string STATUS_SUBMITTED = 'submitted';
 
     const string STATUS_EVALUATED = 'evaluated';
@@ -23,6 +25,7 @@ class Bid extends Model
     const string STATUS_ACCEPTED = 'accepted';
 
     const array STATUSES = [
+        self::STATUS_DRAFT,
         self::STATUS_SUBMITTED,
         self::STATUS_EVALUATED,
         self::STATUS_REJECTED,

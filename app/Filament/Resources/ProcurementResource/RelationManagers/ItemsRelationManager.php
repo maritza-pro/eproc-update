@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources\ProcurementResource\RelationManagers;
+
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class ItemsRelationManager extends RelationManager
+{
+    protected static string $relationship = 'items';
+
+    public function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Select::make('product_id')
+                ->label('Product')
+                ->options(\App\Models\Product::pluck('name', 'id'))
+                ->searchable()
+                ->required(),
+            Forms\Components\TextInput::make('quantity')
+                ->numeric()
+                ->minValue(1)
+                ->required(),
+        ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('product.name')
+            ->columns([
+                Tables\Columns\TextColumn::make('product.name')
+                    ->label('Product')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

@@ -49,8 +49,10 @@ class ProductResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
-                                Forms\Components\TextInput::make('type')
-                                    ->required(),
+                                Forms\Components\Select::make('type')
+                                    ->required()
+                                    ->options(array_combine(Product::TYPES, Product::TYPES))
+                                    ->searchable(),
                                 Forms\Components\TextInput::make('unit'),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
