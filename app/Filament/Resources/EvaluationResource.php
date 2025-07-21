@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,15 +20,15 @@ class EvaluationResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Evaluation';
-
-    protected static ?int $navigationSort = 2;
-
     protected static ?string $model = Evaluation::class;
+
+    protected static ?string $modelLabel = 'Evaluation';
 
     protected static ?string $navigationGroup = 'Bidding';
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+
+    protected static ?int $navigationSort = 2;
 
     public function defineGates(): array
     {
@@ -62,6 +62,31 @@ class EvaluationResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListEvaluations::route('/'),
+            'create' => Pages\CreateEvaluation::route('/create'),
+            'view' => Pages\ViewEvaluation::route('/{record}'),
+            'edit' => Pages\EditEvaluation::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -104,31 +129,6 @@ class EvaluationResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListEvaluations::route('/'),
-            'create' => Pages\CreateEvaluation::route('/create'),
-            'view' => Pages\ViewEvaluation::route('/{record}'),
-            'edit' => Pages\EditEvaluation::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

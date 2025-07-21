@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,15 +20,15 @@ class ProcurementItemResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Procurement Item';
-
-    protected static ?int $navigationSort = 4;
-
     protected static ?string $model = ProcurementItem::class;
+
+    protected static ?string $modelLabel = 'Procurement Item';
 
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+
+    protected static ?int $navigationSort = 4;
 
     public function defineGates(): array
     {
@@ -63,6 +63,31 @@ class ProcurementItemResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProcurementItems::route('/'),
+            'create' => Pages\CreateProcurementItem::route('/create'),
+            'view' => Pages\ViewProcurementItem::route('/{record}'),
+            'edit' => Pages\EditProcurementItem::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -105,31 +130,6 @@ class ProcurementItemResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProcurementItems::route('/'),
-            'create' => Pages\CreateProcurementItem::route('/create'),
-            'view' => Pages\ViewProcurementItem::route('/{record}'),
-            'edit' => Pages\EditProcurementItem::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

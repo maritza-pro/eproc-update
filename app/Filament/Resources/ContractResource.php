@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,15 +20,15 @@ class ContractResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Contract';
-
     protected static ?string $model = Contract::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $modelLabel = 'Contract';
 
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
+
+    protected static ?int $navigationSort = 2;
 
     public function defineGates(): array
     {
@@ -69,6 +69,31 @@ class ContractResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListContracts::route('/'),
+            'create' => Pages\CreateContract::route('/create'),
+            'view' => Pages\ViewContract::route('/{record}'),
+            'edit' => Pages\EditContract::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -118,31 +143,6 @@ class ContractResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListContracts::route('/'),
-            'create' => Pages\CreateContract::route('/create'),
-            'view' => Pages\ViewContract::route('/{record}'),
-            'edit' => Pages\EditContract::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

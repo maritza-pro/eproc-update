@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,9 +20,9 @@ class VendorResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Vendor';
-
     protected static ?string $model = Vendor::class;
+
+    protected static ?string $modelLabel = 'Vendor';
 
     protected static ?string $navigationGroup = 'Master Data';
 
@@ -66,6 +66,31 @@ class VendorResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListVendors::route('/'),
+            'create' => Pages\CreateVendor::route('/create'),
+            'view' => Pages\ViewVendor::route('/{record}'),
+            'edit' => Pages\EditVendor::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -116,31 +141,6 @@ class VendorResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListVendors::route('/'),
-            'create' => Pages\CreateVendor::route('/create'),
-            'view' => Pages\ViewVendor::route('/{record}'),
-            'edit' => Pages\EditVendor::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

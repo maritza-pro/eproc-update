@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -25,11 +25,11 @@ class ProcurementResource extends Resource
 
     protected static ?string $modelLabel = 'Procurement';
 
-    protected static ?int $navigationSort = 1;
-
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?int $navigationSort = 1;
 
     public function defineGates(): array
     {
@@ -66,6 +66,31 @@ class ProcurementResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProcurements::route('/'),
+            'create' => Pages\CreateProcurement::route('/create'),
+            'view' => Pages\ViewProcurement::route('/{record}'),
+            'edit' => Pages\EditProcurement::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ItemsRelationManager::class,
+        ];
     }
 
     public static function table(Table $table): Table
@@ -109,31 +134,6 @@ class ProcurementResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ItemsRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProcurements::route('/'),
-            'create' => Pages\CreateProcurement::route('/create'),
-            'view' => Pages\ViewProcurement::route('/{record}'),
-            'edit' => Pages\EditProcurement::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

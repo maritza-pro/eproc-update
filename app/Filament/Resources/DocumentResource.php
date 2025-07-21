@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,15 +20,15 @@ class DocumentResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Document';
-
     protected static ?string $model = Document::class;
 
-    protected static ?int $navigationSort = 3;
+    protected static ?string $modelLabel = 'Document';
 
     protected static ?string $navigationGroup = 'Procurement';
 
     protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+
+    protected static ?int $navigationSort = 3;
 
     public function defineGates(): array
     {
@@ -62,6 +62,31 @@ class DocumentResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListDocuments::route('/'),
+            'create' => Pages\CreateDocument::route('/create'),
+            'view' => Pages\ViewDocument::route('/{record}'),
+            'edit' => Pages\EditDocument::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -106,31 +131,6 @@ class DocumentResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListDocuments::route('/'),
-            'create' => Pages\CreateDocument::route('/create'),
-            'view' => Pages\ViewDocument::route('/{record}'),
-            'edit' => Pages\EditDocument::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }
