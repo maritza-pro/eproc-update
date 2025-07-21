@@ -1,0 +1,132 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\ProcurementResource\Pages;
+use App\Models\Procurement;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Hexters\HexaLite\HasHexaLite;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+
+class ProcurementResource extends Resource
+{
+    use HasHexaLite;
+
+    protected static ?string $modelLabel = 'Procurement';
+
+    protected static ?string $model = Procurement::class;
+
+    protected static ?string $navigationGroup = 'Procurement';
+
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    public function defineGates(): array
+    {
+        return [
+            'Procurement.index' => __('Allows viewing the Procurement list'),
+            'Procurement.view' => __('Allows viewing Procurement detail'),
+            'Procurement.create' => __('Allows creating a new Procurement'),
+            'Procurement.update' => __('Allows updating Procurements'),
+            'Procurement.delete' => __('Allows deleting Procurements'),
+        ];
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('method')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('end_date'),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('method')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                Tables\Filters\TrashedFilter::make(),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                ActivityLogTimelineTableAction::make('Activities'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProcurements::route('/'),
+            'create' => Pages\CreateProcurement::route('/create'),
+            'view' => Pages\ViewProcurement::route('/{record}'),
+            'edit' => Pages\EditProcurement::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+}
