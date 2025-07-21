@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -21,15 +21,15 @@ class BidResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Bid';
-
     protected static ?string $model = Bid::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $modelLabel = 'Bid';
 
     protected static ?string $navigationGroup = 'Bidding';
 
     protected static ?string $navigationIcon = 'heroicon-o-inbox';
+
+    protected static ?int $navigationSort = 1;
 
     public function defineGates(): array
     {
@@ -71,6 +71,31 @@ class BidResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListBids::route('/'),
+            'create' => Pages\CreateBid::route('/create'),
+            'view' => Pages\ViewBid::route('/{record}'),
+            'edit' => Pages\EditBid::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ItemsRelationManager::class,
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -110,31 +135,6 @@ class BidResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ItemsRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListBids::route('/'),
-            'create' => Pages\CreateBid::route('/create'),
-            'view' => Pages\ViewBid::route('/{record}'),
-            'edit' => Pages\EditBid::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }

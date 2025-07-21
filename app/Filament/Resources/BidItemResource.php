@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -20,15 +20,15 @@ class BidItemResource extends Resource
 {
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Bid Item';
-
-    protected static ?int $navigationSort = 3;
-
     protected static ?string $model = BidItem::class;
+
+    protected static ?string $modelLabel = 'Bid Item';
 
     protected static ?string $navigationGroup = 'Bidding';
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+
+    protected static ?int $navigationSort = 3;
 
     public function defineGates(): array
     {
@@ -67,6 +67,31 @@ class BidItemResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListBidItems::route('/'),
+            'create' => Pages\CreateBidItem::route('/create'),
+            'view' => Pages\ViewBidItem::route('/{record}'),
+            'edit' => Pages\EditBidItem::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function table(Table $table): Table
@@ -115,31 +140,6 @@ class BidItemResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListBidItems::route('/'),
-            'create' => Pages\CreateBidItem::route('/create'),
-            'view' => Pages\ViewBidItem::route('/{record}'),
-            'edit' => Pages\EditBidItem::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 }
