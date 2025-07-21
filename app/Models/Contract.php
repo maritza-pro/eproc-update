@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -12,13 +12,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Contract extends Model
 {
-    const string STATUS_DRAFT = 'draft';
-
-    const string STATUS_ACTIVE = 'active';
-
-    const string STATUS_COMPLETED = 'completed';
-
-    const string STATUS_TERMINATED = 'terminated';
+    use LogsActivity,
+        SoftDeletes;
 
     const array STATUSES = [
         self::STATUS_DRAFT,
@@ -27,8 +22,13 @@ class Contract extends Model
         self::STATUS_TERMINATED,
     ];
 
-    use LogsActivity,
-        SoftDeletes;
+    const string STATUS_ACTIVE = 'active';
+
+    const string STATUS_COMPLETED = 'completed';
+
+    const string STATUS_DRAFT = 'draft';
+
+    const string STATUS_TERMINATED = 'terminated';
 
     protected $fillable = [
         'procurement_id',

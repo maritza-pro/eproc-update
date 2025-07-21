@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -14,15 +14,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Bid extends Model
 {
-    const string STATUS_DRAFT = 'draft';
-
-    const string STATUS_SUBMITTED = 'submitted';
-
-    const string STATUS_EVALUATED = 'evaluated';
-
-    const string STATUS_REJECTED = 'rejected';
-
-    const string STATUS_ACCEPTED = 'accepted';
+    use LogsActivity,
+        SoftDeletes;
 
     const array STATUSES = [
         self::STATUS_DRAFT,
@@ -32,8 +25,15 @@ class Bid extends Model
         self::STATUS_ACCEPTED,
     ];
 
-    use LogsActivity,
-        SoftDeletes;
+    const string STATUS_ACCEPTED = 'accepted';
+
+    const string STATUS_DRAFT = 'draft';
+
+    const string STATUS_EVALUATED = 'evaluated';
+
+    const string STATUS_REJECTED = 'rejected';
+
+    const string STATUS_SUBMITTED = 'submitted';
 
     protected $fillable = [
         'vendor_id',
@@ -41,26 +41,6 @@ class Bid extends Model
         'notes',
         'status',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
-    }
-
-    public function vendor(): BelongsTo
-    {
-        return $this->belongsTo(Vendor::class);
-    }
-
-    public function procurement(): BelongsTo
-    {
-        return $this->belongsTo(Procurement::class);
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(BidItem::class);
-    }
 
     public function evaluation(): HasOne
     {
@@ -70,5 +50,25 @@ class Bid extends Model
     public function evaluations(): HasMany
     {
         return $this->hasMany(Evaluation::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(BidItem::class);
+    }
+
+    public function procurement(): BelongsTo
+    {
+        return $this->belongsTo(Procurement::class);
+    }
+
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

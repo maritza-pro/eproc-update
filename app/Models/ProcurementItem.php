@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -23,6 +23,11 @@ class ProcurementItem extends Model
         'quantity',
     ];
 
+    public function bidItems(): HasMany
+    {
+        return $this->hasMany(BidItem::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
@@ -36,10 +41,5 @@ class ProcurementItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function bidItems(): HasMany
-    {
-        return $this->hasMany(BidItem::class);
     }
 }

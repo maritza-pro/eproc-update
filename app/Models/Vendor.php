@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -27,9 +27,9 @@ class Vendor extends Model
         'user_id',
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    public function bids(): HasMany
     {
-        return LogOptions::defaults();
+        return $this->hasMany(Bid::class);
     }
 
     public function contracts(): HasMany
@@ -37,9 +37,9 @@ class Vendor extends Model
         return $this->hasMany(Contract::class);
     }
 
-    public function bids(): HasMany
+    public function getActivitylogOptions(): LogOptions
     {
-        return $this->hasMany(Bid::class);
+        return LogOptions::defaults();
     }
 
     public function user(): BelongsTo

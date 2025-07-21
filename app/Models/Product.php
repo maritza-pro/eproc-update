@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -12,17 +12,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends Model
 {
-    const string TYPE_GOODS = 'goods';
-
-    const string TYPE_SERVICES = 'services';
+    use LogsActivity,
+        SoftDeletes;
 
     const array TYPES = [
         self::TYPE_GOODS,
         self::TYPE_SERVICES,
     ];
 
-    use LogsActivity,
-        SoftDeletes;
+    const string TYPE_GOODS = 'goods';
+
+    const string TYPE_SERVICES = 'services';
 
     protected $fillable = [
         'name',

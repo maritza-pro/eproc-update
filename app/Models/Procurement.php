@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -12,17 +12,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Procurement extends Model
 {
-    const string METHOD_TENDER = 'tender';
-
-    const string METHOD_DIRECT = 'direct';
+    use LogsActivity,
+        SoftDeletes;
 
     const array METHODS = [
         self::METHOD_TENDER,
         self::METHOD_DIRECT,
     ];
 
-    use LogsActivity,
-        SoftDeletes;
+    const string METHOD_DIRECT = 'direct';
+
+    const string METHOD_TENDER = 'tender';
 
     protected $fillable = [
         'title',
@@ -32,9 +32,9 @@ class Procurement extends Model
         'end_date',
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    public function bids(): HasMany
     {
-        return LogOptions::defaults();
+        return $this->hasMany(Bid::class);
     }
 
     public function contracts(): HasMany
@@ -42,13 +42,13 @@ class Procurement extends Model
         return $this->hasMany(Contract::class);
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
     public function items(): HasMany
     {
         return $this->hasMany(ProcurementItem::class);
-    }
-
-    public function bids(): HasMany
-    {
-        return $this->hasMany(Bid::class);
     }
 }
