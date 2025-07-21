@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Concerns\Model;
 
@@ -10,14 +10,14 @@ trait EncryptUnique
 {
     private $iv = '1234567812345678';
 
-    public function getRouteKey()
-    {
-        return $this->encrypted_id;
-    }
-
     public function getEncryptedIdAttribute(): ?string
     {
         return $this->encrypt($this->attributes['id']);
+    }
+
+    public function getRouteKey()
+    {
+        return $this->encrypted_id;
     }
 
     private function decrypt(string $value): mixed
