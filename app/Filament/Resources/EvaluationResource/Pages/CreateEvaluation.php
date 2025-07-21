@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\EvaluationResource\Pages;
 
 use App\Filament\Resources\EvaluationResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateEvaluation extends CreateRecord
