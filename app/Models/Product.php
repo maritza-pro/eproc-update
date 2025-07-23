@@ -29,6 +29,7 @@ class Product extends Model
         'type',
         'unit',
         'description',
+        'self_estimated_price',
     ];
 
     public function getActivitylogOptions(): LogOptions

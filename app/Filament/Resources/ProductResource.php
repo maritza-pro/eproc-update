@@ -54,6 +54,11 @@ class ProductResource extends Resource
                                     ->options(array_combine(Product::TYPES, Product::TYPES))
                                     ->searchable(),
                                 Forms\Components\TextInput::make('unit'),
+                                Forms\Components\TextInput::make('self_estimated_price')
+                                    ->numeric()
+                                    ->prefix('Rp. ')
+                                    ->default(0)
+                                    ->nullable(),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
                             ]),
