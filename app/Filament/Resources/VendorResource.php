@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Models\Vendor;
 use Filament\Forms;
@@ -13,13 +14,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class VendorResource extends Resource
 {
+    use Gate {
+        Gate::defineGates insteadof HasHexaLite;
+    }
     use HasHexaLite;
 
     protected static ?string $model = Vendor::class;
@@ -30,18 +33,6 @@ class VendorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-    public function defineGates(): array
-    {
-        return [
-            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
-            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
-            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
-        ];
-    }
-
     public static function canCreate(): bool
     {
         if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope')) {
@@ -51,32 +42,9 @@ class VendorResource extends Resource
         return Auth::user()->can(static::getModelLabel() . '.create') && self::$model::where('user_id', Auth::id())->count() < 1;
     }
 
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
-            (Auth::user()->can(static::getModelLabel() . '.delete') && $record->user_id == Auth::id());
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
-            (Auth::user()->can(static::getModelLabel() . '.edit') && $record->user_id == Auth::id());
-    }
-
-    public static function canView(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
-            (Auth::user()->can(static::getModelLabel() . '.view') && $record->user_id == Auth::id());
-    }
-
-    public static function canViewAny(): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.viewAny');
-    }
-
     public static function form(Form $form): Form
     {
-        $disableUserSelect = ! Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = ! Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -96,13 +64,13 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('license_number'),
                                 Forms\Components\Toggle::make('is_verified')
                                     ->required()
-                                    ->disabled($disableUserSelect),
+                                    ->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')
                                     ->relationship('user', 'name')
                                     ->required()
                                     ->searchable()
-                                    ->default($disableUserSelect ? Auth::id() : null)
-                                    ->disabled($disableUserSelect)
+                                    ->default($withoutGlobalScope ? Auth::id() : null)
+                                    ->disabled($withoutGlobalScope)
                                     ->dehydrated(),
                             ]),
                     ]),

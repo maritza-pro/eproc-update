@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\BidItemsRelationManager;
 use App\Filament\Resources\ProductResource\RelationManagers\ProcurementItemsRelationManager;
@@ -15,14 +16,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class ProductResource extends Resource
 {
+    use Gate {
+        Gate::defineGates insteadof HasHexaLite;
+    }
     use HasHexaLite;
 
     protected static ?string $model = Product::class;
@@ -32,43 +34,6 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
-
-    public function defineGates(): array
-    {
-        return [
-            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
-            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
-            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
-        ];
-    }
-
-    public static function canCreate(): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.create');
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.delete');
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.edit');
-    }
-
-    public static function canView(Model $record): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.view');
-    }
-
-    public static function canViewAny(): bool
-    {
-        return Auth::user()->can(static::getModelLabel() . '.viewAny');
-    }
 
     public static function form(Form $form): Form
     {
