@@ -32,6 +32,11 @@ class Product extends Model
         'self_estimated_price',
     ];
 
+    public function bidItems(): HasMany
+    {
+        return $this->hasMany(BidItem::class, 'procurement_item_id', 'id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();

@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers\BidItemsRelationManager;
+use App\Filament\Resources\ProductResource\RelationManagers\ProcurementItemsRelationManager;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,6 +17,7 @@ use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class ProductResource extends Resource
 {
@@ -87,7 +90,9 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProcurementItemsRelationManager::class,
+            BidItemsRelationManager::class,
+            ActivitylogRelationManager::class,
         ];
     }
 
