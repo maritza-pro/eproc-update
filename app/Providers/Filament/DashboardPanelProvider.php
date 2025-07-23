@@ -63,7 +63,7 @@ class DashboardPanelProvider extends PanelProvider
                 ActivitylogPlugin::make()
                     ->navigationGroup('Settings')
                     ->authorize(
-                        fn () => Auth::user()->can('User.index')
+                        fn () => Auth::user()->can('User.withoutGlobalScope')
                     ),
             ])
             ->navigationGroups([
