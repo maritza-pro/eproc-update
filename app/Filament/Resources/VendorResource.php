@@ -44,7 +44,11 @@ class VendorResource extends Resource
 
     public static function canCreate(): bool
     {
-        return Auth::user()->can(static::getModelLabel() . '.create');
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope')) {
+            return true;
+        }
+
+        return Auth::user()->can(static::getModelLabel() . '.create') && self::$model::where('user_id', Auth::id())->count() < 1;
     }
 
     public static function canDelete(Model $record): bool
