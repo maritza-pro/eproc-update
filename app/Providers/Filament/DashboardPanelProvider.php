@@ -18,6 +18,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Rmsramos\Activitylog\ActivitylogPlugin;
 
@@ -60,10 +61,10 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 HexaLite::make(),
                 ActivitylogPlugin::make()
-                    ->navigationGroup('Settings'),
-                // ->authorize(
-                //     fn () => auth()->user()->id === 1
-                // ),
+                    ->navigationGroup('Settings')
+                    ->authorize(
+                        fn () => Auth::user()->can('User.index')
+                    ),
             ])
             ->navigationGroups([
                 NavigationGroup::make()

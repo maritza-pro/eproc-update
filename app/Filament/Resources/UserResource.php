@@ -13,7 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class UserResource extends Resource
@@ -31,12 +33,38 @@ class UserResource extends Resource
     public function defineGates(): array
     {
         return [
-            'User.index' => __('Allows viewing the User list'),
-            'User.view' => __('Allows viewing User detail'),
-            'User.create' => __('Allows creating a new User'),
-            'User.update' => __('Allows updating Users'),
-            'User.delete' => __('Allows deleting Users'),
+            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
+            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
+            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.create');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.delete');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.edit');
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.view');
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.viewAny');
     }
 
     public static function form(Form $form): Form
@@ -56,6 +84,10 @@ class UserResource extends Resource
                                 Forms\Components\TextInput::make('password')
                                     ->password()
                                     ->required(),
+                                Forms\Components\Select::make('roles')
+                                    ->label(__('Role Name'))
+                                    ->relationship('roles', 'name')
+                                    ->placeholder(__('Superuser')),
                             ]),
                     ]),
             ]);
@@ -109,6 +141,7 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('roles.name'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

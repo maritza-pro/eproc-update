@@ -14,7 +14,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class ProcurementResource extends Resource
@@ -34,12 +36,38 @@ class ProcurementResource extends Resource
     public function defineGates(): array
     {
         return [
-            'Procurement.index' => __('Allows viewing the Procurement list'),
-            'Procurement.view' => __('Allows viewing Procurement detail'),
-            'Procurement.create' => __('Allows creating a new Procurement'),
-            'Procurement.update' => __('Allows updating Procurements'),
-            'Procurement.delete' => __('Allows deleting Procurements'),
+            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
+            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
+            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.create');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.delete');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.edit');
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.view');
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.viewAny');
     }
 
     public static function form(Form $form): Form

@@ -31,12 +31,38 @@ class {{ resourceClass }} extends Resource
     public function defineGates(): array
     {
         return [
-            '{{ modelClass }}.index' => __('Allows viewing the {{ modelClass }} list'),
-			'{{ modelClass }}.view' => __('Allows viewing {{ modelClass }} detail'),
-            '{{ modelClass }}.create' => __('Allows creating a new {{ modelClass }}'),
-            '{{ modelClass }}.update' => __('Allows updating {{ modelClass }}s'),
-            '{{ modelClass }}.delete' => __('Allows deleting {{ modelClass }}s'),
+            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
+            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
+            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.create');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.delete');
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.edit');
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.view');
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.viewAny');
     }
 
     public static function form(Form $form): Form

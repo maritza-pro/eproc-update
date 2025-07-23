@@ -13,7 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class VendorResource extends Resource
@@ -31,16 +33,47 @@ class VendorResource extends Resource
     public function defineGates(): array
     {
         return [
-            'Vendor.index' => __('Allows viewing the Vendor list'),
-            'Vendor.view' => __('Allows viewing Vendor detail'),
-            'Vendor.create' => __('Allows creating a new Vendor'),
-            'Vendor.update' => __('Allows updating Vendors'),
-            'Vendor.delete' => __('Allows deleting Vendors'),
+            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
+            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
+            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.create');
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
+            (Auth::user()->can(static::getModelLabel() . '.delete') && $record->user_id == Auth::id());
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
+            (Auth::user()->can(static::getModelLabel() . '.edit') && $record->user_id == Auth::id());
+    }
+
+    public static function canView(Model $record): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') ||
+            (Auth::user()->can(static::getModelLabel() . '.view') && $record->user_id == Auth::id());
+    }
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->can(static::getModelLabel() . '.viewAny');
     }
 
     public static function form(Form $form): Form
     {
+        $disableUserSelect = ! Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope');
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -58,11 +91,15 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
                                 Forms\Components\Toggle::make('is_verified')
-                                    ->required(),
+                                    ->required()
+                                    ->disabled($disableUserSelect),
                                 Forms\Components\Select::make('user_id')
                                     ->relationship('user', 'name')
                                     ->required()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->default($disableUserSelect ? Auth::id() : null)
+                                    ->disabled($disableUserSelect)
+                                    ->dehydrated(),
                             ]),
                     ]),
             ]);
@@ -96,7 +133,15 @@ class VendorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->unless(Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
+                    $query->where('user_id', Auth::id());
+                });
+            })
             ->columns([
+                Tables\Columns\IconColumn::make('is_verified')
+                    ->boolean()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('company_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
@@ -109,8 +154,7 @@ class VendorResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_verified')
-                    ->boolean(),
+
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
