@@ -21,7 +21,7 @@ trait Gate
 
     public static function canCreate(): bool
     {
-        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope')) {
+        if (Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope')) {
             return true;
         }
 

@@ -6,6 +6,7 @@ namespace App\Concerns\Model;
 
 use Illuminate\Support\Str;
 
+// @phpstan-ignore trait.unused
 trait EncryptUnique
 {
     private $iv = '1234567812345678';

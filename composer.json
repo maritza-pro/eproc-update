@@ -3,19 +3,26 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "filament/filament": "^3.3",
         "hexters/hexa-lite": "^2.0",
         "laravel/framework": "^12.0",
+        "laravel/horizon": "^5.33",
+        "laravel/octane": "^2.12",
         "laravel/tinker": "^2.10.1",
         "lorisleiva/laravel-actions": "^2.9",
         "pelmered/filament-money-field": "^1.5",
+        "predis/predis": "^3.1",
         "rmsramos/activitylog": "^1.0"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.6",
         "driftingly/rector-laravel": "^2.0",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.6",
@@ -43,7 +50,8 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan filament:upgrade",
+            "@php artisan make:ide-helper"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -71,12 +79,18 @@
         }
     },
     "config": {
+        "platform": {
+            "php": "8.4.0"
+        },
+        "apcu-autoloader": true,
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",

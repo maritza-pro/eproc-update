@@ -8,7 +8,6 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\BidResource\Pages;
 use App\Filament\Resources\BidResource\RelationManagers\ItemsRelationManager;
 use App\Models\Bid;
-use Auth;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,6 +16,7 @@ use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class BidResource extends Resource
@@ -38,7 +38,7 @@ class BidResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
         $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query) => $query->where('user_id', Auth::id()))
             ->pluck('company_name', 'id');
 

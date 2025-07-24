@@ -35,16 +35,16 @@ class VendorResource extends Resource
 
     public static function canCreate(): bool
     {
-        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope')) {
+        if (Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope')) {
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.create') && self::$model::where('user_id', Auth::id())->count() < 1;
+        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::where('user_id', Auth::id())->count() < 1;
     }
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = ! Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -106,7 +106,7 @@ class VendorResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->unless(Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
+                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());
                 });
             })
