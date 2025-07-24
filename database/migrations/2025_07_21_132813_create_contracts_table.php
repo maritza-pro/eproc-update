@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('procurement_id')->constrained()->cascadeOnDelete()->comment('The procurement this contract is associated with');
-            $table->foreignId('vendor_id')->constrained()->cascadeOnDelete()->comment('The vendor this contract is with');
+            $table->foreignId('procurement_id')->comment('The procurement this contract is associated with')->constrained()->cascadeOnDelete();
+            $table->foreignId('vendor_id')->comment('The vendor this contract is with')->constrained()->cascadeOnDelete();
             $table->string('contract_number')->comment('Unique identifier for the contract');
             $table->date('signed_date')->comment('The date the contract was signed');
             $table->decimal('value', 15, 2)->comment('The total value of the contract');
-            $table->string('status')->default('draft')->comment('The current status of the contract');
+            $table->string('status')->comment('The current status of the contract')->default('draft');
 
             $table->timestampSoftDelete();
         });

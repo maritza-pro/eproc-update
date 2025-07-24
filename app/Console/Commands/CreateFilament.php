@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Console\Commands;
 
-use Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
 class CreateFilament extends Command implements PromptsForMissingInput
@@ -38,7 +38,7 @@ class CreateFilament extends Command implements PromptsForMissingInput
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $resource = $this->argument('resource');
         $resource = Str::of($resource)->headline()->studly()->toString();

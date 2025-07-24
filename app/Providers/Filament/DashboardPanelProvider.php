@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
@@ -63,7 +65,7 @@ class DashboardPanelProvider extends PanelProvider
                 ActivitylogPlugin::make()
                     ->navigationGroup('Settings')
                     ->authorize(
-                        fn () => Auth::user()?->can('User.withoutGlobalScope')
+                        fn () => Auth::user()->can('User.withoutGlobalScope')
                     ),
             ])
             ->navigationGroups([
