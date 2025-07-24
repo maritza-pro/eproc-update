@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources\SurveyResource\RelationManagers;
 
+use Awcodes\TableRepeater;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -23,7 +24,9 @@ class QuestionsRelationManager extends RelationManager
                 Forms\Components\Select::make('type')
                     ->required()
                     ->options(array_combine(\App\Models\SurveyQuestion::TYPES, \App\Models\SurveyQuestion::TYPES))
-                    ->default(\App\Models\SurveyQuestion::TYPE_TEXT),
+                    ->default(\App\Models\SurveyQuestion::TYPE_TEXT)
+                    ->reactive()
+                    ->afterStateUpdated(fn (callable $set) => $set('refresh', now())),
                 Forms\Components\TextInput::make('question')
                     ->required()
                     ->maxLength(255),
@@ -35,6 +38,20 @@ class QuestionsRelationManager extends RelationManager
                     ->default(100),
                 Forms\Components\Toggle::make('required')
                     ->inline(false),
+                TableRepeater\Components\TableRepeater::make('options')
+                    ->relationship('options')
+                    ->headers([
+                        TableRepeater\Header::make('option'),
+                        TableRepeater\Header::make('points'),
+                        TableRepeater\Header::make('is_correct'),
+                    ])
+                    ->schema([
+                        Forms\Components\TextInput::make('option')->required(),
+                        Forms\Components\TextInput::make('points')->required(),
+                        Forms\Components\Toggle::make('is_correct')->inline(false),
+                    ])
+                    ->columnSpan('full')
+                    ->hidden(fn (callable $get) => ! in_array($get('type'), ['select', 'radio', 'checkbox'])),
             ]);
     }
 
