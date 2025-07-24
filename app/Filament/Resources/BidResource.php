@@ -100,6 +100,7 @@ class BidResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('vendor.company_name')
                     ->numeric()

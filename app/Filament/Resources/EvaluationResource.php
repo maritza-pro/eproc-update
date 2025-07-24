@@ -86,6 +86,7 @@ class EvaluationResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('bid.id')
                     ->numeric()

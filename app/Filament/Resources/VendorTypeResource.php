@@ -93,6 +93,7 @@ class VendorTypeResource extends Resource
 
         return $table
             ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('type')
                     ->searchable()

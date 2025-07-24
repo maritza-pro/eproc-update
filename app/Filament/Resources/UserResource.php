@@ -87,6 +87,7 @@ class UserResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

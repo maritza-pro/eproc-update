@@ -86,6 +86,7 @@ class DocumentResource extends Resource
     {
         return $table
             ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('documentable_type')
                     ->searchable(),
