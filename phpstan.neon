@@ -21,5 +21,8 @@ parameters:
         - '#Collection.*transform#'
         - '#Collection.*filter#'
         - '#Collection.*values#'
+        - '#timestampSoftDelete#'
+        - '#can#'
+        - '#comment#'
     excludePaths:
         - app/Models/User.php
