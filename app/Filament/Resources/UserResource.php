@@ -50,9 +50,9 @@ class UserResource extends Resource
                                     ->password()
                                     ->required(),
                                 Forms\Components\Select::make('roles')
-                                    ->label(__('Role Name'))
+                                    ->label('Role Name')
                                     ->relationship('roles', 'name')
-                                    ->placeholder(__('Superuser')),
+                                    ->placeholder('Superuser'),
                             ]),
                     ]),
             ]);
