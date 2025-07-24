@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -45,5 +46,15 @@ class Taxonomy extends Model
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'parent_id');
+    }
+
+    public function relationables(string $modelClass): MorphToMany
+    {
+        return $this->morphedByMany($modelClass, 'relationable', 'taxonomy_relations');
+    }
+
+    public function relations(): HasMany
+    {
+        return $this->hasMany(TaxonomyRelation::class);
     }
 }
