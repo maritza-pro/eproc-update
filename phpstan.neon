@@ -1,0 +1,23 @@
+parameters:
+    level: 8
+    paths:
+        - app/
+        - config/
+        - database/
+        - lang/
+        - routes/
+    scanFiles:
+        - bootstrap/app.php
+    ignoreErrors:
+        - identifier: argument.templateType
+        - identifier: function.alreadyNarrowedType
+        - identifier: function.impossibleType
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
+        - identifier: property.notFound
+        - identifier: binaryOp.invalid
+        - identifier: larastan.noEnvCallsOutsideOfConfig
+        - '#Collection.*map#'
+        - '#Collection.*transform#'
+        - '#Collection.*filter#'
+        - '#Collection.*values#'
