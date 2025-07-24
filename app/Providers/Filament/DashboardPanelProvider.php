@@ -33,6 +33,14 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->login()
+            ->spa()
+            ->registration()
+            ->unsavedChangesAlerts()
+            ->passwordReset()
+            ->databaseTransactions()
+            ->emailVerification()
+            // ->profile()
+            // ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
             ])

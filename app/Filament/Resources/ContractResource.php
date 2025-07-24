@@ -92,6 +92,7 @@ class ContractResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('procurement.title')
                     ->numeric()

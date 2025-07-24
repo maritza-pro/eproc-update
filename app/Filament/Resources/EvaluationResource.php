@@ -85,6 +85,7 @@ class EvaluationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->deferLoading()
             ->columns([
                 Tables\Columns\TextColumn::make('bid.id')
                     ->numeric()
