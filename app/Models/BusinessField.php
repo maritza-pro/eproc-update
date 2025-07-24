@@ -10,14 +10,14 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 
-class BidangBisnis extends Model
+class BusinessField extends Model
 {
     use LogsActivity;
     use SoftDeletes;
 
    protected $fillable = [
-        'kode',
-        'nama',
+        'code',
+        'name',
     ];
 
     public function getActivitylogOptions(): LogOptions

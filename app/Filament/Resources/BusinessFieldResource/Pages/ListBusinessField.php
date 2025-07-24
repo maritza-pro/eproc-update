@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\BidangBisnisResource\Pages;
+namespace App\Filament\Resources\BusinessFieldResource\Pages;
 
-use App\Filament\Resources\BidangBisnisResource;
+use App\Filament\Resources\BusinessFieldResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListBidangBisnis extends ListRecords
+class ListBusinessField extends ListRecords
 {
-    protected static string $resource = BidangBisnisResource::class;
+    protected static string $resource = BusinessFieldResource::class;
 
     protected function getHeaderActions(): array
     {

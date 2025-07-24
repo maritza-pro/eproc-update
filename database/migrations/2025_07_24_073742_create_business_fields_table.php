@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('bidang_bisnis', function (Blueprint $table) {
+    Schema::create('business_fields', function (Blueprint $table) {
         $table->id();
-        $table->string('kode')->unique();
-        $table->string('nama')->unique();
+        $table->string('code')->unique();
+        $table->string('name')->unique();
         $table->timestamps();
         $table->softDeletes();
     });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bidang_bisnis');
+        Schema::dropIfExists('business_fields');
     }
 };

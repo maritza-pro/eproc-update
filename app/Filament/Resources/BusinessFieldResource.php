@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BidangBisnisResource\Pages;
-use App\Filament\Resources\BidangBisnisResource\RelationManagers;
-use App\Models\BidangBisnis;
+use App\Filament\Resources\BusinessFieldResource\Pages;
+use App\Filament\Resources\BusinessFieldResource\RelationManagers;
+use App\Models\BusinessField;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,16 +20,16 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class BidangBisnisResource extends Resource
+class BusinessFieldResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = BidangBisnis::class;
+    protected static ?string $model = BusinessField::class;
 
-    protected static ?string $modelLabel = 'Bidang Bisnis'; 
+    protected static ?string $modelLabel = 'Business Field'; 
 
     protected static ?string $navigationGroup = 'Master Data';
 
@@ -43,11 +43,11 @@ class BidangBisnisResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('kode')
+                                Forms\Components\TextInput::make('code')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('nama')
+                                Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255),
@@ -60,9 +60,9 @@ class BidangBisnisResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode')
+                Tables\Columns\TextColumn::make('code')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('nama')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -110,10 +110,10 @@ class BidangBisnisResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBidangBisnis::route('/'),
-            'create' => Pages\CreateBidangBisnis::route('/create'),
-            'view' => Pages\ViewBidangBisnis::route('/{record}'),
-            'edit' => Pages\EditBidangBisnis::route('/{record}/edit'),
+            'index' => Pages\ListBusinessField::route('/'),
+            'create' => Pages\CreateBusinessField::route('/create'),
+            'view' => Pages\ViewBusinessField::route('/{record}'),
+            'edit' => Pages\EditBusinessField::route('/{record}/edit'),
         ];
     }
 }
