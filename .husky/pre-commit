@@ -1,0 +1,8 @@
+#!/bin/sh
+npx --no-install lint-staged
+node .scripts/check-dd-function.js
+# node .scripts/check-console.js
+# node .scripts/check-translation.js
+# php artisan base:translate
+# git add lang/en.json
+# php artisan route:cache

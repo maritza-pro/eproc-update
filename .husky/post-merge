@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# Get the name of the branch being pushed
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Skip check for specific branches
+if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "staging" ] || [ "$BRANCH" = "development" ]; then
+  echo "ℹ️ Skipping checks on '$BRANCH' branch."
+  exit 0
+fi
+
+# Check if composer.lock or yarn.lock was changed
+FILES_CHANGED=$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)
+
+NEEDS_COMPOSER=false
+NEEDS_YARN=false
+NEEDS_MIGRATE=false
+
+echo "$FILES_CHANGED" | grep -q "composer.lock" && NEEDS_COMPOSER=true
+echo "$FILES_CHANGED" | grep -q "yarn.lock" && NEEDS_YARN=true
+echo "$FILES_CHANGED" | grep -q "Migrations" && NEEDS_MIGRATE=true
+
+if $NEEDS_COMPOSER; then
+  echo "🔧 Running composer install..."
+  composer install --ignore-platform-reqs
+fi
+
+if $NEEDS_MIGRATE; then
+  echo "🔧 Running Migration..."
+  php artisan migrate
+fi
+
+if $NEEDS_YARN; then
+  echo "📦 Running yarn install..."
+  yarn install
+fi
+
+rm -rf bootstrap/cache/*.php
+# composer dump-autoload

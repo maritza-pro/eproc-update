@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# Get the name of the branch being pushed
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Skip check for specific branches
+if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "staging" ] || [ "$BRANCH" = "development" ]; then
+  echo "ℹ️ Skipping checks on '$BRANCH' branch."
+  exit 0
+fi
+
+# ✅ Only run this for feature-type branches
+node .scripts/check-branch.js
+
+# ⛏ Check if the remote branch already exists
+if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null; then
+  FILES=$(git diff --name-only origin/$BRANCH)
+else
+  echo "ℹ Remote branch '$BRANCH' does not exist yet (first push). Diffing against HEAD only."
+  FILES=$(git diff --name-only HEAD)
+fi
+
+
+# Find changed files to be pushed
+#FILES=$(git diff --name-only origin/$(git rev-parse --abbrev-ref HEAD))
+
+# Check if there are any .vue or .js files staged
+# SHOULD_BUILD=false
+# for FILE in $FILES; do
+#   if echo "$FILE" | grep -E '\.vue$|\.js$' >/dev/null; then
+#     SHOULD_BUILD=true
+#     break
+#   fi
+# done
+
+# if [ "$SHOULD_BUILD" = true ]; then
+#   echo "▶ Detected .vue or .js changes — running Vue build..."
+#   yarn build || { echo "❌ Vue build failed. Push aborted."; exit 1; }
+# else
+#   echo "ℹ️  No .vue or .js changes — skipping Vue build."
+# fi
+
+# ---- Laravel route check: run only if .php changed ----
+NEED_PHP_CHECK=false
+for FILE in $FILES; do
+  if echo "$FILE" | grep -E '\.php$' > /dev/null; then
+    NEED_PHP_CHECK=true
+    break
+  fi
+done
+
+if [ "$NEED_PHP_CHECK" = true ]; then
+  echo "▶ Detected .php changes — checking Laravel route cache..."
+  php artisan route:cache || { echo "❌ Laravel route:cache failed. Push aborted."; exit 1; }
+
+  echo "▶ Generating Postman collection..."
+  php artisan create:postman-collection || { echo "❌ Postman collection generation failed. Push aborted."; exit 1; }
+else
+  echo "ℹ️  No .php changes — skipping Laravel route and Postman collection generation."
+fi
+
+php artisan route:clear
+echo "✅ All checks passed. Proceeding with push."
