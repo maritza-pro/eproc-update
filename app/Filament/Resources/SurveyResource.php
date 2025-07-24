@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\SurveyResource\Pages;
+use App\Filament\Resources\SurveyResource\RelationManagers\QuestionsRelationManager;
 use App\Models\Survey;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -75,6 +76,7 @@ class SurveyResource extends Resource
     public static function getRelations(): array
     {
         return [
+            QuestionsRelationManager::class,
             ActivitylogRelationManager::class,
         ];
     }
