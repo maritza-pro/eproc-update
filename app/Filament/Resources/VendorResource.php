@@ -29,7 +29,7 @@ class VendorResource extends Resource
 
     protected static ?string $modelLabel = 'Vendor';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Vendors';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
