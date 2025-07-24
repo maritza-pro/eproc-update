@@ -92,7 +92,7 @@ class VendorTypeResource extends Resource
         $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
-            ->deferLoading()
+            // ->deferLoading()
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('type')

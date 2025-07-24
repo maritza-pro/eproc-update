@@ -105,7 +105,7 @@ class VendorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->deferLoading()
+            // ->deferLoading()
             ->striped()
             ->modifyQueryUsing(function (Builder $query) {
                 $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {

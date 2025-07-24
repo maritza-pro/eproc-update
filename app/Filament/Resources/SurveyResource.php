@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\SurveyCategoryResource\Pages;
-use App\Models\SurveyCategory;
+use App\Filament\Resources\SurveyResource\Pages;
+use App\Models\Survey;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,20 +19,20 @@ use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class SurveyCategoryResource extends Resource
+class SurveyResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = SurveyCategory::class;
+    protected static ?string $model = Survey::class;
 
-    protected static ?string $modelLabel = 'Category';
+    protected static ?string $modelLabel = 'Survey';
 
     protected static ?string $navigationGroup = 'Surveys';
 
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -40,24 +40,15 @@ class SurveyCategoryResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\Textarea::make('description'),
-                        Forms\Components\Grid::make(3)
+                        Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('type'),
-                                Forms\Components\TextInput::make('code'),
-                                Forms\Components\Select::make('parent_id')
-                                    ->relationship('parent', 'name'),
-                            ]),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\ColorPicker::make('text_color'),
-                                Forms\Components\ColorPicker::make('background_color'),
-                                Forms\Components\Toggle::make('is_active')
-                                    ->inline(false)
-                                    ->required()
-                                    ->default(true),
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                Forms\Components\Select::make('category_id')
+                                    ->relationship('category', 'name')
+                                    ->searchable(),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);
@@ -74,10 +65,10 @@ class SurveyCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSurveyCategories::route('/'),
-            'create' => Pages\CreateSurveyCategory::route('/create'),
-            'view' => Pages\ViewSurveyCategory::route('/{record}'),
-            'edit' => Pages\EditSurveyCategory::route('/{record}/edit'),
+            'index' => Pages\ListSurveys::route('/'),
+            'create' => Pages\CreateSurvey::route('/create'),
+            'view' => Pages\ViewSurvey::route('/{record}'),
+            'edit' => Pages\EditSurvey::route('/{record}/edit'),
         ];
     }
 
@@ -96,30 +87,11 @@ class SurveyCategoryResource extends Resource
             // ->deferLoading()
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('type')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('code')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('parent.name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\ColorColumn::make('text_color')
-                    ->alignCenter(),
-                Tables\Columns\ColorColumn::make('background_color')
-                    ->alignCenter(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->boolean()
-                    ->alignCenter(),
-                Tables\Columns\IconColumn::make('is_system')
-                    ->boolean()
-                    ->alignCenter()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

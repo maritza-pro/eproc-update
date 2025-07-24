@@ -85,7 +85,7 @@ class DocumentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->deferLoading()
+            // ->deferLoading()
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('documentable_type')
