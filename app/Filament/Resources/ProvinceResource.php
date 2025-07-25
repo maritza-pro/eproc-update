@@ -45,11 +45,11 @@ class ProvinceResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('name')   
-                                    ->required(),
                                 Forms\Components\Select::make('country_id')
                                     ->relationship('country', 'name')
-                                    ->required()
+                                    ->required(),
+                            Forms\Components\TextInput::make('name')   
+                                    ->required(),
                             ]),
                     ]),
             ]);
