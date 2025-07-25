@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class City extends Model
+class District extends Model
 {
     //
     use LogsActivity,
@@ -17,17 +17,12 @@ class City extends Model
 
     protected $fillable = [
         'name',
-        'province_id',
+        'city_id',
     ];
 
-    public function province()
+    public function city()
     {
-        return $this->belongsTo(Province::class, 'province_id', 'id');
-    }
-
-    public function district()
-    {
-        return $this->hasMany(District::class, 'city_id', 'id');
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
     public function getActivitylogOptions(): LogOptions
