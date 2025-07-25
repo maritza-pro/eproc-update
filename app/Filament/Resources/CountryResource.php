@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Concerns\Resource\Gate;
+use App\Filament\Resources\CountryResource\RelationManagers\CityRelationManager;
 use App\Filament\Resources\CountryResource\RelationManagers\ProvinceRelationManager;
 use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
@@ -87,6 +88,7 @@ class CountryResource extends Resource
     {
         return [
             ProvinceRelationManager::class,
+            CityRelationManager::class,
         ];
     }
 
