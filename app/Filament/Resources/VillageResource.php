@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DistrictResource\Pages;
-use App\Filament\Resources\DistrictResource\RelationManagers;
-use App\Models\District;
+use App\Filament\Resources\VillageResource\Pages;
+use App\Filament\Resources\VillageResource\RelationManagers;
+use App\Models\Village;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,21 +20,22 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class DistrictResource extends Resource
+class VillageResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
     
-    protected static ?string $model = District::class;
-    protected static ?string $modelLabel = 'District';
+    protected static ?string $model = Village::class;
+
+    protected static ?string $modelLabel = 'Village';
 
     protected static ?string $navigationGroup = 'Location';
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationIcon = 'heroicon-o-home';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
 
 
@@ -68,9 +69,17 @@ class DistrictResource extends Resource
                                     ->disabled(fn (callable $get) => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
+                                Forms\Components\Select::make('district_id')
+                                    ->label('District')
+                                    ->options(function (callable $get) {
+                                        return \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id');
+                                    })
+                                    ->disabled(fn (callable $get) => empty($get('city_id')))
+                                    ->reactive()
+                                    ->required(),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
-                        ])
+                            ]),
                     ]),
             ]);
     }
@@ -84,13 +93,16 @@ class DistrictResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
+                Tables\Columns\TextColumn::make('district.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.province.name')
+                Tables\Columns\TextColumn::make('district.city.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.province.country.name')
+                Tables\Columns\TextColumn::make('district.city.province.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('district.city.province.country.name')
                     ->searchable()
                     ->sortable(),
             ])
@@ -118,9 +130,9 @@ ActivityLogTimelineTableAction::make('Activities'),
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDistricts::route('/'),
-            'create' => Pages\CreateDistrict::route('/create'),
-            'edit' => Pages\EditDistrict::route('/{record}/edit'),
+            'index' => Pages\ListVillages::route('/'),
+            'create' => Pages\CreateVillage::route('/create'),
+            'edit' => Pages\EditVillage::route('/{record}/edit'),
         ];
     }
 }
