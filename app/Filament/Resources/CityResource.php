@@ -45,10 +45,21 @@ class CityResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                Forms\Components\Select::make('country_id')
+                                    ->label('Country')
+                                    ->options(\App\Models\Country::all()->pluck('name', 'id'))
+                                    ->reactive()
+                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
-                                    ->relationship('province', 'name')
+                                    ->label('Province')
+                                    ->options(function (callable $get) {
+                                        return \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id');
+                                    })
+                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->reactive()
+                                    ->required(),
+                                Forms\Components\TextInput::make('name')
                                     ->required(),
                             ]),
                     ]),
