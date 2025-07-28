@@ -12,9 +12,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CityRelationManager extends RelationManager
+class DistrictRelationManager extends RelationManager
 {
-    protected static string $relationship = 'City';
+    protected static string $relationship = 'district';
 
     public function form(Form $form): Form
     {
@@ -23,18 +23,41 @@ class CityRelationManager extends RelationManager
                 Forms\Components\Select::make('province_id')
                     ->label('Province')
                     ->options(function (RelationManager $livewire) {
-                        return \App\Models\Province::where('country_id', $livewire->getOwnerRecord()->id)
+                        $country = $livewire->getOwnerRecord(); // get current Country
+                        if (!$country) return [];
+
+                        return \App\Models\Province::where('country_id', $country->id)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(fn($set, $record) => $set('province_id', $record?->province_id)),
+                    ->afterStateHydrated(function ($set, $record) {
+                        $set('province_id', $record?->province_id);
+                    })
+                    ->afterStateUpdated(function (callable $set) {
+                        $set('district_id', null);
+                    }),
+
+                Forms\Components\Select::make('city_id')
+                    ->label('City')
+                    ->options(function (callable $get) {
+                        $provinceId = $get('province_id');
+                        if (!$provinceId) return [];
+
+                        return \App\Models\City::where('province_id', $provinceId)
+                            ->pluck('name', 'id');
+                    })
+                    ->required()
+                    ->reactive()
+                    ->disabled(fn(callable $get) => empty($get('province_id')))
+                    ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
+                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
             ]);
     }
-
 
     public function table(Table $table): Table
     {

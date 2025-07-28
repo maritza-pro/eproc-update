@@ -54,7 +54,7 @@ class CityResource extends Resource
                                             $set('country_id', $record->province->country_id);
                                         }
                                     })
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
@@ -64,14 +64,14 @@ class CityResource extends Resource
                                     })
                                     ->required()
                                     ->reactive()
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn(callable $get) => empty($get('country_id')))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         $set('province_id', $record?->province_id);
                                     }),
-                                Forms\Components\TextInput::make('name')   
+                                Forms\Components\TextInput::make('name')
                                     ->required(),
                             ]),
-                        ]),
+                    ]),
             ]);
     }
 
@@ -89,14 +89,14 @@ class CityResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('province.country.name')
                     ->searchable()
-                    ->sortable(),  
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-ActivityLogTimelineTableAction::make('Activities'),
+                ActivityLogTimelineTableAction::make('Activities'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -110,7 +110,7 @@ ActivityLogTimelineTableAction::make('Activities'),
         return [
             //
         ];
-    } 
+    }
 
     public static function getPages(): array
     {

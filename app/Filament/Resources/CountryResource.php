@@ -13,8 +13,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\CountryResource\RelationManagers\CityRelationManager;
 use App\Filament\Resources\CountryResource\RelationManagers\ProvinceRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\CityRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\DistrictRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\VillageRelationManager;
 use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,7 +32,7 @@ class CountryResource extends Resource
     use HasHexaLite;
 
     protected static ?string $model = Country::class;
-    
+
     protected static ?string $modelLabel = 'Country';
 
     protected static ?string $navigationGroup = 'Location';
@@ -89,6 +91,8 @@ class CountryResource extends Resource
         return [
             ProvinceRelationManager::class,
             CityRelationManager::class,
+            DistrictRelationManager::class,
+            VillageRelationManager::class,
         ];
     }
 
