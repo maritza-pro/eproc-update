@@ -86,6 +86,8 @@ class ProcurementItemResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('procurement.title')
                     ->numeric()

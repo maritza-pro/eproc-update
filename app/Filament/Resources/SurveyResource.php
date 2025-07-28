@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\ProcurementResource\Pages;
-use App\Filament\Resources\ProcurementResource\RelationManagers\ItemsRelationManager;
-use App\Models\Procurement;
+use App\Filament\Resources\SurveyResource\Pages;
+use App\Filament\Resources\SurveyResource\RelationManagers\QuestionsRelationManager;
+use App\Models\Survey;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,24 +16,24 @@ use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class ProcurementResource extends Resource
+class SurveyResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = Procurement::class;
+    protected static ?string $model = Survey::class;
 
-    protected static ?string $modelLabel = 'Procurement';
+    protected static ?string $modelLabel = 'Survey';
 
-    protected static ?string $navigationGroup = 'Procurement';
+    protected static ?string $navigationGroup = 'Surveys';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -45,15 +45,9 @@ class ProcurementResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->required(),
-                                Forms\Components\Select::make('method')
-                                    ->required()
-                                    ->options(array_combine(Procurement::METHODS, Procurement::METHODS))
+                                Forms\Components\Select::make('category_id')
+                                    ->relationship('category', 'name')
                                     ->searchable(),
-                                Forms\Components\DatePicker::make('start_date')
-                                    ->required()
-                                    ->beforeOrEqual('end_date'),
-                                Forms\Components\DatePicker::make('end_date')
-                                    ->afterOrEqual('start_date'),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
                             ]),
@@ -72,35 +66,33 @@ class ProcurementResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProcurements::route('/'),
-            'create' => Pages\CreateProcurement::route('/create'),
-            'view' => Pages\ViewProcurement::route('/{record}'),
-            'edit' => Pages\EditProcurement::route('/{record}/edit'),
+            'index' => Pages\ListSurveys::route('/'),
+            'create' => Pages\CreateSurvey::route('/create'),
+            'view' => Pages\ViewSurvey::route('/{record}'),
+            'edit' => Pages\EditSurvey::route('/{record}/edit'),
         ];
     }
 
     public static function getRelations(): array
     {
         return [
-            ItemsRelationManager::class,
+            QuestionsRelationManager::class,
+            ActivitylogRelationManager::class,
         ];
     }
 
     public static function table(Table $table): Table
     {
+        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+
         return $table
             // ->deferLoading()
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('method')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->date()
+                Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

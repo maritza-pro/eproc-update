@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources\SurveyCategoryResource\Pages;
+
+use App\Filament\Resources\SurveyCategoryResource;
+use Filament\Actions;
+use Filament\Resources\Pages\ViewRecord;
+
+class ViewSurveyCategory extends ViewRecord
+{
+    protected static string $resource = SurveyCategoryResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('back')
+                ->label('Back')
+                ->icon('heroicon-m-arrow-left')
+                ->color('gray')
+                ->url(static::getResource()::getUrl('index')),
+            Actions\EditAction::make(),
+        ];
+    }
+}

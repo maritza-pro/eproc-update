@@ -39,7 +39,7 @@ class VendorResource extends Resource
             return true;
         }
 
-        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::where('user_id', Auth::id())->count() < 1;
+        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::query()->when(Auth::id(), fn (Builder $query) => $query->where('user_id', Auth::id()))->count() < 1;
     }
 
     public static function form(Form $form): Form
@@ -105,6 +105,8 @@ class VendorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // ->deferLoading()
+            ->striped()
             ->modifyQueryUsing(function (Builder $query) {
                 $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());

@@ -40,7 +40,8 @@ class CreateFilament extends Command implements PromptsForMissingInput
      */
     public function handle(): void
     {
-        $resource = $this->argument('resource');
+        // @phpstan-ignore cast.string
+        $resource = (string) $this->argument('resource');
         $resource = Str::of($resource)->headline()->studly()->toString();
 
         Artisan::call('make:filament-resource', [

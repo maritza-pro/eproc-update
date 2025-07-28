@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\VendorTypeResource\Pages;
-use App\Models\VendorType;
+use App\Filament\Resources\SurveyCategoryResource\Pages;
+use App\Models\SurveyCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,19 +17,20 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class VendorTypeResource extends Resource
+class SurveyCategoryResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = VendorType::class;
+    protected static ?string $model = SurveyCategory::class;
 
-    protected static ?string $modelLabel = 'Vendor Type';
+    protected static ?string $modelLabel = 'Category';
 
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationGroup = 'Surveys';
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
@@ -73,17 +74,17 @@ class VendorTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVendorTypes::route('/'),
-            'create' => Pages\CreateVendorType::route('/create'),
-            'view' => Pages\ViewVendorType::route('/{record}'),
-            'edit' => Pages\EditVendorType::route('/{record}/edit'),
+            'index' => Pages\ListSurveyCategories::route('/'),
+            'create' => Pages\CreateSurveyCategory::route('/create'),
+            'view' => Pages\ViewSurveyCategory::route('/{record}'),
+            'edit' => Pages\EditSurveyCategory::route('/{record}/edit'),
         ];
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            ActivitylogRelationManager::class,
         ];
     }
 

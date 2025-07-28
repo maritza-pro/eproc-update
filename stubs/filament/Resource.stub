@@ -54,6 +54,8 @@ class {{ resourceClass }} extends Resource
         $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
+//->deferLoading()
+->striped()
             ->columns([
 {{ tableColumns }}
             ])

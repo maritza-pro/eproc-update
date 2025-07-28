@@ -16,7 +16,6 @@ class CreateBid extends CreateRecord
     {
         $bid = $this->record;
 
-        // Ambil semua procurement items dari procurement terkait
         $procurementItems = $bid->procurement->items;
 
         foreach ($procurementItems as $item) {

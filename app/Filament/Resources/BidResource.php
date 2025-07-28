@@ -39,7 +39,7 @@ class BidResource extends Resource
     public static function form(Form $form): Form
     {
         $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-        $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query) => $query->where('user_id', Auth::id()))
+        $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query): Builder => $query->where('user_id', Auth::id()))
             ->pluck('company_name', 'id');
 
         return $form
@@ -99,6 +99,8 @@ class BidResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // ->deferLoading()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('vendor.company_name')
                     ->numeric()
