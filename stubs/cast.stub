@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
