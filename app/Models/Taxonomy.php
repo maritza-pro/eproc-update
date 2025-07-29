@@ -33,6 +33,11 @@ class Taxonomy extends Model
 
     protected $table = 'taxonomies';
 
+	public function vendors(): HasMany
+    {
+        return $this->hasMany(Vendor::class);
+    }
+
     public function children(): HasMany
     {
         return $this->hasMany(Taxonomy::class, 'parent_id');
