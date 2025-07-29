@@ -18,6 +18,7 @@ trait Gate
             "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
             "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
             "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
+            "{$this->getModelLabel()}.validate" => "Allows validating {$this->getModelLabel()}",
         ];
     }
 
