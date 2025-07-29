@@ -8,6 +8,8 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\SurveyResource\Pages;
 use App\Filament\Resources\SurveyResource\RelationManagers\QuestionsRelationManager;
 use App\Models\Survey;
+use App\Models\VendorBusiness;
+use App\Models\VendorType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,11 +47,32 @@ class SurveyResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->required(),
                                 Forms\Components\Select::make('category_id')
                                     ->relationship('category', 'name')
                                     ->searchable(),
+                                Forms\Components\Select::make('type')
+                                    ->label('Type')
+                                    ->options([
+                                        'vendor' => 'Vendor',
+                                        'procurement' => 'Procurement',
+                                    ])
+                                    ->required()
+                                    ->reactive(),
+                                Forms\Components\Select::make('properties.vendor_type')
+                                    ->label('Vendor Type')
+                                    ->options(fn () => VendorType::query()->pluck('name', 'id'))
+                                    ->required(fn ($get) => $get('type') === 'vendor')
+                                    ->visible(fn ($get) => $get('type') === 'vendor')
+                                    ->searchable(),
+                                Forms\Components\Select::make('properties.vendor_business')
+                                    ->label('Vendor Business')
+                                    ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
+                                    ->required(fn ($get) => $get('type') === 'vendor')
+                                    ->visible(fn ($get) => $get('type') === 'vendor')
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->columnSpanFull(),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
                             ]),
@@ -96,6 +119,14 @@ class SurveyResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('vendorType.name')
+                    ->label('Vendor Type')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('vendorBusiness.name')
+                    ->label('Vendor Business')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

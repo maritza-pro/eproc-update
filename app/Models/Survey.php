@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Survey extends Model
 {
     use Cachable,
+        HasJsonRelationships,
         LogsActivity,
         SoftDeletes;
 
@@ -31,7 +33,16 @@ class Survey extends Model
         'title',
         'description',
         'category_id',
+        'type',
+        'properties',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'properties' => 'array',
+        ];
+    }
 
     public function category(): BelongsTo
     {
@@ -46,5 +57,15 @@ class Survey extends Model
     public function questions(): HasMany
     {
         return $this->hasMany(SurveyQuestion::class);
+    }
+
+    public function vendorBusiness(): Belongsto
+    {
+        return $this->belongsTo(VendorBusiness::class, 'properties->vendor_business');
+    }
+
+    public function vendorType(): Belongsto
+    {
+        return $this->belongsTo(VendorType::class, 'properties->vendor_type');
     }
 }
