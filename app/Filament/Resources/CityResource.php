@@ -88,6 +88,7 @@ class CityResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('City')
                     ->searchable()
                     ->sortable(),
             ])

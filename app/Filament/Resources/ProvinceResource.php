@@ -65,6 +65,7 @@ class ProvinceResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Province')
                     ->searchable()
                     ->sortable(),
             ])

@@ -91,6 +91,7 @@ class DistrictResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('District')
                     ->searchable()
                     ->sortable(),
             ])

@@ -103,6 +103,7 @@ class VillageResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Village')
                     ->searchable()
                     ->sortable(),
             ])
