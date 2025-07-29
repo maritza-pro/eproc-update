@@ -35,7 +35,7 @@ class VillageRelationManager extends RelationManager
                         $set('province_id', $record?->province_id);
                     })
                     ->afterStateUpdated(function (callable $set) {
-                        $set('district_id', null);
+                        $set('city_id', null);
                     }),
 
                 Forms\Components\Select::make('city_id')
@@ -51,7 +51,7 @@ class VillageRelationManager extends RelationManager
                     ->reactive()
                     ->disabled(fn(callable $get) => empty($get('province_id')))
                     ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
+                    ->afterStateUpdated(fn(callable $set) => $set('district_id', null)),
 
                 Forms\Components\Select::make('district_id')
                     ->label('District')
