@@ -17,6 +17,7 @@ use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class ProcurementResource extends Resource
 {
@@ -83,6 +84,7 @@ class ProcurementResource extends Resource
     {
         return [
             ItemsRelationManager::class,
+            ActivitylogRelationManager::class,
         ];
     }
 
