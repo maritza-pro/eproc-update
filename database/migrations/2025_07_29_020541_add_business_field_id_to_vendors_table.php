@@ -18,7 +18,8 @@ return new class extends Migration
                   ->nullable()
                   ->after('company_name')
                   ->constrained('business_fields')
-                  ->onDelete('set null');
+                  ->onDelete('set null')
+				  ->comment('The ID of the business field associated with the vendor');
         });
     }
 
