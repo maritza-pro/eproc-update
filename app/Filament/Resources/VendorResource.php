@@ -54,6 +54,12 @@ class VendorResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')
                                     ->required(),
+                                Forms\Components\Select::make('business_field_id')
+                                    ->relationship('businessField', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->label('Business Field'),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
                                     ->required(),
@@ -62,6 +68,12 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('tax_number'),
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
+                                Forms\Components\Select::make('taxonomies')
+                                    ->relationship('taxonomies', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->label('Vendor Type'),
                                 Forms\Components\Toggle::make('is_verified')
                                     ->required()
                                     ->disabled($withoutGlobalScope),
@@ -118,6 +130,9 @@ class VendorResource extends Resource
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('company_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('businessField.name')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
@@ -128,7 +143,11 @@ class VendorResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),
-
+                Tables\Columns\TextColumn::make('taxonomies.name')
+					->label('Vendor Type')
+                    ->badge()
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
