@@ -50,13 +50,18 @@ class Taxonomy extends Model
         return $this->belongsTo(Taxonomy::class, 'parent_id');
     }
 
-    public function relationables(string $modelClass): MorphToMany
-    {
-        return $this->morphedByMany($modelClass, 'relationable', 'taxonomy_relations');
-    }
+    // public function relationables(string $modelClass): MorphToMany
+    // {
+    //     return $this->morphedByMany($modelClass, 'relationable', 'taxonomy_relations');
+    // }
 
     public function relations(): HasMany
     {
         return $this->hasMany(TaxonomyRelation::class);
+    }
+
+    public function vendors(): HasMany
+    {
+        return $this->hasMany(Vendor::class);
     }
 }

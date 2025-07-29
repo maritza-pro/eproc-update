@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\VendorTypeResource\Pages;
-use App\Models\VendorType;
+use App\Filament\Resources\VendorBusinessResource\Pages;
+use App\Models\VendorBusiness;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,22 +19,22 @@ use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class VendorTypeResource extends Resource
+class VendorBusinessResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = VendorType::class;
+    protected static ?string $model = VendorBusiness::class;
 
-    protected static ?string $modelLabel = 'Type';
+    protected static ?string $modelLabel = 'Business';
 
     protected static ?string $navigationGroup = 'Vendors';
 
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -76,10 +76,10 @@ class VendorTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVendorTypes::route('/'),
-            'create' => Pages\CreateVendorType::route('/create'),
-            'view' => Pages\ViewVendorType::route('/{record}'),
-            'edit' => Pages\EditVendorType::route('/{record}/edit'),
+            'index' => Pages\ListVendorBusinesses::route('/'),
+            'create' => Pages\CreateVendorBusiness::route('/create'),
+            'view' => Pages\ViewVendorBusiness::route('/{record}'),
+            'edit' => Pages\EditVendorBusiness::route('/{record}/edit'),
         ];
     }
 
