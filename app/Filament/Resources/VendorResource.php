@@ -34,6 +34,8 @@ class VendorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
+    protected static ?int $navigationSort = 1;
+
     public static function canCreate(): bool
     {
         if (Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope')) {
