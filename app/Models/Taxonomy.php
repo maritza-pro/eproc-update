@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,7 +15,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Taxonomy extends Model
 {
-    use LogsActivity,
+    use Cachable,
+        LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
@@ -32,11 +34,6 @@ class Taxonomy extends Model
     ];
 
     protected $table = 'taxonomies';
-
-	public function vendors(): HasMany
-    {
-        return $this->hasMany(Vendor::class);
-    }
 
     public function children(): HasMany
     {
@@ -61,5 +58,10 @@ class Taxonomy extends Model
     public function relations(): HasMany
     {
         return $this->hasMany(TaxonomyRelation::class);
+    }
+
+    public function vendors(): HasMany
+    {
+        return $this->hasMany(Vendor::class);
     }
 }

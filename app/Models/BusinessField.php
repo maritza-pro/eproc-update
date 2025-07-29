@@ -1,25 +1,25 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
-
 
 class BusinessField extends Model
 {
-    use LogsActivity;
-    use SoftDeletes;
-	use HasFactory;
+    use Cachable,
+        HasFactory,
+        LogsActivity,
+        SoftDeletes;
 
-   protected $fillable = [
+    protected $fillable = [
         'code',
         'name',
     ];
@@ -29,7 +29,7 @@ class BusinessField extends Model
         return LogOptions::defaults();
     }
 
-	public function vendors(): HasMany
+    public function vendors(): HasMany
     {
         return $this->hasMany(Vendor::class);
     }
