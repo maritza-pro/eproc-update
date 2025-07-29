@@ -23,6 +23,12 @@ class Country extends Model
         'name',
         'code',
         'currency',
+        'iso',
+        'num_code',
+        'msisdn_code',
+        'phone_code',
+        'latitude',
+        'longitude',
     ];
 
     public function province(): HasMany

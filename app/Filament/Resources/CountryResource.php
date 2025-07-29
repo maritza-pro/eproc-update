@@ -51,10 +51,46 @@ class CountryResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
+
                                 Forms\Components\TextInput::make('code')
-                                    ->required(),
+                                    ->maxLength(2)
+                                    ->label('Country Code')
+                                    ->helperText('2-letter country code (e.g. ID, US)')
+                                    ->extraAttributes(['style' => 'text-transform: uppercase']),
+
                                 Forms\Components\TextInput::make('currency')
-                                    ->required(),
+                                    ->maxLength(10),
+
+                                Forms\Components\TextInput::make('iso')
+                                    ->maxLength(3)
+                                    ->helperText('3-letter ISO code (e.g. IDN, USA)'),
+
+                                Forms\Components\TextInput::make('num_code')
+                                    ->numeric()
+                                    ->maxLength(3)
+                                    ->label('Numeric Code')
+                                    ->helperText('Numeric country code (e.g. 360 for Indonesia)'),
+
+                                Forms\Components\TextInput::make('phone_code')
+                                    ->numeric()
+                                    ->maxLength(5)
+                                    ->label('Phone Code')
+                                    ->helperText('e.g. 62 for Indonesia'),
+
+                                Forms\Components\TextInput::make('msisdn_code')
+                                    ->numeric()
+                                    ->maxLength(5)
+                                    ->label('MSISDN Code'),
+
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
             ]);
@@ -67,10 +103,35 @@ class CountryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Country Name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('currency'),
+
+                Tables\Columns\TextColumn::make('code')
+                    ->label('Country Code')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('iso')
+                    ->label('ISO Code'),
+
+                Tables\Columns\TextColumn::make('num_code')
+                    ->label('Numeric Code'),
+
+                Tables\Columns\TextColumn::make('currency')
+                    ->label('Currency'),
+
+                Tables\Columns\TextColumn::make('msisdn_code')
+                    ->label('MSISDN Code'),
+
+                Tables\Columns\TextColumn::make('phone_code')
+                    ->label('Phone Code')
+                    ->formatStateUsing(fn($state) => '+' . $state),
+
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

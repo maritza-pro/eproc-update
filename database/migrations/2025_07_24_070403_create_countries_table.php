@@ -17,8 +17,14 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->comment('The name of the country');
-            $table->string('code',3)->comment('The code of the country');
-            $table->string('currency')->comment('The currency of the country');
+            $table->string('code', 2)->nullable()->comment('The 2-letter country code (e.g., ID, US)');
+            $table->string('iso', 3)->nullable()->comment('The 3-letter ISO code of the country');
+            $table->string('num_code', 3)->nullable()->comment('The numeric ISO code of the country');
+            $table->string('currency')->nullable()->comment('The currency used in the country');
+            $table->string('msisdn_code')->nullable()->comment('The MSISDN code used for mobile numbering');
+            $table->string('phone_code')->nullable()->comment('The international phone dialing code (e.g., +62)');
+            $table->decimal('latitude', 10, 6)->nullable()->comment('The latitude of the country');
+            $table->decimal('longitude', 10, 6)->nullable()->comment('The longitude of the country');
 
             $table->timestampSoftDelete();
         });
