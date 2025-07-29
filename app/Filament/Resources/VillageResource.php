@@ -26,7 +26,7 @@ class VillageResource extends Resource
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
-    
+
     protected static ?string $model = Village::class;
 
     protected static ?string $modelLabel = 'Village';
@@ -51,14 +51,14 @@ class VillageResource extends Resource
                                     ->label('Country')
                                     ->options(\App\Models\Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
                                     ->options(function (callable $get) {
                                         return \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id');
                                     })
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn(callable $get) => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
@@ -66,7 +66,7 @@ class VillageResource extends Resource
                                     ->options(function (callable $get) {
                                         return \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id');
                                     })
-                                    ->disabled(fn (callable $get) => empty($get('province_id')))
+                                    ->disabled(fn(callable $get) => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('district_id')
@@ -74,7 +74,7 @@ class VillageResource extends Resource
                                     ->options(function (callable $get) {
                                         return \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id');
                                     })
-                                    ->disabled(fn (callable $get) => empty($get('city_id')))
+                                    ->disabled(fn(callable $get) => empty($get('city_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
@@ -90,19 +90,19 @@ class VillageResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('district.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('district.city.name')
+                Tables\Columns\TextColumn::make('district.city.province.country.name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('district.city.province.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('district.city.province.country.name')
+                Tables\Columns\TextColumn::make('district.city.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('district.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
             ])
@@ -111,7 +111,7 @@ class VillageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-ActivityLogTimelineTableAction::make('Activities'),
+                ActivityLogTimelineTableAction::make('Activities'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -26,7 +26,7 @@ class DistrictResource extends Resource
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
-    
+
     protected static ?string $model = District::class;
     protected static ?string $modelLabel = 'District';
 
@@ -50,14 +50,14 @@ class DistrictResource extends Resource
                                     ->label('Country')
                                     ->options(\App\Models\Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
                                     ->options(function (callable $get) {
                                         return \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id');
                                     })
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn(callable $get) => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
@@ -65,12 +65,12 @@ class DistrictResource extends Resource
                                     ->options(function (callable $get) {
                                         return \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id');
                                     })
-                                    ->disabled(fn (callable $get) => empty($get('province_id')))
+                                    ->disabled(fn(callable $get) => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
-                        ])
+                            ])
                     ]),
             ]);
     }
@@ -81,16 +81,16 @@ class DistrictResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
+                Tables\Columns\TextColumn::make('city.province.country.name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('city.province.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('city.province.country.name')
+                Tables\Columns\TextColumn::make('city.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
             ])
@@ -99,7 +99,7 @@ class DistrictResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-ActivityLogTimelineTableAction::make('Activities'),
+                ActivityLogTimelineTableAction::make('Activities'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -81,13 +81,13 @@ class CityResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('province.country.name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('province.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('province.country.name')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
             ])

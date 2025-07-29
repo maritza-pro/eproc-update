@@ -26,7 +26,7 @@ class ProvinceResource extends Resource
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
-    
+
     protected static ?string $model = Province::class;
 
     protected static ?string $modelLabel = 'Province';
@@ -48,7 +48,7 @@ class ProvinceResource extends Resource
                                 Forms\Components\Select::make('country_id')
                                     ->relationship('country', 'name')
                                     ->required(),
-                            Forms\Components\TextInput::make('name')   
+                                Forms\Components\TextInput::make('name')
                                     ->required(),
                             ]),
                     ]),
@@ -61,10 +61,10 @@ class ProvinceResource extends Resource
 
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('country.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('country.name')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
             ])
@@ -73,7 +73,7 @@ class ProvinceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-ActivityLogTimelineTableAction::make('Activities'),
+                ActivityLogTimelineTableAction::make('Activities'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
