@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class VendorResource extends Resource
 {
@@ -39,7 +40,7 @@ class VendorResource extends Resource
             return true;
         }
 
-        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::query()->when(Auth::id(), fn (Builder $query) => $query->where('user_id', Auth::id()))->count() < 1;
+        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::query()->when(Auth::id(), fn (Builder $query): Builder => $query->where('user_id', Auth::id()))->count() < 1;
     }
 
     public static function form(Form $form): Form
@@ -55,7 +56,7 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('company_name')
                                     ->required(),
                                 Forms\Components\Select::make('business_field_id')
-                                    ->relationship('businessField', 'name')
+                                    ->relationship('business', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required()
@@ -110,7 +111,7 @@ class VendorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivitylogRelationManager::class,
         ];
     }
 
@@ -144,7 +145,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('license_number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('taxonomies.name')
-					->label('Vendor Type')
+                    ->label('Vendor Type')
                     ->badge()
                     ->searchable()
                     ->sortable(),
