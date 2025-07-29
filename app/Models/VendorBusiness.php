@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ScopedBy([TaxonomyScope::class])]
-class VendorBusinessField extends Taxonomy
+class VendorBusiness extends Taxonomy
 {
     use WithTaxonomy;
 
