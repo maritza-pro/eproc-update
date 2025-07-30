@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -20,18 +22,18 @@ class District extends Model
         'city_id',
     ];
 
-    public function city()
+    public function city(): BelongsTo
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    public function village(): HasMany
+    {
+        return $this->hasMany(Village::class, 'district_id', 'id');
     }
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
-    }
-
-    public function village()
-    {
-        return $this->hasMany(Village::class, 'district_id', 'id');
     }
 }

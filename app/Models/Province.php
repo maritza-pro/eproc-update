@@ -1,13 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Province extends Model
@@ -22,17 +26,17 @@ class Province extends Model
         'country_id',
     ];
 
-    public function city()
-    {
-        return $this->hasMany(City::class, 'province_id', 'id');
-    }
-
-    public function country()
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
-    public function district()
+    public function city(): HasMany
+    {
+        return $this->hasMany(City::class, 'province_id', 'id');
+    }
+
+    public function district(): HasManyThrough
     {
         return $this->hasManyThrough(
             District::class,
@@ -40,15 +44,11 @@ class Province extends Model
             'province_id',
             'city_id',
             'id',
-            'id');
+            'id'
+        );
     }
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
-    }
-
-    public function village()
+    public function village(): HasManyDeep
     {
         return $this->hasManyDeep(
             \App\Models\Village::class,
@@ -59,5 +59,10 @@ class Province extends Model
                 'district_id',
             ]
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }

@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources\ProvinceResource\RelationManagers;
 
 use App\Models\City;
+use App\Models\District;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -50,14 +51,14 @@ class VillageRelationManager extends RelationManager
                             return [];
                         }
 
-                        return \App\Models\District::where('city_id', $cityId)
+                        return District::where('city_id', $cityId)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
-                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
-                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
+                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
+                    ->afterStateHydrated(fn($set, $record) => $set('district_id', $record?->district_id))
+                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
 
                 Forms\Components\TextInput::make('name')
                     ->required()

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -22,6 +22,11 @@ class City extends Model
         'province_id',
     ];
 
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
+    }
+
     public function district(): HasMany
     {
         return $this->hasMany(District::class, 'city_id', 'id');
@@ -30,10 +35,5 @@ class City extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
-    }
-
-    public function province(): BelongsTo
-    {
-        return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Country extends Model
@@ -30,6 +31,12 @@ class Country extends Model
         'longitude',
     ];
 
+
+    public function province(): HasMany
+    {
+        return $this->hasMany(Province::class, 'country_id', 'id');
+    }
+
     public function city(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -42,7 +49,7 @@ class Country extends Model
         );
     }
 
-    public function district()
+    public function district(): HasManyDeep
     {
         return $this->hasManyDeep(
             \App\Models\District::class,
@@ -55,17 +62,7 @@ class Country extends Model
         );
     }
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
-    }
-
-    public function province(): HasMany
-    {
-        return $this->hasMany(Province::class, 'country_id', 'id');
-    }
-
-    public function village()
+    public function village(): HasManyDeep
     {
         return $this->hasManyDeep(
             \App\Models\Village::class,
@@ -77,5 +74,10 @@ class Country extends Model
                 'district_id',
             ]
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
     }
 }
