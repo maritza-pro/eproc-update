@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Concerns\Model\WithSurvey;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,8 @@ class Vendor extends Model
 {
     use Cachable,
         LogsActivity,
-        SoftDeletes;
+        SoftDeletes,
+        WithSurvey;
 
     protected $fillable = [
         'company_name',

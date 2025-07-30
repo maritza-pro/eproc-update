@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class BidResource extends Resource
 {
@@ -93,6 +94,7 @@ class BidResource extends Resource
     {
         return [
             ItemsRelationManager::class,
+            ActivitylogRelationManager::class,
         ];
     }
 
