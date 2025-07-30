@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Province extends Model
 {
     //
     use LogsActivity,
-        SoftDeletes;
+        SoftDeletes,
+        HasRelationships;
 
     protected $fillable = [
         'name',
@@ -28,6 +30,30 @@ class Province extends Model
     public function city()
     {
         return $this->hasMany(City::class, 'province_id', 'id');
+    }
+
+    public function district()
+    {
+        return $this->hasManyThrough(
+            District::class,
+            City::class,
+            'province_id',
+            'city_id',
+            'id',
+            'id');
+    }
+
+    public function village()
+    {
+        return $this->hasManyDeep(
+            \App\Models\Village::class,
+            [\App\Models\City::class, \App\Models\District::class],
+            [
+                'province_id',
+                'city_id',
+                'district_id'
+            ]
+            );
     }
 
     public function getActivitylogOptions(): LogOptions

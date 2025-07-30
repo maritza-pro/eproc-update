@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,10 +18,6 @@ use App\Filament\Resources\CountryResource\RelationManagers\DistrictRelationMana
 use App\Filament\Resources\CountryResource\RelationManagers\VillageRelationManager;
 use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class CountryResource extends Resource
 {
@@ -71,16 +66,11 @@ class CountryResource extends Resource
                                     ->label('Numeric Code')
                                     ->helperText('Numeric country code (e.g. 360 for Indonesia)'),
 
-                                Forms\Components\TextInput::make('phone_code')
-                                    ->numeric()
-                                    ->maxLength(5)
-                                    ->label('Phone Code')
-                                    ->helperText('e.g. 62 for Indonesia'),
-
                                 Forms\Components\TextInput::make('msisdn_code')
                                     ->numeric()
                                     ->maxLength(5)
-                                    ->label('MSISDN Code'),
+                                    ->label('MSISDN Code')
+                                    ->helperText('e.g. 62 for Indonesia'),
 
                                 Forms\Components\TextInput::make('latitude')
                                     ->label('Latitude')
@@ -122,10 +112,6 @@ class CountryResource extends Resource
 
                 Tables\Columns\TextColumn::make('msisdn_code')
                     ->label('MSISDN Code'),
-
-                Tables\Columns\TextColumn::make('phone_code')
-                    ->label('Phone Code')
-                    ->formatStateUsing(fn($state) => '+' . $state),
 
                 Tables\Columns\TextColumn::make('latitude')
                     ->label('Latitude'),

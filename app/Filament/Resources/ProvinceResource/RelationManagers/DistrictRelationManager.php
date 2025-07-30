@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\CountryResource\RelationManagers;
+namespace App\Filament\Resources\ProvinceResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,39 +20,15 @@ class DistrictRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('province_id')
-                    ->label('Province')
-                    ->options(function (RelationManager $livewire) {
-                        $country = $livewire->getOwnerRecord();
-                        if (!$country) return [];
-
-                        return \App\Models\Province::where('country_id', $country->id)
-                            ->pluck('name', 'id');
-                    })
-                    ->required()
-                    ->reactive()
-                    ->afterStateHydrated(function ($set, $record) {
-                        $set('province_id', $record?->province_id);
-                    })
-                    ->afterStateUpdated(function (callable $set) {
-                        $set('city_id', null);
-                    }),
-
                 Forms\Components\Select::make('city_id')
                     ->label('City')
-                    ->options(function (callable $get) {
-                        $provinceId = $get('province_id');
-                        if (!$provinceId) return [];
-
-                        return \App\Models\City::where('province_id', $provinceId)
+                    ->options(function (RelationManager $livewire) {
+                        return \App\Models\City::where('province_id', $livewire->getOwnerRecord()->id)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get) => empty($get('province_id')))
-                    ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
-
+                    ->afterStateHydrated(fn($set, $record) => $set('province_id', $record?->province_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

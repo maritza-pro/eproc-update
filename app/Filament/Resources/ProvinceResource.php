@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProvinceResource\Pages;
-use App\Filament\Resources\ProvinceResource\RelationManagers;
 use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,12 +12,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Concerns\Resource\Gate;
+use App\Filament\Resources\ProvinceResource\RelationManagers\CityRelationManager;
+use App\Filament\Resources\ProvinceResource\RelationManagers\DistrictRelationManager;
+use App\Filament\Resources\ProvinceResource\RelationManagers\VillageRelationManager;
 use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class ProvinceResource extends Resource
 {
@@ -86,7 +85,9 @@ class ProvinceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CityRelationManager::class,
+            DistrictRelationManager::class,
+            VillageRelationManager::class,
         ];
     }
 

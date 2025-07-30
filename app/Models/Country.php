@@ -26,7 +26,6 @@ class Country extends Model
         'iso',
         'num_code',
         'msisdn_code',
-        'phone_code',
         'latitude',
         'longitude',
     ];
