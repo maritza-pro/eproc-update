@@ -22,8 +22,8 @@
         "pelmered/filament-money-field": "^1.5",
         "predis/predis": "^3.1",
         "rmsramos/activitylog": "^1.0",
-        "staudenmeir/eloquent-json-relations": "^1.14",
-        "staudenmeir/eloquent-has-many-deep": "^1.21"
+        "staudenmeir/eloquent-has-many-deep": "^1.21",
+        "staudenmeir/eloquent-json-relations": "^1.14"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
