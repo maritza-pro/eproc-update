@@ -41,7 +41,7 @@ class Vendor extends Model
 
     public function businessField(): BelongsTo
     {
-        return $this->belongsTo(VendorBusiness::class,);
+        return $this->belongsTo(VendorBusiness::class);
     }
 
     public function contracts(): HasMany
