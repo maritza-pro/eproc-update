@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\SurveyResource\Pages;
 
 use App\Filament\Resources\SurveyResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateSurvey extends CreateRecord
