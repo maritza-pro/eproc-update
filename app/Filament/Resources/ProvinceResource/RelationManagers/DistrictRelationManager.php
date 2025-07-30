@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\ProvinceResource\RelationManagers;
 
@@ -9,8 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DistrictRelationManager extends RelationManager
 {
@@ -22,11 +20,11 @@ class DistrictRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('city_id')
                     ->label('City')
-                    ->options(fn(RelationManager $livewire) => \App\Models\City::where('province_id', $livewire->getOwnerRecord()->id)
+                    ->options(fn (RelationManager $livewire) => \App\Models\City::where('province_id', $livewire->getOwnerRecord()->id)
                         ->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(fn($set, $record) => $set('province_id', $record?->province_id)),
+                    ->afterStateHydrated(fn ($set, $record) => $set('province_id', $record?->province_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

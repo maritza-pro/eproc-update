@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -13,23 +13,23 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Province extends Model
 {
     //
-    use LogsActivity,
-        SoftDeletes,
-        HasRelationships;
+    use HasRelationships,
+        LogsActivity,
+        SoftDeletes;
 
     protected $fillable = [
         'name',
         'country_id',
     ];
 
-    public function country()
-    {
-        return $this->belongsTo(Country::class, 'country_id', 'id');
-    }
-
     public function city()
     {
         return $this->hasMany(City::class, 'province_id', 'id');
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
     public function district()
@@ -43,6 +43,11 @@ class Province extends Model
             'id');
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
     public function village()
     {
         return $this->hasManyDeep(
@@ -51,13 +56,8 @@ class Province extends Model
             [
                 'province_id',
                 'city_id',
-                'district_id'
+                'district_id',
             ]
-            );
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
+        );
     }
 }

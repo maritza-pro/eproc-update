@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\CountryResource\RelationManagers;
 
@@ -9,8 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VillageRelationManager extends RelationManager
 {
@@ -23,8 +21,9 @@ class VillageRelationManager extends RelationManager
                 Forms\Components\Select::make('province_id')
                     ->label('Province')
                     ->options(function (RelationManager $livewire) {
-                        $country = $livewire->getOwnerRecord(); 
-                        if (!$country) {
+                        $country = $livewire->getOwnerRecord();
+
+                        if (! $country) {
                             return [];
                         }
 
@@ -44,7 +43,8 @@ class VillageRelationManager extends RelationManager
                     ->label('City')
                     ->options(function (callable $get) {
                         $provinceId = $get('province_id');
-                        if (!$provinceId) {
+
+                        if (! $provinceId) {
                             return [];
                         }
 
@@ -53,15 +53,16 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
-                    ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('district_id', null)),
+                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id))
+                    ->afterStateUpdated(fn (callable $set) => $set('district_id', null)),
 
                 Forms\Components\Select::make('district_id')
                     ->label('District')
                     ->options(function (callable $get) {
                         $cityId = $get('city_id');
-                        if (!$cityId) {
+
+                        if (! $cityId) {
                             return [];
                         }
 
@@ -70,9 +71,9 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
-                    ->afterStateHydrated(fn($set, $record) => $set('district_id', $record?->district_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
+                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
+                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
+                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
 
                 Forms\Components\TextInput::make('name')
                     ->required()
