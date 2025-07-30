@@ -51,7 +51,7 @@ class QuestionsRelationManager extends RelationManager
                         Forms\Components\Toggle::make('is_correct')->inline(false),
                     ])
                     ->columnSpan('full')
-                    ->hidden(fn (callable $get) => ! in_array($get('type'), ['select', 'radio', 'checkbox'])),
+                    ->hidden(fn (callable $get): bool => ! in_array($get('type'), ['select', 'radio', 'checkbox'])),
             ]);
     }
 

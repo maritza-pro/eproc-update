@@ -61,14 +61,14 @@ class SurveyResource extends Resource
                                 Forms\Components\Select::make('properties.vendor_type')
                                     ->label('Vendor Type')
                                     ->options(fn () => VendorType::query()->pluck('name', 'id'))
-                                    ->required(fn ($get) => $get('type') === 'vendor')
-                                    ->visible(fn ($get) => $get('type') === 'vendor')
+                                    ->required(fn ($get): bool => $get('type') === 'vendor')
+                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
                                     ->searchable(),
                                 Forms\Components\Select::make('properties.vendor_business')
                                     ->label('Vendor Business')
                                     ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
-                                    ->required(fn ($get) => $get('type') === 'vendor')
-                                    ->visible(fn ($get) => $get('type') === 'vendor')
+                                    ->required(fn ($get): bool => $get('type') === 'vendor')
+                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
                                     ->searchable(),
                                 Forms\Components\TextInput::make('title')
                                     ->required()
@@ -108,7 +108,7 @@ class SurveyResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             // ->deferLoading()

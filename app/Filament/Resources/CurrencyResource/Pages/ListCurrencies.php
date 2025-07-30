@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\SurveyCategoryResource\Pages;
+namespace App\Filament\Resources\CurrencyResource\Pages;
 
-use App\Filament\Resources\SurveyCategoryResource;
+use App\Filament\Resources\CurrencyResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListSurveyCategories extends ListRecords
+class ListCurrencies extends ListRecords
 {
-    protected static string $resource = SurveyCategoryResource::class;
+    protected static string $resource = CurrencyResource::class;
 
     protected function getHeaderActions(): array
     {
