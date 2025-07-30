@@ -1,24 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\CityResource\Pages;
-use App\Filament\Resources\CityResource\RelationManagers;
 use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
-use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class CityResource extends Resource
 {
@@ -54,17 +50,18 @@ class CityResource extends Resource
                                             $set('country_id', $record->province->country_id);
                                         }
                                     })
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
                                     ->options(function (callable $get) {
                                         $countryId = $get('country_id');
+
                                         return \App\Models\Province::where('country_id', $countryId)->pluck('name', 'id');
                                     })
                                     ->required()
                                     ->reactive()
-                                    ->disabled(fn(callable $get) => empty($get('country_id')))
+                                    ->disabled(fn (callable $get) => empty($get('country_id')))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         $set('province_id', $record?->province_id);
                                     }),
@@ -75,9 +72,25 @@ class CityResource extends Resource
             ]);
     }
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListCities::route('/'),
+            'create' => Pages\CreateCity::route('/create'),
+            'edit' => Pages\EditCity::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             ->columns([
@@ -104,21 +117,5 @@ class CityResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListCities::route('/'),
-            'create' => Pages\CreateCity::route('/create'),
-            'edit' => Pages\EditCity::route('/{record}/edit'),
-        ];
     }
 }

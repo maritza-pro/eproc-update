@@ -1,22 +1,22 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\ProvinceResource\Pages;
+use App\Filament\Resources\ProvinceResource\RelationManagers\CityRelationManager;
+use App\Filament\Resources\ProvinceResource\RelationManagers\DistrictRelationManager;
+use App\Filament\Resources\ProvinceResource\RelationManagers\VillageRelationManager;
 use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
-use App\Filament\Resources\ProvinceResource\RelationManagers\CityRelationManager;
-use App\Filament\Resources\ProvinceResource\RelationManagers\DistrictRelationManager;
-use App\Filament\Resources\ProvinceResource\RelationManagers\VillageRelationManager;
-use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class ProvinceResource extends Resource
@@ -54,9 +54,27 @@ class ProvinceResource extends Resource
             ]);
     }
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProvinces::route('/'),
+            'create' => Pages\CreateProvince::route('/create'),
+            'edit' => Pages\EditProvince::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            CityRelationManager::class,
+            DistrictRelationManager::class,
+            VillageRelationManager::class,
+        ];
+    }
+
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             ->columns([
@@ -80,23 +98,5 @@ class ProvinceResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            CityRelationManager::class,
-            DistrictRelationManager::class,
-            VillageRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListProvinces::route('/'),
-            'create' => Pages\CreateProvince::route('/create'),
-            'edit' => Pages\EditProvince::route('/{record}/edit'),
-        ];
     }
 }

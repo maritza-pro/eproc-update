@@ -1,24 +1,20 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\VillageResource\Pages;
-use App\Filament\Resources\VillageResource\RelationManagers;
 use App\Models\Village;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
-use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class VillageResource extends Resource
 {
@@ -37,8 +33,6 @@ class VillageResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -51,30 +45,24 @@ class VillageResource extends Resource
                                     ->label('Country')
                                     ->options(\App\Models\Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(function (callable $get) {
-                                        return \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id');
-                                    })
-                                    ->disabled(fn(callable $get) => empty($get('country_id')))
+                                    ->options(fn (callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
+                                    ->disabled(fn (callable $get) => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
-                                    ->options(function (callable $get) {
-                                        return \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id');
-                                    })
-                                    ->disabled(fn(callable $get) => empty($get('province_id')))
+                                    ->options(fn (callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
+                                    ->disabled(fn (callable $get) => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('district_id')
                                     ->label('District')
-                                    ->options(function (callable $get) {
-                                        return \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id');
-                                    })
-                                    ->disabled(fn(callable $get) => empty($get('city_id')))
+                                    ->options(fn (callable $get) => \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id'))
+                                    ->disabled(fn (callable $get) => empty($get('city_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
@@ -84,9 +72,25 @@ class VillageResource extends Resource
             ]);
     }
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListVillages::route('/'),
+            'create' => Pages\CreateVillage::route('/create'),
+            'edit' => Pages\EditVillage::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             ->columns([
@@ -119,21 +123,5 @@ class VillageResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListVillages::route('/'),
-            'create' => Pages\CreateVillage::route('/create'),
-            'edit' => Pages\EditVillage::route('/{record}/edit'),
-        ];
     }
 }

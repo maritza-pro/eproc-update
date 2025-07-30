@@ -1,23 +1,23 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\CountryResource\Pages;
+use App\Filament\Resources\CountryResource\RelationManagers\CityRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\DistrictRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\ProvinceRelationManager;
+use App\Filament\Resources\CountryResource\RelationManagers\VillageRelationManager;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
-use App\Filament\Resources\CountryResource\RelationManagers\ProvinceRelationManager;
-use App\Filament\Resources\CountryResource\RelationManagers\CityRelationManager;
-use App\Filament\Resources\CountryResource\RelationManagers\DistrictRelationManager;
-use App\Filament\Resources\CountryResource\RelationManagers\VillageRelationManager;
-use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
+use Illuminate\Support\Facades\Auth;
 
 class CountryResource extends Resource
 {
@@ -86,9 +86,28 @@ class CountryResource extends Resource
             ]);
     }
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListCountries::route('/'),
+            'create' => Pages\CreateCountry::route('/create'),
+            'edit' => Pages\EditCountry::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ProvinceRelationManager::class,
+            CityRelationManager::class,
+            DistrictRelationManager::class,
+            VillageRelationManager::class,
+        ];
+    }
+
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             ->columns([
@@ -131,24 +150,5 @@ class CountryResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ProvinceRelationManager::class,
-            CityRelationManager::class,
-            DistrictRelationManager::class,
-            VillageRelationManager::class,
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListCountries::route('/'),
-            'create' => Pages\CreateCountry::route('/create'),
-            'edit' => Pages\EditCountry::route('/{record}/edit'),
-        ];
     }
 }
