@@ -50,19 +50,19 @@ class VillageResource extends Resource
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
                                     ->options(fn (callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
                                     ->options(fn (callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get) => empty($get('province_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('district_id')
                                     ->label('District')
                                     ->options(fn (callable $get) => \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get) => empty($get('city_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')

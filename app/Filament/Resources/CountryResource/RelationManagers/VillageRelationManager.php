@@ -24,7 +24,9 @@ class VillageRelationManager extends RelationManager
                     ->label('Province')
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord(); 
-                        if (!$country) return [];
+                        if (!$country) {
+                            return [];
+                        }
 
                         return \App\Models\Province::where('country_id', $country->id)
                             ->pluck('name', 'id');
@@ -42,14 +44,16 @@ class VillageRelationManager extends RelationManager
                     ->label('City')
                     ->options(function (callable $get) {
                         $provinceId = $get('province_id');
-                        if (!$provinceId) return [];
+                        if (!$provinceId) {
+                            return [];
+                        }
 
                         return \App\Models\City::where('province_id', $provinceId)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get) => empty($get('province_id')))
+                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
                     ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
                     ->afterStateUpdated(fn(callable $set) => $set('district_id', null)),
 
@@ -57,14 +61,16 @@ class VillageRelationManager extends RelationManager
                     ->label('District')
                     ->options(function (callable $get) {
                         $cityId = $get('city_id');
-                        if (!$cityId) return [];
+                        if (!$cityId) {
+                            return [];
+                        }
 
                         return \App\Models\District::where('city_id', $cityId)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get) => empty($get('city_id')))
+                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
                     ->afterStateHydrated(fn($set, $record) => $set('district_id', $record?->district_id))
                     ->afterStateUpdated(fn(callable $set) => $set('name', null)),
 

@@ -61,7 +61,7 @@ class CityResource extends Resource
                                     })
                                     ->required()
                                     ->reactive()
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         $set('province_id', $record?->province_id);
                                     }),

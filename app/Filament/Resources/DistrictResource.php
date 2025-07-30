@@ -50,13 +50,13 @@ class DistrictResource extends Resource
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
                                     ->options(fn (callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get) => empty($get('country_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
                                     ->options(fn (callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get) => empty($get('province_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')

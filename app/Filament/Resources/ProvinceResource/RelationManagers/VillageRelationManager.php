@@ -55,7 +55,7 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn (callable $get) => empty($get('city_id')))
+                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
                     ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
                     ->afterStateUpdated(fn (callable $set) => $set('name', null)),
 
