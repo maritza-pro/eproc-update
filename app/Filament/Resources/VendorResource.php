@@ -58,7 +58,7 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('company_name')
                                     ->required(),
                                 Forms\Components\Select::make('business_field_id')
-                                    ->relationship('business', 'name')
+                                    ->relationship('businessField', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required()

@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\SurveyResource\Pages;
+namespace App\Filament\Resources\CurrencyResource\Pages;
 
-use App\Filament\Resources\SurveyResource;
+use App\Filament\Resources\CurrencyResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class ViewSurvey extends ViewRecord
+class ViewCurrency extends ViewRecord
 {
-    protected static string $resource = SurveyResource::class;
+    protected static string $resource = CurrencyResource::class;
 
     protected function getHeaderActions(): array
     {

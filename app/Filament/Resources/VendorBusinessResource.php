@@ -92,7 +92,7 @@ class VendorBusinessResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
             // ->deferLoading()
