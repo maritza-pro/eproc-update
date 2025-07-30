@@ -1,16 +1,15 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\ProvinceResource\RelationManagers;
 
+use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VillageRelationManager extends RelationManager
 {
@@ -18,16 +17,19 @@ class VillageRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        
+
         return $form
             ->schema([
                 Forms\Components\Select::make('city_id')
                     ->label('City')
                     ->options(function (RelationManager $livewire) {
                         $province = $livewire->getOwnerRecord();
-                        if (!$province) return [];
 
-                        return \App\Models\City::where('province_id', $province->id)
+                        if (! $province) {
+                            return [];
+                        }
+
+                        return City::where('province_id', $province->id)
                             ->pluck('name', 'id');
                     })
                     ->required()
@@ -43,16 +45,19 @@ class VillageRelationManager extends RelationManager
                     ->label('District')
                     ->options(function (callable $get) {
                         $cityId = $get('city_id');
-                        if (!$cityId) return [];
+
+                        if (! $cityId) {
+                            return [];
+                        }
 
                         return \App\Models\District::where('city_id', $cityId)
                             ->pluck('name', 'id');
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get) => empty($get('city_id')))
-                    ->afterStateHydrated(fn($set, $record) => $set('district_id', $record?->district_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
+                    ->disabled(fn (callable $get) => empty($get('city_id')))
+                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
+                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
 
                 Forms\Components\TextInput::make('name')
                     ->required()
