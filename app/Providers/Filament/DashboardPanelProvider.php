@@ -84,6 +84,8 @@ class DashboardPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Bidding'),
                 NavigationGroup::make()
+                    ->label('Location'),
+                NavigationGroup::make()
                     ->label('Settings'),
             ]);
     }

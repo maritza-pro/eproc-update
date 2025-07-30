@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace App\Filament\Resources\CountryResource\RelationManagers;
+
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class DistrictRelationManager extends RelationManager
+{
+    protected static string $relationship = 'district';
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('province_id')
+                    ->label('Province')
+                    ->options(function (RelationManager $livewire) {
+                        $country = $livewire->getOwnerRecord();
+
+                        if (! $country) {
+                            return [];
+                        }
+
+                        return \App\Models\Province::where('country_id', $country->id)
+                            ->pluck('name', 'id');
+                    })
+                    ->required()
+                    ->reactive()
+                    ->afterStateHydrated(function ($set, $record) {
+                        $set('province_id', $record?->province_id);
+                    })
+                    ->afterStateUpdated(function (callable $set) {
+                        $set('city_id', null);
+                    }),
+
+                Forms\Components\Select::make('city_id')
+                    ->label('City')
+                    ->options(function (callable $get) {
+                        $provinceId = $get('province_id');
+
+                        if (! $provinceId) {
+                            return [];
+                        }
+
+                        return \App\Models\City::where('province_id', $provinceId)
+                            ->pluck('name', 'id');
+                    })
+                    ->required()
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id))
+                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
+
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('name')
+            ->columns([
+                Tables\Columns\TextColumn::make('name'),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}
