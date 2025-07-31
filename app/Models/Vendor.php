@@ -32,7 +32,13 @@ class Vendor extends Model
         'user_id',
         'business_field_id',
         'vendor_type_id',
+		'bank_id',
     ];
+
+	public function bank(): BelongsTo
+	{
+		return $this->belongsTo(Bank::class);
+	}
 
     public function bids(): HasMany
     {
