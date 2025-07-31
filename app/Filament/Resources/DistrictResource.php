@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\DistrictResource\Pages;
+use App\Filament\Resources\DistrictResource\RelationManagers\VillageRelationManager;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\District;
@@ -89,7 +90,7 @@ class DistrictResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VillageRelationManager::class,
         ];
     }
 
