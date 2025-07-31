@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
+use App\Models\Bank;
 
 class VendorResource extends Resource
 {
@@ -63,6 +64,13 @@ class VendorResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->label('Business Field'),
+								Forms\Components\Select::make('bank_id')
+									->label('Informasi Bank')
+									->relationship('bank', 'id')
+									->getOptionLabelFromRecordUsing(fn (Bank $record) => "{$record->bank_name} - {$record->bank_account_number} (a.n {$record->bank_account_name})")
+									->searchable()
+									->preload()
+									->required(),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
                                     ->required(),
@@ -136,6 +144,10 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('businessField.name')
                     ->searchable()
                     ->sortable(),
+				Tables\Columns\TextColumn::make('bank.bank_name')
+					->searchable()
+					->sortable()
+					->badge(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
