@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
+use App\Models\Currency;
+use Filament\Forms\Get;
 
 class ProductResource extends Resource
 {
@@ -44,17 +46,26 @@ class ProductResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
-                                    ->required(),
+                                    ->required()
+									->columnSpanFull(),
                                 Forms\Components\Select::make('type')
                                     ->required()
                                     ->options(array_combine(Product::TYPES, Product::TYPES))
                                     ->searchable(),
                                 Forms\Components\TextInput::make('unit'),
+                                Forms\Components\Select::make('currency_id')
+                                    ->relationship('currency', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->live()
+                                    ->label('Currency'),
                                 Forms\Components\TextInput::make('self_estimated_price')
                                     ->numeric()
-                                    ->prefix('Rp. ')
+                                    ->required()
                                     ->default(0)
-                                    ->nullable(),
+                                    ->prefix(fn (Get $get): ?string => Currency::find($get('currency_id'))?->symbol . ' ')
+                                    ->label('Estimated Price'),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
                             ]),
@@ -97,6 +108,13 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('self_estimated_price')
+                    ->money(fn ($record) => $record->currency?->code)
+                    ->sortable()
+                    ->label('Price'),
+                Tables\Columns\TextColumn::make('currency.name')
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('unit')
