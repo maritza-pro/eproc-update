@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\CityResource\Pages;
 use App\Filament\Resources\CityResource\RelationManagers\DistrictRelationManager;
+use App\Filament\Resources\CityResource\RelationManagers\VillageRelationManager;
 use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -94,6 +95,7 @@ class CityResource extends Resource
     {
         return [
             DistrictRelationManager::class,
+            VillageRelationManager::class,
         ];
     }
 
