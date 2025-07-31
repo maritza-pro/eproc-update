@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
+use Filament\Forms\Components\Card;
+
 
 class BankResource extends Resource
 {
@@ -39,22 +41,25 @@ class BankResource extends Resource
 
 
     public static function form(Form $form): Form
-	{
-		return $form
-			->schema([
-				Forms\Components\TextInput::make('bank_name')
-					->required(),
-				Forms\Components\TextInput::make('bank_account_name')
-					->label('Nama Pemilik Rekening')
-					->required(),
-				Forms\Components\TextInput::make('bank_account_number')
-					->label('Nomor Rekening')
-					->numeric()
-					->required(),
-				Forms\Components\TextInput::make('bank_branch')
-					->label('Cabang Bank'),
-			]);
-	}
+{
+    return $form
+        ->schema([
+            Card::make()
+                ->schema([
+                    Forms\Components\TextInput::make('bank_name')
+                        ->required(),
+                    Forms\Components\TextInput::make('bank_account_name')
+                        ->label('Nama Pemilik Rekening')
+                        ->required(),
+                    Forms\Components\TextInput::make('bank_account_number')
+                        ->label('Nomor Rekening')
+                        ->numeric()
+                        ->required(),
+                    Forms\Components\TextInput::make('bank_branch')
+                        ->label('Cabang Bank'),
+                ])
+        ]);
+}
 
     public static function table(Table $table): Table
 	{
@@ -78,6 +83,7 @@ class BankResource extends Resource
 			->actions([
 				Tables\Actions\EditAction::make(),
 				Tables\Actions\DeleteAction::make(),
+				Tables\Actions\ViewAction::make(),
 			])
 			->bulkActions([
 				Tables\Actions\BulkActionGroup::make([
@@ -98,6 +104,7 @@ class BankResource extends Resource
         return [
             'index' => Pages\ListBanks::route('/'),
             'create' => Pages\CreateBank::route('/create'),
+			'view' => Pages\ViewBank::route('/{record}'),
             'edit' => Pages\EditBank::route('/{record}/edit'),
         ];
     }
