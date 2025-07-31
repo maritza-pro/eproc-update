@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->foreignId('province_id')->constrained()->cascadeOnDelete()->comment('The province this city belongs to');
             $table->string('name')->comment('The name of the city');
-            $table->decimal('latitude', 10, 6)->nullable()->comment('The latitude of the country');
-            $table->decimal('longitude', 10, 6)->nullable()->comment('The longitude of the country');
+            $table->decimal('latitude', 10, 6)->nullable()->comment('The latitude of the city');
+            $table->decimal('longitude', 10, 6)->nullable()->comment('The longitude of the city');
 
             $table->timestampSoftDelete();
         });
