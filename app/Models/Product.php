@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Product extends Model
 {
@@ -47,5 +49,10 @@ class Product extends Model
     public function procurementItems(): HasMany
     {
         return $this->hasMany(ProcurementItem::class);
+    }
+
+	public function currency(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 }
