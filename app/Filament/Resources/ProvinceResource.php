@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
@@ -49,6 +49,14 @@ class ProvinceResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
             ]);
@@ -85,6 +93,10 @@ class ProvinceResource extends Resource
                     ->label('Province')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //
