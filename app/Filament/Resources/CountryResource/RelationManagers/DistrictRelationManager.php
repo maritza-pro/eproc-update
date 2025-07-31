@@ -40,7 +40,6 @@ class DistrictRelationManager extends RelationManager
                     ->afterStateUpdated(function (callable $set) {
                         $set('city_id', null);
                     }),
-
                 Forms\Components\Select::make('city_id')
                     ->label('City')
                     ->options(function (callable $get) {
@@ -58,10 +57,17 @@ class DistrictRelationManager extends RelationManager
                     ->disabled(fn(callable $get): bool => empty($get('province_id')))
                     ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
                     ->afterStateUpdated(fn(callable $set) => $set('name', null)),
-
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->numeric()
+                    ->helperText('e.g. -6.200000'),
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->numeric()
+                    ->helperText('e.g. 106.816666'),
             ]);
     }
 
@@ -70,7 +76,13 @@ class DistrictRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

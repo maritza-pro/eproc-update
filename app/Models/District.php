@@ -20,6 +20,8 @@ class District extends Model
     protected $fillable = [
         'name',
         'city_id',
+        'latitude',
+        'longitude',
     ];
 
     public function city(): BelongsTo
