@@ -41,7 +41,6 @@ class VillageRelationManager extends RelationManager
                     ->afterStateUpdated(function (callable $set) {
                         $set('district_id', null);
                     }),
-
                 Forms\Components\Select::make('district_id')
                     ->label('District')
                     ->options(function (callable $get) {
@@ -59,7 +58,6 @@ class VillageRelationManager extends RelationManager
                     ->disabled(fn(callable $get): bool => empty($get('city_id')))
                     ->afterStateHydrated(fn($set, $record) => $set('district_id', $record?->district_id))
                     ->afterStateUpdated(fn(callable $set) => $set('name', null)),
-
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -71,7 +69,13 @@ class VillageRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

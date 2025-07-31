@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
@@ -45,28 +45,36 @@ class VillageResource extends Resource
                                     ->label('Country')
                                     ->options(\App\Models\Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(fn (callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
+                                    ->options(fn(callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
+                                    ->disabled(fn(callable $get): bool => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
-                                    ->options(fn (callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                                    ->options(fn(callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
+                                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('district_id')
                                     ->label('District')
-                                    ->options(fn (callable $get) => \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
+                                    ->options(fn(callable $get) => \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id'))
+                                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
             ]);
@@ -110,6 +118,10 @@ class VillageResource extends Resource
                     ->label('Village')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

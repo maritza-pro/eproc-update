@@ -19,6 +19,8 @@ class Village extends Model
     protected $fillable = [
         'name',
         'district_id',
+        'latitude',
+        'longitude',
     ];
 
     public function district(): BelongsTo
