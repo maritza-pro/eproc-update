@@ -9,6 +9,8 @@ use App\Filament\Resources\CityResource\Pages;
 use App\Filament\Resources\CityResource\RelationManagers\DistrictRelationManager;
 use App\Filament\Resources\CityResource\RelationManagers\VillageRelationManager;
 use App\Models\City;
+use App\Models\Country;
+use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,7 +47,7 @@ class CityResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('country_id')
                                     ->label('Country')
-                                    ->options(\App\Models\Country::all()->pluck('name', 'id'))
+                                    ->options(Country::all()->pluck('name', 'id'))
                                     ->reactive()
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->province) {
@@ -59,7 +61,7 @@ class CityResource extends Resource
                                     ->options(function (callable $get) {
                                         $countryId = $get('country_id');
 
-                                        return \App\Models\Province::where('country_id', $countryId)->pluck('name', 'id');
+                                        return Province::where('country_id', $countryId)->pluck('name', 'id');
                                     })
                                     ->required()
                                     ->reactive()

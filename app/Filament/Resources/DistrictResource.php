@@ -6,7 +6,10 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\DistrictResource\Pages;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\District;
+use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -43,19 +46,19 @@ class DistrictResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('country_id')
                                     ->label('Country')
-                                    ->options(\App\Models\Country::all()->pluck('name', 'id'))
+                                    ->options(Country::all()->pluck('name', 'id'))
                                     ->reactive()
                                     ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(fn(callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
+                                    ->options(fn(callable $get) => Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
                                     ->disabled(fn(callable $get): bool => empty($get('country_id')))
                                     ->reactive()
                                     ->required(),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
-                                    ->options(fn(callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
+                                    ->options(fn(callable $get) => City::where('province_id', $get('province_id'))->pluck('name', 'id'))
                                     ->disabled(fn(callable $get): bool => empty($get('province_id')))
                                     ->reactive()
                                     ->required(),

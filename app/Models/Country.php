@@ -52,8 +52,8 @@ class Country extends Model
     public function district(): HasManyDeep
     {
         return $this->hasManyDeep(
-            \App\Models\District::class,
-            [\App\Models\Province::class, \App\Models\City::class],
+            District::class,
+            [Province::class, City::class],
             [
                 'country_id',
                 'province_id',
@@ -65,8 +65,8 @@ class Country extends Model
     public function village(): HasManyDeep
     {
         return $this->hasManyDeep(
-            \App\Models\Village::class,
-            [\App\Models\Province::class, \App\Models\City::class, \App\Models\District::class],
+            Village::class,
+            [Province::class, City::class, District::class],
             [
                 'country_id',
                 'province_id',
