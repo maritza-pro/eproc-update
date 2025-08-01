@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BankResource\Pages;
-use App\Filament\Resources\BankResource\RelationManagers;
 use App\Models\Bank;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -40,43 +39,33 @@ class BankResource extends Resource
 
 
 
-    public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            Card::make()
+     public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Card::make()
                 ->schema([
-                    Forms\Components\TextInput::make('bank_name')
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+
+                    Forms\Components\TextInput::make('code')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(255),
+
+                    Forms\Components\Toggle::make('is_active')
                         ->required(),
-                    Forms\Components\TextInput::make('bank_account_name')
-                        ->label('Nama Pemilik Rekening')
-                        ->required(),
-                    Forms\Components\TextInput::make('bank_account_number')
-                        ->label('Nomor Rekening')
-                        ->numeric()
-                        ->required(),
-                    Forms\Components\TextInput::make('bank_branch')
-                        ->label('Cabang Bank'),
                 ])
         ]);
-}
+    }
 
     public static function table(Table $table): Table
 	{
-		return $table
-			->columns([
-				Tables\Columns\TextColumn::make('bank_name')
-					->searchable()->sortable(),
-				Tables\Columns\TextColumn::make('bank_account_name')
-					->label('Nama Pemilik Rekening')
-					->searchable(),
-				Tables\Columns\TextColumn::make('bank_account_number')
-					->label('Nomor Rekening')
-					->searchable()
-					->badge(),
-				Tables\Columns\TextColumn::make('created_at')
-					->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-			])
+		 return $table->columns([
+        Tables\Columns\TextColumn::make('name')->searchable(),
+        Tables\Columns\TextColumn::make('code')->searchable(),
+        Tables\Columns\IconColumn::make('is_active')->boolean(),
+    	])
 			->filters([
 				//
 			])
