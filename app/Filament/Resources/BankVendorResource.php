@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\BankVendorResource\Pages;
 use App\Models\BankVendor;
 use Filament\Forms;
@@ -11,12 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class BankVendorResource extends Resource
 {
@@ -25,15 +21,13 @@ class BankVendorResource extends Resource
     }
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Bank Vendor';
-
     protected static ?string $model = BankVendor::class;
 
-	protected static ?string $navigationGroup = 'Vendors';
+    protected static ?string $modelLabel = 'Bank Vendor';
+
+    protected static ?string $navigationGroup = 'Vendors';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-
 
     public static function form(Form $form): Form
     {
@@ -68,6 +62,23 @@ class BankVendorResource extends Resource
             ]);
     }
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListBankVendors::route('/'),
+            'create' => Pages\CreateBankVendor::route('/create'),
+            'view' => Pages\ViewBankVendor::route('/{record}'),
+            'edit' => Pages\EditBankVendor::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -97,7 +108,7 @@ class BankVendorResource extends Resource
                 Tables\Filters\SelectFilter::make('bank_id')
                     ->relationship('bank', 'name')
                     ->label('Filter by Bank'),
-                Tables\Filters\TernaryFilter::make('is_active')
+                Tables\Filters\TernaryFilter::make('is_active'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -109,22 +120,5 @@ class BankVendorResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListBankVendors::route('/'),
-            'create' => Pages\CreateBankVendor::route('/create'),
-			'view' => Pages\ViewBankVendor::route('/{record}'),
-            'edit' => Pages\EditBankVendor::route('/{record}/edit'),
-        ];
     }
 }

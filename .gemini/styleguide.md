@@ -127,13 +127,6 @@ Tapi kalau mau proyek kamu gak bikin sakit mata, ikuti aturan main berikut. Otom
 
 (Biar kamu gak bikin variable `a1`, `b2`, atau `xyz` karena "lagi buru-buru")
 
-## 📝 Standar PHPDoc
-
-- Semua method publik minimal ada `@param`, `@return`
-- Urutan rapi: `param`, `return`, `throws` — bukan acak kayak isi tas
-- `@inheritdoc` dibersihin kalau gak perlu
-- Pint akan bantuin format. Jangan coba-coba edit manual seenaknya.
-
 ---
 
 ## ✏️ Konfigurasi Editor

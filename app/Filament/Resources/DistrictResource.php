@@ -6,7 +6,11 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\DistrictResource\Pages;
+use App\Filament\Resources\DistrictResource\RelationManagers\VillageRelationManager;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\District;
+use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -43,24 +47,59 @@ class DistrictResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('country_id')
                                     ->label('Country')
-                                    ->options(\App\Models\Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
-                                    ->required(),
+                                    ->required()
+                                    ->options(Country::query()->pluck('name', 'id'))
+                                    ->afterStateUpdated(function (callable $set) {
+                                        $set('province_id', null);
+                                        $set('city_id', null);
+                                    })
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->city) {
+                                            $set('country_id', $record?->city?->province?->country_id);
+                                        }
+                                    }),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(fn (callable $get) => \App\Models\Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->reactive()
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
+                                    ->afterStateUpdated(fn (callable $set): mixed => $set('city_id', null))
+                                    ->options(
+                                        fn (callable $get) => $get('country_id')
+                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            : []
+                                    )
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->city) {
+                                            $set('province_id', $record->city->province_id);
+                                        }
+                                    }),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
-                                    ->options(fn (callable $get) => \App\Models\City::where('province_id', $get('province_id'))->pluck('name', 'id'))
-                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
                                     ->reactive()
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                                    ->options(
+                                        fn (callable $get) => $get('province_id')
+                                            ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
+                                            : []
+                                    )
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->city) {
+                                            $set('city_id', $record->city_id);
+                                        }
+                                    }),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
             ]);
@@ -78,7 +117,7 @@ class DistrictResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VillageRelationManager::class,
         ];
     }
 
@@ -101,6 +140,10 @@ class DistrictResource extends Resource
                     ->label('District')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

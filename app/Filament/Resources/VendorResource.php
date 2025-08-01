@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
-use Filament\Forms\Components\Placeholder;
 
 class VendorResource extends Resource
 {
@@ -28,9 +27,13 @@ class VendorResource extends Resource
     use HasHexaLite;
 
     protected static ?string $model = Vendor::class;
+
     protected static ?string $modelLabel = 'Vendor';
+
     protected static ?string $navigationGroup = 'Vendors';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -50,23 +53,23 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('tax_number'),
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
-								Forms\Components\Select::make('bank_vendor_id')
-									->label('Akun Bank Vendor')
-									->relationship(
-										name: 'bankVendor',
-										titleAttribute: 'account_number',
-										modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
-									)
-									->getOptionLabelFromRecordUsing(fn ($record) => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
-									->searchable()
-									->preload()
-									->placeholder('Pilih akun bank yang sudah ada'),
+                                Forms\Components\Select::make('bank_vendor_id')
+                                    ->label('Akun Bank Vendor')
+                                    ->relationship(
+                                        name: 'bankVendor',
+                                        titleAttribute: 'account_number',
+                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
+                                    ->searchable()
+                                    ->preload()
+                                    ->placeholder('Pilih akun bank yang sudah ada'),
                                 Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
                                 Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
                     ]),
-				]);
+            ]);
     }
 
     public static function getEloquentQuery(): Builder
@@ -106,19 +109,17 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
-				Tables\Columns\TextColumn::make('bankVendor.bank.name')
-					->label('Bank')
-					->searchable(
-						query: function (Builder $query, string $search): Builder {
-							return $query->whereHas('bankVendor.bank', function ($q) use ($search) {
-								$q->where('name', 'like', "%{$search}%");
-							})->orWhereHas('bankVendor', function ($q) use ($search) {
-								$q->where('account_number', 'like', "%{$search}%");
-							});
-						}
-					)
-					->badge()
-					->sortable(),
+                Tables\Columns\TextColumn::make('bankVendor.bank.name')
+                    ->label('Bank')
+                    ->searchable(
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        })->orWhereHas('bankVendor', function ($q) use ($search) {
+                            $q->where('account_number', 'like', "%{$search}%");
+                        })
+                    )
+                    ->badge()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('taxonomies.name')->label('Vendor Type')->badge()->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),

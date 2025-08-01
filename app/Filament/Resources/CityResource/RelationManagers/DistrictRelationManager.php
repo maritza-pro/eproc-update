@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\ProvinceResource\RelationManagers;
+namespace App\Filament\Resources\CityResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -10,9 +10,9 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CityRelationManager extends RelationManager
+class DistrictRelationManager extends RelationManager
 {
-    protected static string $relationship = 'cities';
+    protected static string $relationship = 'districts';
 
     public function form(Form $form): Form
     {

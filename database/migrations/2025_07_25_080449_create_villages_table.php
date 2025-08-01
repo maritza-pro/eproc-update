@@ -18,6 +18,8 @@ return new class extends Migration
 
             $table->foreignId('district_id')->constrained()->cascadeOnDelete()->comment('The district this village belongs to');
             $table->string('name')->comment('The name of the village');
+            $table->decimal('latitude', 10, 6)->nullable()->comment('The latitude of the village');
+            $table->decimal('longitude', 10, 6)->nullable()->comment('The longitude of the village');
 
             $table->timestampSoftDelete();
         });

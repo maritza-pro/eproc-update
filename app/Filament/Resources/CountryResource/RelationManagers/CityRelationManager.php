@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources\CountryResource\RelationManagers;
 
+use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -12,7 +13,7 @@ use Filament\Tables\Table;
 
 class CityRelationManager extends RelationManager
 {
-    protected static string $relationship = 'city';
+    protected static string $relationship = 'cities';
 
     public function form(Form $form): Form
     {
@@ -20,8 +21,9 @@ class CityRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('province_id')
                     ->label('Province')
-                    ->options(fn (RelationManager $livewire) => \App\Models\Province::where('country_id', $livewire->getOwnerRecord()->id)
-                        ->pluck('name', 'id')
+                    ->options(
+                        fn (RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
+                            ->pluck('name', 'id')
                     )
                     ->required()
                     ->reactive()
@@ -29,6 +31,14 @@ class CityRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->numeric()
+                    ->helperText('e.g. -6.200000'),
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->numeric()
+                    ->helperText('e.g. 106.816666'),
             ]);
     }
 
@@ -37,7 +47,13 @@ class CityRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
             ])
             ->filters([
                 //

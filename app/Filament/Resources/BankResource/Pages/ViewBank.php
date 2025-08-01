@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Filament\Resources\BankResource\Pages;
 
 use App\Filament\Resources\BankResource;
@@ -10,7 +12,7 @@ class ViewBank extends ViewRecord
 {
     protected static string $resource = BankResource::class;
 
-	protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\Action::make('back')

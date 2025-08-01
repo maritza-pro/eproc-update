@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::table('vendors', function (Blueprint $table) {
             $table->foreignId('bank_vendor_id')
-                  ->nullable()
-                  ->after('license_number')
-                  ->constrained('bank_vendors')
-                  ->nullOnDelete()
-				  ->comment('Reference to the bank vendor associated with the vendor');
+                ->nullable()
+                ->after('license_number')
+                ->constrained('bank_vendors')
+                ->nullOnDelete()
+                ->comment('Reference to the bank vendor associated with the vendor');
         });
     }
 

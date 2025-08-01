@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Country extends Model
@@ -30,7 +31,7 @@ class Country extends Model
         'longitude',
     ];
 
-    public function city(): HasManyThrough
+    public function cities(): HasManyThrough
     {
         return $this->hasManyThrough(
             City::class,
@@ -42,11 +43,11 @@ class Country extends Model
         );
     }
 
-    public function district()
+    public function districts(): HasManyDeep
     {
         return $this->hasManyDeep(
-            \App\Models\District::class,
-            [\App\Models\Province::class, \App\Models\City::class],
+            District::class,
+            [Province::class, City::class],
             [
                 'country_id',
                 'province_id',
@@ -60,16 +61,16 @@ class Country extends Model
         return LogOptions::defaults();
     }
 
-    public function province(): HasMany
+    public function provinces(): HasMany
     {
         return $this->hasMany(Province::class, 'country_id', 'id');
     }
 
-    public function village()
+    public function villages(): HasManyDeep
     {
         return $this->hasManyDeep(
-            \App\Models\Village::class,
-            [\App\Models\Province::class, \App\Models\City::class, \App\Models\District::class],
+            Village::class,
+            [Province::class, City::class, District::class],
             [
                 'country_id',
                 'province_id',

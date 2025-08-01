@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,13 +16,14 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
 
             $table->foreignId('currency_id')
-                  ->nullable()
-                  ->after('self_estimated_price')
-                  ->constrained('currencies')
-                  ->onDelete('set null')
-				  ->comment('The ID of the currency associated with the product');
+                ->nullable()
+                ->after('self_estimated_price')
+                ->constrained('currencies')
+                ->onDelete('set null')
+                ->comment('The ID of the currency associated with the product');
         });
     }
+
     /**
      * Reverse the migrations.
      */

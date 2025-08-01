@@ -2,9 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\ProvinceResource\RelationManagers;
+namespace App\Filament\Resources\CityResource\RelationManagers;
 
-use App\Models\City;
 use App\Models\District;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,52 +17,16 @@ class VillageRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-
         return $form
             ->schema([
-                Forms\Components\Select::make('city_id')
-                    ->label('City')
-                    ->options(function (RelationManager $livewire) {
-                        $province = $livewire->getOwnerRecord();
 
-                        if (! $province) {
-                            return [];
-                        }
-
-                        return City::where('province_id', $province->id)
-                            ->pluck('name', 'id');
-                    })
-                    ->required()
-                    ->reactive()
-                    ->afterStateHydrated(function (callable $set, $record) {
-                        if ($record?->district) {
-                            $set('city_id', $record->district->city_id);
-                        }
-                    })
-                    ->afterStateUpdated(function (callable $set) {
-                        $set('district_id', null);
-                    }),
                 Forms\Components\Select::make('district_id')
                     ->label('District')
-                    ->options(function (callable $get) {
-                        $cityId = $get('city_id');
-
-                        if (! $cityId) {
-                            return [];
-                        }
-
-                        return District::where('city_id', $cityId)
-                            ->pluck('name', 'id');
-                    })
+                    ->options(fn (RelationManager $livewire) => District::where('city_id', $livewire->getOwnerRecord()->id)
+                        ->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
-                    ->afterStateHydrated(function (callable $set, $record) {
-                        if ($record?->district) {
-                            $set('district_id', $record->district_id);
-                        }
-                    })
-                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
+                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
