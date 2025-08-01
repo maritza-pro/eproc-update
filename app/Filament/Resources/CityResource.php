@@ -49,7 +49,7 @@ class CityResource extends Resource
                                     ->label('Country')
                                     ->required()
                                     ->reactive()
-                                    ->options(Country::all()->pluck('name', 'id'))
+                                    ->options(Country::query()->pluck('name', 'id'))
                                     ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->province) {
