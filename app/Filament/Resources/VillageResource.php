@@ -47,28 +47,72 @@ class VillageResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('country_id')
                                     ->label('Country')
-                                    ->options(Country::all()->pluck('name', 'id'))
                                     ->reactive()
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
-                                    ->required(),
+                                    ->required()
+                                    ->options(Country::all()->pluck('name', 'id'))
+                                    ->afterStateUpdated(function (callable $set) {
+                                        $set('province_id', null);
+                                        $set('city_id', null);
+                                        $set('district_id', null);
+                                    })
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->district) {
+                                            $set('country_id', $record->district->city->province->country_id);
+                                        }
+                                    }),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(fn(callable $get) => Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
-                                    ->disabled(fn(callable $get): bool => empty($get('country_id')))
                                     ->reactive()
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn(callable $get): bool => empty($get('country_id')))
+                                    ->afterStateUpdated(function (callable $set) {
+                                        $set('city_id', null);
+                                        $set('district_id', null);
+                                    })
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('country_id')
+                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            : []
+                                    )
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->district) {
+                                            $set('province_id', $record->district->city->province_id);
+                                        }
+                                    }),
                                 Forms\Components\Select::make('city_id')
                                     ->label('City')
-                                    ->options(fn(callable $get) => City::where('province_id', $get('province_id'))->pluck('name', 'id'))
-                                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
                                     ->reactive()
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
+                                    ->afterStateUpdated(fn(callable $set): mixed => $set('district_id', null))
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('province_id')
+                                            ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
+                                            : []
+                                    )
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->district) {
+                                            $set('city_id', $record->district->city_id);
+                                        }
+                                    }),
                                 Forms\Components\Select::make('district_id')
                                     ->label('District')
-                                    ->options(fn(callable $get) => District::where('city_id', $get('city_id'))->pluck('name', 'id'))
-                                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
                                     ->reactive()
-                                    ->required(),
+                                    ->required()
+                                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('city_id')
+                                            ? District::where('city_id', $get('city_id'))->pluck('name', 'id')
+                                            : []
+                                    )
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->district) {
+                                            $set('district_id', $record->district_id);
+                                        }
+                                    }),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
