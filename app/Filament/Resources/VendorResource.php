@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
-use App\Models\Bank;
+use Filament\Forms\Components\Placeholder;
 
 class VendorResource extends Resource
 {
@@ -28,23 +28,10 @@ class VendorResource extends Resource
     use HasHexaLite;
 
     protected static ?string $model = Vendor::class;
-
     protected static ?string $modelLabel = 'Vendor';
-
     protected static ?string $navigationGroup = 'Vendors';
-
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-
     protected static ?int $navigationSort = 1;
-
-    public static function canCreate(): bool
-    {
-        if (Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope')) {
-            return true;
-        }
-
-        return Auth::user()?->can(static::getModelLabel() . '.create') && self::$model::query()->when(Auth::id(), fn (Builder $query): Builder => $query->where('user_id', Auth::id()))->count() < 1;
-    }
 
     public static function form(Form $form): Form
     {
@@ -56,56 +43,35 @@ class VendorResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('company_name')
-                                    ->required(),
-                                Forms\Components\Select::make('business_field_id')
-                                    ->relationship('businessField', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->label('Business Field'),
-								Forms\Components\Select::make('bank_id')
-									->label('Informasi Bank')
-									->relationship('bank', 'id')
-									->getOptionLabelFromRecordUsing(fn (Bank $record) => "{$record->bank_name} - {$record->bank_account_number} (a.n {$record->bank_account_name})")
-									->searchable()
-									->preload()
-									->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->required(),
-                                Forms\Components\TextInput::make('phone')
-                                    ->tel(),
+                                Forms\Components\TextInput::make('company_name')->required(),
+                                Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
+                                Forms\Components\TextInput::make('email')->email()->required(),
+                                Forms\Components\TextInput::make('phone')->tel(),
                                 Forms\Components\TextInput::make('tax_number'),
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
-                                Forms\Components\Select::make('taxonomies')
-                                    ->relationship('taxonomies', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->label('Vendor Type'),
-                                Forms\Components\Toggle::make('is_verified')
-                                    ->required()
-                                    ->disabled($withoutGlobalScope),
-                                Forms\Components\Select::make('user_id')
-                                    ->relationship('user', 'name')
-                                    ->required()
-                                    ->searchable()
-                                    ->default($withoutGlobalScope ? Auth::id() : null)
-                                    ->disabled($withoutGlobalScope)
-                                    ->dehydrated(),
+								Forms\Components\Select::make('bank_vendor_id')
+									->label('Akun Bank Vendor')
+									->relationship(
+										name: 'bankVendor',
+										titleAttribute: 'account_number',
+										modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
+									)
+									->getOptionLabelFromRecordUsing(fn ($record) => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
+									->searchable()
+									->preload()
+									->placeholder('Pilih akun bank yang sudah ada'),
+                                Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
+                                Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
+                                Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
                     ]),
-            ]);
+				]);
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 
     public static function getPages(): array
@@ -128,7 +94,6 @@ class VendorResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->deferLoading()
             ->striped()
             ->modifyQueryUsing(function (Builder $query) {
                 $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
@@ -136,48 +101,28 @@ class VendorResource extends Resource
                 });
             })
             ->columns([
-                Tables\Columns\IconColumn::make('is_verified')
-                    ->boolean()
-                    ->alignCenter(),
-                Tables\Columns\TextColumn::make('company_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('businessField.name')
-                    ->searchable()
-                    ->sortable(),
-				Tables\Columns\TextColumn::make('bank.bank_name')
-					->searchable()
-					->sortable()
-					->badge(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tax_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('business_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('license_number')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('taxonomies.name')
-                    ->label('Vendor Type')
-                    ->badge()
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_verified')->boolean()->alignCenter(),
+                Tables\Columns\TextColumn::make('company_name')->searchable(),
+                Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('phone')->searchable(),
+				Tables\Columns\TextColumn::make('bankVendor.bank.name')
+					->label('Bank')
+					->searchable(
+						query: function (Builder $query, string $search): Builder {
+							return $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+								$q->where('name', 'like', "%{$search}%");
+							})->orWhereHas('bankVendor', function ($q) use ($search) {
+								$q->where('account_number', 'like', "%{$search}%");
+							});
+						}
+					)
+					->badge()
+					->sortable(),
+                Tables\Columns\TextColumn::make('taxonomies.name')->label('Vendor Type')->badge()->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('user.name')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
