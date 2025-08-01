@@ -50,7 +50,10 @@ class DistrictResource extends Resource
                                     ->reactive()
                                     ->required()
                                     ->options(Country::all()->pluck('name', 'id'))
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(function (callable $set) {
+                                        $set('province_id', null);
+                                        $set('city_id', null);
+                                    })
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->city) {
                                             $set('country_id', $record->city->province->country_id);
@@ -61,7 +64,13 @@ class DistrictResource extends Resource
                                     ->reactive()
                                     ->required()
                                     ->disabled(fn(callable $get): bool => empty($get('country_id')))
-                                    ->options(fn(callable $get) => Province::where('country_id', $get('country_id'))->pluck('name', 'id'))
+                                    ->afterStateUpdated(fn(callable $set): mixed => $set('city_id', null))
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('country_id')
+                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            : []
+                                    )
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->city) {
                                             $set('province_id', $record->city->province_id);
@@ -72,7 +81,12 @@ class DistrictResource extends Resource
                                     ->reactive()
                                     ->required()
                                     ->disabled(fn(callable $get): bool => empty($get('province_id')))
-                                    ->options(fn(callable $get) => City::where('province_id', $get('province_id'))->pluck('name', 'id'))
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('province_id')
+                                            ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
+                                            : []
+                                    )
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->city) {
                                             $set('city_id', $record->city_id);
