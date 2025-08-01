@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources\CountryResource\RelationManagers;
 
@@ -35,8 +35,10 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(function ($set, $record) {
-                        $set('province_id', $record?->province_id);
+                    ->afterStateHydrated(function (callable $set, $record) {
+                        if ($record?->district) {
+                            $set('province_id', $record->district->city->province_id);
+                        }
                     })
                     ->afterStateUpdated(function (callable $set) {
                         $set('city_id', null);
@@ -55,9 +57,13 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
-                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id))
-                    ->afterStateUpdated(fn (callable $set) => $set('district_id', null)),
+                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
+                    ->afterStateHydrated(function (callable $set, $record) {
+                        if ($record?->district) {
+                            $set('city_id', $record->district->city_id);
+                        }
+                    })
+                    ->afterStateUpdated(fn(callable $set) => $set('district_id', null)),
                 Forms\Components\Select::make('district_id')
                     ->label('District')
                     ->options(function (callable $get) {
@@ -72,9 +78,13 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
-                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
-                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
+                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
+                    ->afterStateHydrated(function (callable $set, $record) {
+                        if ($record?->district) {
+                            $set('district_id', $record->district_id);
+                        }
+                    })
+                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

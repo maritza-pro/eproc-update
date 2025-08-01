@@ -26,7 +26,7 @@ class VillageRelationManager extends RelationManager
                         ->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id)),
+                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

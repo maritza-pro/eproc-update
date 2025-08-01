@@ -35,8 +35,10 @@ class VillageRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(function ($set, $record) {
-                        $set('city_id', $record?->city_id);
+                    ->afterStateHydrated(function (callable $set, $record) {
+                        if ($record?->district) {
+                            $set('city_id', $record->district->city_id);
+                        }
                     })
                     ->afterStateUpdated(function (callable $set) {
                         $set('district_id', null);
@@ -56,7 +58,11 @@ class VillageRelationManager extends RelationManager
                     ->required()
                     ->reactive()
                     ->disabled(fn (callable $get): bool => empty($get('city_id')))
-                    ->afterStateHydrated(fn ($set, $record) => $set('district_id', $record?->district_id))
+                    ->afterStateHydrated(function (callable $set, $record) {
+                        if ($record?->district) {
+                            $set('district_id', $record->district_id);
+                        }
+                    })
                     ->afterStateUpdated(fn (callable $set) => $set('name', null)),
                 Forms\Components\TextInput::make('name')
                     ->required()
