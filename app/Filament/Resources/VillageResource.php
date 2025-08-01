@@ -49,7 +49,7 @@ class VillageResource extends Resource
                                     ->label('Country')
                                     ->reactive()
                                     ->required()
-                                    ->options(Country::all()->pluck('name', 'id'))
+                                    ->options(Country::query()->pluck('name', 'id'))
                                     ->afterStateUpdated(function (callable $set) {
                                         $set('province_id', null);
                                         $set('city_id', null);
