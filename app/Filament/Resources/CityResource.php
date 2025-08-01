@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -50,7 +50,7 @@ class CityResource extends Resource
                                     ->required()
                                     ->reactive()
                                     ->options(Country::all()->pluck('name', 'id'))
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
+                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->province) {
                                             $set('country_id', $record->province->country_id);
@@ -60,13 +60,12 @@ class CityResource extends Resource
                                     ->label('Province')
                                     ->required()
                                     ->reactive()
-                                    ->disabled(fn(callable $get): bool => empty($get('country_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         $set('province_id', $record?->province_id);
                                     })
                                     ->options(
-                                        fn(callable $get) =>
-                                        $get('country_id')
+                                        fn (callable $get) => $get('country_id')
                                             ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
                                             : []
                                     ),

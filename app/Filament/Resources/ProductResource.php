@@ -8,9 +8,11 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\BidItemsRelationManager;
 use App\Filament\Resources\ProductResource\RelationManagers\ProcurementItemsRelationManager;
+use App\Models\Currency;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -19,8 +21,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
-use App\Models\Currency;
-use Filament\Forms\Get;
 
 class ProductResource extends Resource
 {
@@ -47,7 +47,7 @@ class ProductResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
-									->columnSpanFull(),
+                                    ->columnSpanFull(),
                                 Forms\Components\Select::make('type')
                                     ->required()
                                     ->options(array_combine(Product::TYPES, Product::TYPES))

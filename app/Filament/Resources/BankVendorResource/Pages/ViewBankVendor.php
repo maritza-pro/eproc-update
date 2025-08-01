@@ -10,7 +10,7 @@ class ViewBankVendor extends ViewRecord
 {
     protected static string $resource = BankVendorResource::class;
 
-	protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\Action::make('back')

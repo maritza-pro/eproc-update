@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -31,12 +31,6 @@ class Country extends Model
         'longitude',
     ];
 
-
-    public function provinces(): HasMany
-    {
-        return $this->hasMany(Province::class, 'country_id', 'id');
-    }
-
     public function cities(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -62,6 +56,16 @@ class Country extends Model
         );
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
+    public function provinces(): HasMany
+    {
+        return $this->hasMany(Province::class, 'country_id', 'id');
+    }
+
     public function villages(): HasManyDeep
     {
         return $this->hasManyDeep(
@@ -74,10 +78,5 @@ class Country extends Model
                 'district_id',
             ]
         );
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -64,14 +64,13 @@ class VillageResource extends Resource
                                     ->label('Province')
                                     ->reactive()
                                     ->required()
-                                    ->disabled(fn(callable $get): bool => empty($get('country_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
                                     ->afterStateUpdated(function (callable $set) {
                                         $set('city_id', null);
                                         $set('district_id', null);
                                     })
                                     ->options(
-                                        fn(callable $get) =>
-                                        $get('country_id')
+                                        fn (callable $get) => $get('country_id')
                                             ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
                                             : []
                                     )
@@ -84,11 +83,10 @@ class VillageResource extends Resource
                                     ->label('City')
                                     ->reactive()
                                     ->required()
-                                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
-                                    ->afterStateUpdated(fn(callable $set): mixed => $set('district_id', null))
+                                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                                    ->afterStateUpdated(fn (callable $set): mixed => $set('district_id', null))
                                     ->options(
-                                        fn(callable $get) =>
-                                        $get('province_id')
+                                        fn (callable $get) => $get('province_id')
                                             ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
                                             : []
                                     )
@@ -101,10 +99,9 @@ class VillageResource extends Resource
                                     ->label('District')
                                     ->reactive()
                                     ->required()
-                                    ->disabled(fn(callable $get): bool => empty($get('city_id')))
+                                    ->disabled(fn (callable $get): bool => empty($get('city_id')))
                                     ->options(
-                                        fn(callable $get) =>
-                                        $get('city_id')
+                                        fn (callable $get) => $get('city_id')
                                             ? District::where('city_id', $get('city_id'))->pluck('name', 'id')
                                             : []
                                     )

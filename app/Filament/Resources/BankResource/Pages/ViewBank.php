@@ -10,7 +10,7 @@ class ViewBank extends ViewRecord
 {
     protected static string $resource = BankResource::class;
 
-	protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\Action::make('back')

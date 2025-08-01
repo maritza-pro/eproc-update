@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\CountryResource\RelationManagers;
 
@@ -54,9 +54,9 @@ class DistrictRelationManager extends RelationManager
                     })
                     ->required()
                     ->reactive()
-                    ->disabled(fn(callable $get): bool => empty($get('province_id')))
-                    ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id))
-                    ->afterStateUpdated(fn(callable $set) => $set('name', null)),
+                    ->disabled(fn (callable $get): bool => empty($get('province_id')))
+                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id))
+                    ->afterStateUpdated(fn (callable $set) => $set('name', null)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

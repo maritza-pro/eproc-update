@@ -7,11 +7,10 @@ namespace App\Models;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
 
 class Currency extends Model
 {
@@ -34,7 +33,7 @@ class Currency extends Model
         return LogOptions::defaults();
     }
 
-	public function products(): HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }

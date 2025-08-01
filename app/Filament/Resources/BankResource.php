@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Resources\BankResource\Pages;
 use App\Models\Bank;
 use Filament\Forms;
@@ -11,15 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
-use Illuminate\Support\Facades\Auth;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
-use Filament\Forms\Components\Card;
-
 
 class BankResource extends Resource
 {
@@ -28,18 +21,15 @@ class BankResource extends Resource
     }
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Bank';
-
     protected static ?string $model = Bank::class;
 
-	protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $modelLabel = 'Bank';
 
+    protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-
-
-     public static function form(Form $form): Form
+    public static function form(Form $form): Form
     {
         return $form->schema([
             Forms\Components\Card::make()
@@ -55,31 +45,19 @@ class BankResource extends Resource
 
                     Forms\Components\Toggle::make('is_active')
                         ->required(),
-                ])
+                ]),
         ]);
     }
 
-    public static function table(Table $table): Table
-	{
-		 return $table->columns([
-        Tables\Columns\TextColumn::make('name')->searchable(),
-        Tables\Columns\TextColumn::make('code')->searchable(),
-        Tables\Columns\IconColumn::make('is_active')->boolean(),
-    	])
-			->filters([
-				//
-			])
-			->actions([
-				Tables\Actions\EditAction::make(),
-				Tables\Actions\DeleteAction::make(),
-				Tables\Actions\ViewAction::make(),
-			])
-			->bulkActions([
-				Tables\Actions\BulkActionGroup::make([
-					Tables\Actions\DeleteBulkAction::make(),
-				]),
-			]);
-	}
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListBanks::route('/'),
+            'create' => Pages\CreateBank::route('/create'),
+            'view' => Pages\ViewBank::route('/{record}'),
+            'edit' => Pages\EditBank::route('/{record}/edit'),
+        ];
+    }
 
     public static function getRelations(): array
     {
@@ -88,13 +66,25 @@ class BankResource extends Resource
         ];
     }
 
-    public static function getPages(): array
+    public static function table(Table $table): Table
     {
-        return [
-            'index' => Pages\ListBanks::route('/'),
-            'create' => Pages\CreateBank::route('/create'),
-			'view' => Pages\ViewBank::route('/{record}'),
-            'edit' => Pages\EditBank::route('/{record}/edit'),
-        ];
+        return $table->columns([
+            Tables\Columns\TextColumn::make('name')->searchable(),
+            Tables\Columns\TextColumn::make('code')->searchable(),
+            Tables\Columns\IconColumn::make('is_active')->boolean(),
+        ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

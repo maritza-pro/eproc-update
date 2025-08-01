@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\CountryResource\RelationManagers;
 
@@ -22,12 +22,12 @@ class CityRelationManager extends RelationManager
                 Forms\Components\Select::make('province_id')
                     ->label('Province')
                     ->options(
-                        fn(RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
+                        fn (RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
                             ->pluck('name', 'id')
                     )
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(fn($set, $record) => $set('province_id', $record?->province_id)),
+                    ->afterStateHydrated(fn ($set, $record) => $set('province_id', $record?->province_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

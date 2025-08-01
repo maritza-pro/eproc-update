@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\CityResource\RelationManagers;
 
@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VillageRelationManager extends RelationManager
 {
@@ -24,11 +22,11 @@ class VillageRelationManager extends RelationManager
 
                 Forms\Components\Select::make('district_id')
                     ->label('District')
-                    ->options(fn(RelationManager $livewire) => District::where('city_id', $livewire->getOwnerRecord()->id)
+                    ->options(fn (RelationManager $livewire) => District::where('city_id', $livewire->getOwnerRecord()->id)
                         ->pluck('name', 'id'))
                     ->required()
                     ->reactive()
-                    ->afterStateHydrated(fn($set, $record) => $set('city_id', $record?->city_id)),
+                    ->afterStateHydrated(fn ($set, $record) => $set('city_id', $record?->city_id)),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),

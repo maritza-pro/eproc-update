@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -25,14 +25,19 @@ class City extends Model
         'longitude',
     ];
 
-    public function province(): BelongsTo
-    {
-        return $this->belongsTo(Province::class, 'province_id', 'id');
-    }
-
     public function districts(): HasMany
     {
         return $this->hasMany(District::class, 'city_id', 'id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 
     public function villages(): HasManyThrough
@@ -45,9 +50,5 @@ class City extends Model
             'id',
             'id'
         );
-    }
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
     }
 }
