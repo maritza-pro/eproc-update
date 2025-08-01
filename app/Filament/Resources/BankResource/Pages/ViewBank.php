@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\BankResource\Pages;
 
 use App\Filament\Resources\BankResource;
