@@ -18,11 +18,10 @@ class Bank extends Model
         SoftDeletes;
 
     protected $fillable = [
-		'bank_name',
-		'bank_account_name',
-		'bank_account_number',
-		'bank_branch',
-	];
+        'name',
+        'code',
+        'is_active',
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {
