@@ -30,12 +30,12 @@ class City extends Model
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 
-    public function district(): HasMany
+    public function districts(): HasMany
     {
         return $this->hasMany(District::class, 'city_id', 'id');
     }
 
-    public function village(): HasManyThrough
+    public function villages(): HasManyThrough
     {
         return $this->hasManyThrough(
             Village::class,

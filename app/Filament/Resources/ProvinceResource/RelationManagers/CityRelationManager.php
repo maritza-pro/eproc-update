@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 
 class CityRelationManager extends RelationManager
 {
-    protected static string $relationship = 'city';
+    protected static string $relationship = 'cities';
 
     public function form(Form $form): Form
     {

@@ -33,12 +33,12 @@ class Province extends Model
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
-    public function city(): HasMany
+    public function cities(): HasMany
     {
         return $this->hasMany(City::class, 'province_id', 'id');
     }
 
-    public function district(): HasManyThrough
+    public function districts(): HasManyThrough
     {
         return $this->hasManyThrough(
             District::class,
@@ -50,7 +50,7 @@ class Province extends Model
         );
     }
 
-    public function village(): HasManyDeep
+    public function villages(): HasManyDeep
     {
         return $this->hasManyDeep(
             Village::class,

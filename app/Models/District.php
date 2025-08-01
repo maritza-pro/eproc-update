@@ -29,7 +29,7 @@ class District extends Model
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
 
-    public function village(): HasMany
+    public function villages(): HasMany
     {
         return $this->hasMany(Village::class, 'district_id', 'id');
     }
