@@ -57,7 +57,7 @@ class VillageResource extends Resource
                                     })
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->district) {
-                                            $set('country_id', $record->district->city->province->country_id);
+                                            $set('country_id', $record?->district?->city?->province?->country_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('province_id')
@@ -76,7 +76,7 @@ class VillageResource extends Resource
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->district) {
-                                            $set('province_id', $record->district->city->province_id);
+                                            $set('province_id', $record?->district?->city?->province_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('city_id')
@@ -92,7 +92,7 @@ class VillageResource extends Resource
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->district) {
-                                            $set('city_id', $record->district->city_id);
+                                            $set('city_id', $record?->district?->city_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('district_id')

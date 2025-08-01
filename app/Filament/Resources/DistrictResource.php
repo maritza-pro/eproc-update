@@ -56,7 +56,7 @@ class DistrictResource extends Resource
                                     })
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->city) {
-                                            $set('country_id', $record->city->province->country_id);
+                                            $set('country_id', $record?->city?->province?->country_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('province_id')

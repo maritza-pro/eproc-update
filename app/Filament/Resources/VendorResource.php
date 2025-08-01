@@ -112,7 +112,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendor.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendor', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");
