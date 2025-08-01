@@ -47,28 +47,29 @@ class CityResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('country_id')
                                     ->label('Country')
-                                    ->options(Country::all()->pluck('name', 'id'))
+                                    ->required()
                                     ->reactive()
+                                    ->options(Country::all()->pluck('name', 'id'))
+                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         if ($record?->province) {
                                             $set('country_id', $record->province->country_id);
                                         }
-                                    })
-                                    ->afterStateUpdated(fn(callable $set) => $set('province_id', null))
-                                    ->required(),
+                                    }),
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(function (callable $get) {
-                                        $countryId = $get('country_id');
-
-                                        return Province::where('country_id', $countryId)->pluck('name', 'id');
-                                    })
                                     ->required()
                                     ->reactive()
                                     ->disabled(fn(callable $get): bool => empty($get('country_id')))
                                     ->afterStateHydrated(function (callable $set, $record) {
                                         $set('province_id', $record?->province_id);
-                                    }),
+                                    })
+                                    ->options(
+                                        fn(callable $get) =>
+                                        $get('country_id')
+                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            : []
+                                    ),
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
