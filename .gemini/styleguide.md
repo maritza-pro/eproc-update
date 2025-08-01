@@ -149,3 +149,5 @@ Tapi kalau mau proyek kamu gak bikin sakit mata, ikuti aturan main berikut. Otom
 
 Fokus ke logika dan fitur.  
 Biarin mesin yang bantu kamu ngoding lebih rapi — kecuali kamu masih seneng ngoding gaya batu.
+
+Comment dalam Bahas Indonesia menggunakan gaya sarkas
