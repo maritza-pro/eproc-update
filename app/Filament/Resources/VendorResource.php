@@ -44,6 +44,7 @@ class VendorResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
+
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')->required(),
@@ -58,9 +59,9 @@ class VendorResource extends Resource
                                     ->relationship(
                                         name: 'bankVendor',
                                         titleAttribute: 'account_number',
-                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
+                                        modifyQueryUsing: fn(Builder $query) => $query->with(['bank'])
                                     )
-                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
+                                    ->getOptionLabelFromRecordUsing(fn($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
                                     ->searchable()
                                     ->preload()
                                     ->placeholder('Pilih akun bank yang sudah ada'),
@@ -68,7 +69,46 @@ class VendorResource extends Resource
                                 Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
-                    ]),
+
+                        Forms\Components\Tabs::make('Tabs')
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make('Informasi Umum')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                        ->relationship('vendorProfile')
+                                        ->schema([
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('business_entity_type')
+                                                    ->label('Jenis Badan Usaha')
+                                                    ->nullable(),
+                                                Forms\Components\TextInput::make('npwp')
+                                                    ->label('NPWP')
+                                                    ->nullable(),
+                                                Forms\Components\TextInput::make('nib')
+                                                    ->label('NIB')
+                                                    ->nullable(),
+                                                Forms\Components\TextInput::make('website')
+                                                    ->label('Website')
+                                                    ->url()
+                                                    ->nullable(),
+                                                Forms\Components\TextInput::make('established_year')
+                                                    ->label('Tahun Berdiri')
+                                                    ->numeric()
+                                                    ->minValue(1900)
+                                                    ->maxValue(now()->year),
+                                                Forms\Components\TextInput::make('employee_count')
+                                                    ->label('Jumlah Karyawan')
+                                                    ->numeric()
+                                                    ->nullable(),
+                                            ]),
+                                        Forms\Components\Textarea::make('head_office_address')
+                                            ->label('Alamat Kantor Pusat'),
+                                             ])
+                                    ])
+                            ])
+                    ])
+
             ]);
     }
 
@@ -112,7 +152,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendor.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendor', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");
