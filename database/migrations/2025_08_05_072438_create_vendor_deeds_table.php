@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('vendor_deeds', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('vendor_id')->nullable()->constrained('vendors')->onDelete('cascade')->comment('Reference to the vendor');
+            $table->foreignId('vendor_id')->constrained('vendors')->onDelete('cascade')->comment('Reference to the vendor');
             $table->string('deed_number')->nullable()->comment('Company Deed Number');
             $table->date('deed_date')->nullable()->comment('Company Deed Date');
             $table->string('deed_notary_name')->nullable()->comment('Notary Name for Company Deed');
