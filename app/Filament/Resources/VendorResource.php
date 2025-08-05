@@ -44,6 +44,7 @@ class VendorResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
+
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')->required(),
@@ -68,7 +69,133 @@ class VendorResource extends Resource
                                 Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
+
+                        Forms\Components\Tabs::make('Tabs')
+                            ->tabs([
+                                Forms\Components\Tabs\Tab::make('General Information')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorProfile')
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('business_entity_type')
+                                                            ->label('Business Entity Type')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('npwp')
+                                                            ->label('Tax Identification Number (NPWP)')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('nib')
+                                                            ->label('Business Registration Number (NIB)')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('website')
+                                                            ->label('Website')
+                                                            ->url()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('established_year')
+                                                            ->label('Year Established')
+                                                            ->numeric()
+                                                            ->minValue(1900)
+                                                            ->maxValue(now()->year),
+
+                                                        Forms\Components\TextInput::make('employee_count')
+                                                            ->label('Number of Employees')
+                                                            ->numeric()
+                                                            ->nullable(),
+                                                    ]),
+
+                                                Forms\Components\Textarea::make('head_office_address')
+                                                    ->label('Head Office Address'),
+                                            ]),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('PIC Contact')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorPic')
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('name')
+                                                            ->label('Full Name')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('position')
+                                                            ->label('Job Title / Position')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('phone_number')
+                                                            ->label('Phone Number')
+                                                            ->tel()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('email')
+                                                            ->label('Email Address')
+                                                            ->email()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('ktp_number')
+                                                            ->label('National ID (KTP) Number')
+                                                            ->nullable(),
+
+                                                        Forms\Components\View::make('attachment_viewer')
+                                                            ->viewData(['collectionName' => 'attachment'])
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('attachment')
+                                                            ->collection('attachment')
+                                                            ->maxFiles(1)
+                                                            ->label('Attachment (JPEG, PNG, PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['image/*', 'application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
+                                                    ]),
+                                            ]),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Legality & Licensing')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorDeed')
+                                            ->schema([
+                                                Forms\Components\Section::make('Deed Information')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)->schema([
+                                                            Forms\Components\TextInput::make('deed_number')->label('Deed Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('deed_date')->label('Deed Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('deed_notary_name')->label('Notary Name')->nullable(),
+                                                            Forms\Components\TextInput::make('approval_number')->label('Approval Number (Kemenkumham)')->nullable(),
+
+                                                            Forms\Components\TextInput::make('latest_amendment_number')->label('Latest Amendment Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('latest_amendment_date')->label('Latest Amendment Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
+                                                            Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
+
+                                                            Forms\Components\View::make('deed_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'deed_attachment'])
+                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->visibleOn('view'),
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('deed_attachment')
+                                                                ->collection('deed_attachment')
+                                                                ->label('Deed Attachment (PDF, max 2MB)')
+                                                                ->acceptedFileTypes(['application/pdf'])
+                                                                ->maxSize(2048)
+                                                                ->maxFiles(1)
+                                                                ->downloadable()
+                                                                ->hiddenOn('view'),
+                                                        ]),
+                                                    ]),
+                                            ]),
+                                    ]),
+                            ]),
                     ]),
+
             ]);
     }
 
