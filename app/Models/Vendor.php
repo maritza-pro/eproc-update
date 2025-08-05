@@ -72,9 +72,9 @@ class Vendor extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function vendorProfile(): HasOne
+    public function vendorDeed(): HasOne
     {
-        return $this->hasOne(VendorProfile::class);
+        return $this->hasOne(VendorDeed::class);
     }
 
     public function vendorPic(): HasOne
@@ -82,9 +82,8 @@ class Vendor extends Model
         return $this->hasOne(VendorPic::class);
     }
 
-    public function vendorDeed(): HasOne
+    public function vendorProfile(): HasOne
     {
-        return $this->hasOne(VendorDeed::class);
+        return $this->hasOne(VendorProfile::class);
     }
-
 }

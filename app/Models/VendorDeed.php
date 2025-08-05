@@ -17,10 +17,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class VendorDeed extends Model implements HasMedia
 {
     //
-    use LogsActivity,
-        Cachable,
-        SoftDeletes,
-        InteractsWithMedia;
+    use Cachable,
+        InteractsWithMedia,
+        LogsActivity,
+        SoftDeletes;
 
     protected $fillable = [
         'vendor_id',
@@ -34,11 +34,6 @@ class VendorDeed extends Model implements HasMedia
         'latest_approval_number',
     ];
 
-    public function vendor(): BelongsTo
-    {
-        return $this->belongsTo(Vendor::class);
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
@@ -47,15 +42,20 @@ class VendorDeed extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('deed_attachment') 
-            ->singleFile(); 
+            ->addMediaCollection('deed_attachment')
+            ->singleFile();
     }
 
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-              ->width(200)
-              ->height(200)
-              ->nonQueued(); 
+            ->width(200)
+            ->height(200)
+            ->nonQueued();
+    }
+
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

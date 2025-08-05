@@ -14,8 +14,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class VendorProfile extends Model
 {
     //
-    use LogsActivity,
-        Cachable,
+    use Cachable,
+        LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
@@ -29,14 +29,13 @@ class VendorProfile extends Model
         'employee_count',
     ];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
     }
 }
