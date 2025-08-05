@@ -142,6 +142,7 @@ class VendorResource extends Resource
                                                             ->nullable(),
 
                                                         Forms\Components\View::make('attachment_viewer')
+                                                            ->viewData(['collectionName' => 'attachment'])
                                                             ->view('filament.forms.components.attachment-viewer')
                                                             ->visibleOn('view'),
 
@@ -154,6 +155,42 @@ class VendorResource extends Resource
                                                             ->downloadable()
                                                             ->hiddenOn('view'),
                                                     ])
+                                            ])
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Legality & Licensing')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorDeed')
+                                            ->schema([
+                                                Forms\Components\Section::make('Deed Information')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)->schema([
+                                                            Forms\Components\TextInput::make('deed_number')->label('Deed Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('deed_date')->label('Deed Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('deed_notary_name')->label('Notary Name')->nullable(),
+                                                            Forms\Components\TextInput::make('approval_number')->label('Approval Number (Kemenkumham)')->nullable(),
+
+                                                            Forms\Components\TextInput::make('latest_amendment_number')->label('Latest Amendment Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('latest_amendment_date')->label('Latest Amendment Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
+                                                            Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
+
+                                                            Forms\Components\View::make('deed_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'deed_attachment'])
+                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->visibleOn('view'),
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('deed_attachment')
+                                                                ->collection('deed_attachment')
+                                                                ->label('Deed Attachment (PDF, max 2MB)')
+                                                                ->acceptedFileTypes(['application/pdf'])
+                                                                ->maxSize(2048)
+                                                                ->maxFiles(1)
+                                                                ->downloadable()
+                                                                ->hiddenOn('view'),
+                                                        ]),
+                                                    ]),
                                             ])
                                     ])
                             ])

@@ -81,4 +81,10 @@ class Vendor extends Model
     {
         return $this->hasOne(VendorPic::class);
     }
+
+    public function vendorDeed(): HasOne
+    {
+        return $this->hasOne(VendorDeed::class);
+    }
+
 }
