@@ -76,4 +76,9 @@ class Vendor extends Model
     {
         return $this->hasOne(VendorProfile::class);
     }
+
+    public function vendorPic(): HasOne
+    {
+        return $this->hasOne(VendorPic::class);
+    }
 }

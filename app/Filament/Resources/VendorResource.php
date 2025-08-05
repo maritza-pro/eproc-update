@@ -72,39 +72,89 @@ class VendorResource extends Resource
 
                         Forms\Components\Tabs::make('Tabs')
                             ->tabs([
-                                Forms\Components\Tabs\Tab::make('Informasi Umum')
+                                Forms\Components\Tabs\Tab::make('General Information')
                                     ->schema([
                                         Forms\Components\Group::make()
-                                        ->relationship('vendorProfile')
-                                        ->schema([
-                                        Forms\Components\Grid::make(2)
+                                            ->relationship('vendorProfile')
                                             ->schema([
-                                                Forms\Components\TextInput::make('business_entity_type')
-                                                    ->label('Jenis Badan Usaha')
-                                                    ->nullable(),
-                                                Forms\Components\TextInput::make('npwp')
-                                                    ->label('NPWP')
-                                                    ->nullable(),
-                                                Forms\Components\TextInput::make('nib')
-                                                    ->label('NIB')
-                                                    ->nullable(),
-                                                Forms\Components\TextInput::make('website')
-                                                    ->label('Website')
-                                                    ->url()
-                                                    ->nullable(),
-                                                Forms\Components\TextInput::make('established_year')
-                                                    ->label('Tahun Berdiri')
-                                                    ->numeric()
-                                                    ->minValue(1900)
-                                                    ->maxValue(now()->year),
-                                                Forms\Components\TextInput::make('employee_count')
-                                                    ->label('Jumlah Karyawan')
-                                                    ->numeric()
-                                                    ->nullable(),
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('business_entity_type')
+                                                            ->label('Business Entity Type')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('npwp')
+                                                            ->label('Tax Identification Number (NPWP)')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('nib')
+                                                            ->label('Business Registration Number (NIB)')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('website')
+                                                            ->label('Website')
+                                                            ->url()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('established_year')
+                                                            ->label('Year Established')
+                                                            ->numeric()
+                                                            ->minValue(1900)
+                                                            ->maxValue(now()->year),
+
+                                                        Forms\Components\TextInput::make('employee_count')
+                                                            ->label('Number of Employees')
+                                                            ->numeric()
+                                                            ->nullable(),
+                                                    ]),
+
+                                                Forms\Components\Textarea::make('head_office_address')
+                                                    ->label('Head Office Address'),
                                             ]),
-                                        Forms\Components\Textarea::make('head_office_address')
-                                            ->label('Alamat Kantor Pusat'),
-                                             ])
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('PIC Contact')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorPic')
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('name')
+                                                            ->label('Full Name')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('position')
+                                                            ->label('Job Title / Position')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('phone_number')
+                                                            ->label('Phone Number')
+                                                            ->tel()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('email')
+                                                            ->label('Email Address')
+                                                            ->email()
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('ktp_number')
+                                                            ->label('National ID (KTP) Number')
+                                                            ->nullable(),
+
+                                                        Forms\Components\View::make('attachment_viewer')
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('attachment')
+                                                            ->collection('attachment')
+                                                            ->maxFiles(1)
+                                                            ->label('Attachment (JPEG, PNG, PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['image/*', 'application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
+                                                    ])
+                                            ])
                                     ])
                             ])
                     ])
