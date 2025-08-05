@@ -47,15 +47,7 @@ class VendorBusinessResource extends Resource
                         Forms\Components\Textarea::make('description'),
                         Forms\Components\Grid::make(3)
                             ->schema([
-                                Forms\Components\TextInput::make('type'),
                                 Forms\Components\TextInput::make('code'),
-                                Forms\Components\Select::make('parent_id')
-                                    ->relationship('parent', 'name'),
-                            ]),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\ColorPicker::make('text_color'),
-                                Forms\Components\ColorPicker::make('background_color'),
                                 Forms\Components\Toggle::make('is_active')
                                     ->inline(false)
                                     ->required()
@@ -112,9 +104,11 @@ class VendorBusinessResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColorColumn::make('text_color')
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColorColumn::make('background_color')
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean()
                     ->alignCenter(),
