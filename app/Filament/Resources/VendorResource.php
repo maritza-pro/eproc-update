@@ -59,9 +59,9 @@ class VendorResource extends Resource
                                     ->relationship(
                                         name: 'bankVendor',
                                         titleAttribute: 'account_number',
-                                        modifyQueryUsing: fn(Builder $query) => $query->with(['bank'])
+                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
                                     )
-                                    ->getOptionLabelFromRecordUsing(fn($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
+                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
                                     ->searchable()
                                     ->preload()
                                     ->placeholder('Pilih akun bank yang sudah ada'),
@@ -330,7 +330,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendor.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendor', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");

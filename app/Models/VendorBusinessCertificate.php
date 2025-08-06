@@ -16,9 +16,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class VendorBusinessCertificate extends Model implements HasMedia
 {
     //
-    use LogsActivity,
-        Cachable,
+    use Cachable,
         InteractsWithMedia,
+        LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
