@@ -77,9 +77,9 @@ class Vendor extends Model
         return $this->hasOne(VendorDeed::class);
     }
 
-    public function vendorPic(): HasOne
+    public function vendorContact(): HasOne
     {
-        return $this->hasOne(VendorPic::class);
+        return $this->hasOne(VendorContact::class);
     }
 
     public function vendorProfile(): HasOne

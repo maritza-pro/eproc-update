@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class VendorPic extends Model implements HasMedia
+class VendorContact extends Model implements HasMedia
 {
     //
     use Cachable,
@@ -28,7 +28,7 @@ class VendorPic extends Model implements HasMedia
         'position',
         'phone_number',
         'email',
-        'ktp_number',
+        'identity_number',
     ];
 
     public function getActivitylogOptions(): LogOptions

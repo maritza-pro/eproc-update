@@ -83,11 +83,11 @@ class VendorResource extends Resource
                                                             ->label('Business Entity Type')
                                                             ->nullable(),
 
-                                                        Forms\Components\TextInput::make('npwp')
+                                                        Forms\Components\TextInput::make('tax_identification_number')
                                                             ->label('Tax Identification Number (NPWP)')
                                                             ->nullable(),
 
-                                                        Forms\Components\TextInput::make('nib')
+                                                        Forms\Components\TextInput::make('business_identification_number')
                                                             ->label('Business Registration Number (NIB)')
                                                             ->nullable(),
 
@@ -115,7 +115,7 @@ class VendorResource extends Resource
                                 Forms\Components\Tabs\Tab::make('PIC Contact')
                                     ->schema([
                                         Forms\Components\Group::make()
-                                            ->relationship('vendorPic')
+                                            ->relationship('vendorContact')
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -137,7 +137,7 @@ class VendorResource extends Resource
                                                             ->email()
                                                             ->nullable(),
 
-                                                        Forms\Components\TextInput::make('ktp_number')
+                                                        Forms\Components\TextInput::make('identity_number')
                                                             ->label('National ID (KTP) Number')
                                                             ->nullable(),
 
