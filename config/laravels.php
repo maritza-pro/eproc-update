@@ -34,7 +34,7 @@ return [
     |
     */
 
-    'listen_port' => env('LARAVELS_LISTEN_PORT', 80),
+    'listen_port' => env('LARAVELS_LISTEN_PORT', 9235),
 
     /*
     |--------------------------------------------------------------------------
@@ -291,7 +291,7 @@ return [
     'swoole' => [
         'daemonize' => env('LARAVELS_DAEMONIZE', false),
         'dispatch_mode' => env('LARAVELS_DISPATCH_MODE', 3),
-        'worker_num' => env('LARAVELS_WORKER_NUM', 50),
+        'worker_num' => env('LARAVELS_WORKER_NUM', 10),
         // 'task_worker_num' => env('LARAVELS_TASK_WORKER_NUM', 10),
         'task_ipc_mode' => 1,
         'task_max_request' => env('LARAVELS_TASK_MAX_REQUEST', 100000),
