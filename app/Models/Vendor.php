@@ -72,18 +72,33 @@ class Vendor extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function vendorBusinessCertificate(): HasOne
+    {
+        return $this->hasOne(VendorBusinessCertificate::class);
+    }
+
+    public function vendorBusinessLicense(): HasOne
+    {
+        return $this->hasOne(VendorBusinessLicense::class);
+    }
+
+    public function vendorContact(): HasOne
+    {
+        return $this->hasOne(VendorContact::class);
+    }
+
     public function vendorDeed(): HasOne
     {
         return $this->hasOne(VendorDeed::class);
     }
 
-    public function vendorPic(): HasOne
-    {
-        return $this->hasOne(VendorPic::class);
-    }
-
     public function vendorProfile(): HasOne
     {
         return $this->hasOne(VendorProfile::class);
+    }
+
+    public function vendorTaxRegistration(): HasOne
+    {
+        return $this->hasOne(VendorTaxRegistration::class);
     }
 }

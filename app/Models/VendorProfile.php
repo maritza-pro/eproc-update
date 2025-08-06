@@ -21,8 +21,8 @@ class VendorProfile extends Model
     protected $fillable = [
         'vendor_id',
         'business_entity_type',
-        'npwp',
-        'nib',
+        'tax_identification_number',
+        'business_identification_number',
         'head_office_address',
         'website',
         'established_year',

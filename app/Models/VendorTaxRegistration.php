@@ -12,9 +12,8 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class VendorPic extends Model implements HasMedia
+class VendorTaxRegistration extends Model implements HasMedia
 {
     //
     use Cachable,
@@ -25,10 +24,11 @@ class VendorPic extends Model implements HasMedia
     protected $fillable = [
         'vendor_id',
         'name',
-        'position',
-        'phone_number',
-        'email',
-        'ktp_number',
+        'address',
+        'certificate_number',
+        'confirmation_status',
+        'tax_obligation',
+        'registered_tax_office',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -39,16 +39,8 @@ class VendorPic extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('attachment')
+            ->addMediaCollection('vendor_tax_registration_attachment')
             ->singleFile();
-    }
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(200)
-            ->height(200)
-            ->nonQueued();
     }
 
     public function vendor(): BelongsTo

@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->foreignId('vendor_id')->constrained()->onDelete('cascade')->comment('The ID of the vendor associated with the profile');
             $table->string('business_entity_type')->nullable()->comment('The type of business entity the company is');
-            $table->string('npwp')->nullable()->comment('The NPWP of the company');
-            $table->string('nib')->nullable()->comment('The NIB of the company');
+            $table->string('tax_identification_number')->nullable()->comment('The NPWP (Tax Identification Number) of the company');
+            $table->string('business_identification_number')->nullable()->comment('The NIB (Business Identification Number) of the company');
             $table->text('head_office_address')->nullable()->comment('The head office address of the company');
             $table->string('website')->nullable()->comment('The website of the company');
             $table->year('established_year')->nullable()->comment('The year the company was established');
