@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -13,22 +13,21 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class VendorTaxRegistration extends Model implements HasMedia
+class VendorBusinessCertificate extends Model implements HasMedia
 {
     //
     use LogsActivity,
-        InteractsWithMedia,
         Cachable,
+        InteractsWithMedia,
         SoftDeletes;
 
     protected $fillable = [
         'vendor_id',
-        'name',
-        'address',
         'certificate_number',
-        'confirmation_status',
-        'tax_obligation',
-        'registered_tax_office',
+        'issued_at',
+        'issued_by',
+        'expires_at',
+        'classification',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -39,7 +38,7 @@ class VendorTaxRegistration extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('vendor_tax_registration_attachment')
+            ->addMediaCollection('vendor_certificate_attachment')
             ->singleFile();
     }
 

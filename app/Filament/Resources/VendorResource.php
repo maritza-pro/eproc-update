@@ -255,6 +255,34 @@ class VendorResource extends Resource
                                                         ]),
                                                     ]),
                                             ]),
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorBusinessCertificate')
+                                            ->schema([
+                                                Forms\Components\Section::make('Business Certificate Information')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)->schema([
+                                                            Forms\Components\TextInput::make('certificate_number')->label('Certificate Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('issued_at')->label('Issued Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('issued_by')->label('Issued By')->nullable(),
+                                                            Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('classification')->label('Classification')->nullable(),
+                                                            Forms\Components\View::make('vendor_certificate_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'vendor_certificate_attachment'])
+                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->visibleOn('view'),
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_certificate_attachment')
+                                                                ->collection('vendor_certificate_attachment')
+                                                                ->label('Business Certificate Attachment (PDF, max 2MB)')
+                                                                ->acceptedFileTypes(['application/pdf'])
+                                                                ->maxSize(2048)
+                                                                ->maxFiles(1)
+                                                                ->downloadable()
+                                                                ->hiddenOn('view'),
+                                                        ]),
+                                                    ]),
+                                            ]),
                                     ]),
                             ]),
                     ]),
