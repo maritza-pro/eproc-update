@@ -219,6 +219,42 @@ class VendorResource extends Resource
                                                         ]),
                                                     ]),
                                             ]),
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorTaxRegistration')
+                                            ->schema([
+                                                Forms\Components\Section::make('Tax Registration Certificate Information')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)->schema([
+                                                            Forms\Components\TextInput::make('name')->label('Name')->nullable(),
+                                                            Forms\Components\TextInput::make('certificate_number')->label('Certificate Number')->nullable(),
+
+                                                            Forms\Components\TextInput::make('confirmation_status')->label('Confirmation Status')->nullable(),
+                                                            Forms\Components\Select::make('tax_obligation')
+                                                                ->label('Tax Obligation')
+                                                                ->options([
+                                                                    'collecting' => 'Collecting',
+                                                                    'depositing' => 'Depositing',
+                                                                    'reporting' => 'Reporting VAT/Luxury Tax',
+                                                                ]),
+
+                                                            Forms\Components\TextInput::make('registered_tax_office')->label('Registered Tax Office')->nullable(),
+                                                            Forms\Components\TextArea::make('address')->label('Address')->nullable(),
+
+                                                            Forms\Components\View::make('vendor_tax_registration_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'vendor_tax_registration_attachment'])
+                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->visibleOn('view'),
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_tax_registration_attachment')
+                                                                ->collection('vendor_tax_registration_attachment')
+                                                                ->label('Tax Registration Certificate Attachment (PDF, max 2MB)')
+                                                                ->acceptedFileTypes(['application/pdf'])
+                                                                ->maxSize(2048)
+                                                                ->maxFiles(1)
+                                                                ->downloadable()
+                                                                ->hiddenOn('view'),
+                                                        ]),
+                                                    ]),
+                                            ]),
                                     ]),
                             ]),
                     ]),

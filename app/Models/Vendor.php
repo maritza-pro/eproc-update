@@ -91,4 +91,9 @@ class Vendor extends Model
     {
         return $this->hasOne(VendorBusinessLicense::class);
     }
+
+    public function vendorTaxRegistration(): HasOne
+    {
+        return $this->hasOne(VendorTaxRegistration::class);
+    }
 }
