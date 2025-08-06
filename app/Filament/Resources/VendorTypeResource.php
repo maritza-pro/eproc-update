@@ -78,7 +78,7 @@ class VendorTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // ActivitylogRelationManager::class,
+            ActivitylogRelationManager::class,
         ];
     }
 

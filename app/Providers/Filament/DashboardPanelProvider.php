@@ -33,7 +33,7 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->login()
-            ->spa()
+            // ->spa()
             ->registration()
             ->unsavedChangesAlerts()
             ->passwordReset()
