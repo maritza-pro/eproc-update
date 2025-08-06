@@ -59,9 +59,9 @@ class VendorResource extends Resource
                                     ->relationship(
                                         name: 'bankVendor',
                                         titleAttribute: 'account_number',
-                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
+                                        modifyQueryUsing: fn(Builder $query) => $query->with(['bank'])
                                     )
-                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
+                                    ->getOptionLabelFromRecordUsing(fn($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
                                     ->searchable()
                                     ->preload()
                                     ->placeholder('Pilih akun bank yang sudah ada'),
@@ -141,15 +141,15 @@ class VendorResource extends Resource
                                                             ->label('National ID (KTP) Number')
                                                             ->nullable(),
 
-                                                        Forms\Components\View::make('attachment_viewer')
-                                                            ->viewData(['collectionName' => 'attachment'])
+                                                        Forms\Components\View::make('vendor_contact_attachment_viewer')
+                                                            ->viewData(['collectionName' => 'vendor_contact_attachment'])
                                                             ->view('filament.forms.components.attachment-viewer')
                                                             ->visibleOn('view'),
 
-                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('attachment')
-                                                            ->collection('attachment')
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_contact_attachment')
+                                                            ->collection('vendor_contact_attachment')
                                                             ->maxFiles(1)
-                                                            ->label('Attachment (JPEG, PNG, PDF, max 2MB)')
+                                                            ->label('Contact Attachment (JPEG, PNG, PDF, max 2MB)')
                                                             ->acceptedFileTypes(['image/*', 'application/pdf'])
                                                             ->maxSize(2048)
                                                             ->downloadable()
@@ -177,13 +177,40 @@ class VendorResource extends Resource
                                                             Forms\Components\TextInput::make('latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
                                                             Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
 
-                                                            Forms\Components\View::make('deed_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'deed_attachment'])
+                                                            Forms\Components\View::make('vendor_deed_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'vendor_deed_attachment'])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
-                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('deed_attachment')
-                                                                ->collection('deed_attachment')
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_deed_attachment')
+                                                                ->collection('vendor_deed_attachment')
                                                                 ->label('Deed Attachment (PDF, max 2MB)')
+                                                                ->acceptedFileTypes(['application/pdf'])
+                                                                ->maxSize(2048)
+                                                                ->maxFiles(1)
+                                                                ->downloadable()
+                                                                ->hiddenOn('view'),
+                                                        ]),
+                                                    ]),
+                                            ]),
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorBusinessLicense')
+                                            ->schema([
+                                                Forms\Components\Section::make('Business License Information')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)->schema([
+                                                            Forms\Components\TextInput::make('license_number')->label('License Number')->nullable(),
+                                                            Forms\Components\DatePicker::make('issued_at')->label('Issued Date')->nullable(),
+
+                                                            Forms\Components\TextInput::make('issued_by')->label('Issued By')->nullable(),
+                                                            Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
+
+                                                            Forms\Components\View::make('vendor_license_attachment_viewer')
+                                                                ->viewData(['collectionName' => 'vendor_license_attachment'])
+                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->visibleOn('view'),
+                                                            Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_license_attachment')
+                                                                ->collection('vendor_license_attachment')
+                                                                ->label('Business License Attachment (PDF, max 2MB)')
                                                                 ->acceptedFileTypes(['application/pdf'])
                                                                 ->maxSize(2048)
                                                                 ->maxFiles(1)
@@ -239,7 +266,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendor.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendor', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");

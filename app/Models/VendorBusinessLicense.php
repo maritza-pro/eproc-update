@@ -14,24 +14,20 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class VendorDeed extends Model implements HasMedia
+class VendorBusinessLicense extends Model implements HasMedia
 {
     //
-    use Cachable,
+    use LogsActivity,
+        Cachable,
         InteractsWithMedia,
-        LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
         'vendor_id',
-        'deed_number',
-        'deed_date',
-        'deed_notary_name',
-        'approval_number',
-        'latest_amendment_number',
-        'latest_amendment_date',
-        'latest_amendment_notary',
-        'latest_approval_number',
+        'license_number',
+        'issued_at',
+        'issued_by',
+        'expires_at',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -42,7 +38,7 @@ class VendorDeed extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('vendor_deed_attachment')
+            ->addMediaCollection('vendor_license_attachment')
             ->singleFile();
     }
 

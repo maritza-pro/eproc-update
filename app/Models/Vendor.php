@@ -86,4 +86,9 @@ class Vendor extends Model
     {
         return $this->hasOne(VendorProfile::class);
     }
+
+    public function vendorBusinessLicense(): HasOne
+    {
+        return $this->hasOne(VendorBusinessLicense::class);
+    }
 }

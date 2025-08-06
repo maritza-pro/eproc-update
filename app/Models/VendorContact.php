@@ -39,7 +39,7 @@ class VendorContact extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('attachment')
+            ->addMediaCollection('vendor_contact_attachment')
             ->singleFile();
     }
 
