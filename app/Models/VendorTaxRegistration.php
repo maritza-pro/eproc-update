@@ -17,8 +17,8 @@ class VendorTaxRegistration extends Model implements HasMedia
 {
     //
     use LogsActivity,
-        InteractsWithMedia,
         Cachable,
+        InteractsWithMedia,
         SoftDeletes;
 
     protected $fillable = [
