@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Providers\Filament;
 
+use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -71,7 +72,17 @@ class DashboardPanelProvider extends PanelProvider
             ->plugins([
                 HexaLite::make(),
                 ActivitylogPlugin::make()
-                    ->navigationGroup('Settings')
+                    ->navigationGroup('Systems')
+                    ->authorize(
+                        fn () => Auth::user()->can('User.withoutGlobalScope')
+                    ),
+                FilamentLogViewerPlugin::make()
+                    // ->listLogs(\App\Filament\Pages\ListLogs::class)
+                    // ->viewLog(\App\Filament\Pages\ViewLog::class)
+                    ->navigationGroup('Systems')
+                    ->navigationSort(99)
+                    ->navigationIcon('heroicon-s-document-text')
+                    ->navigationLabel('Log Viewer')
                     ->authorize(
                         fn () => Auth::user()->can('User.withoutGlobalScope')
                     ),
@@ -87,6 +98,8 @@ class DashboardPanelProvider extends PanelProvider
                     ->label('Location'),
                 NavigationGroup::make()
                     ->label('Settings'),
+                NavigationGroup::make()
+                    ->label('Systems'),
             ]);
     }
 }
