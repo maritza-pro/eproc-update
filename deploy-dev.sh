@@ -1,7 +1,7 @@
 #!/bin/sh
 redis-cli flushall
 # activate maintenance mode
-php8.4 artisan down --render=maintenance
+php8.4 artisan down
 
 # update source code
 git checkout development

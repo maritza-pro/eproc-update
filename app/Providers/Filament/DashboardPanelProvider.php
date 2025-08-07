@@ -13,7 +13,9 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Assets\Js;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Widgets;
 use Hexters\HexaLite\HexaLite;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -27,6 +29,13 @@ use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
+    public function boot(): void
+    {
+        FilamentAsset::register([
+            Js::make('custom-script', asset('js/custom.js')),
+        ]);
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
