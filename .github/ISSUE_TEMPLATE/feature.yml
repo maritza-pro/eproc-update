@@ -1,0 +1,107 @@
+name: 🛠️ Change Request / New Feature
+description: Request a new feature or propose a change to an existing one
+title: "[CR-NUMBER]"
+labels: ["change request", "feature", "product backlog"]
+assignees: []
+
+body:
+  - type: input
+    id: module_name
+    attributes:
+      label: 🧩 Module
+      description: Which module is affected or should include this feature?
+      placeholder: "e.g., User Management, Billing"
+    validations:
+      required: true
+
+  - type: input
+    id: service_name
+    attributes:
+      label: 🔧 Feature / Service Name
+      description: Name of the service, component, or feature involved
+      placeholder: "e.g., UserNotificationService"
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_story
+    attributes:
+      label: 📋 User Story
+      description: Use the Scrum format — “As a [role], I want [feature] so that [benefit].”
+      placeholder: "As an admin, I want to reset user passwords so that I can assist users who are locked out."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: ✅ Acceptance Criteria
+      description: Bullet points or checklist of what needs to be completed for this task to be considered done.
+      placeholder: |
+        - [ ] Password reset button is visible to admins
+        - [ ] Clicking button triggers email notification
+        - [ ] Feature is covered by unit and integration tests
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🚦 Priority Level
+      options:
+        - High
+        - Medium
+        - Low
+      default: 1
+    validations:
+      required: true
+
+  - type: input
+    id: estimate
+    attributes:
+      label: ⏱️ Effort Estimate
+      description: Use time format or Story Points (SP)
+      placeholder: "e.g., 5h, 2 SP"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: approval_status
+    attributes:
+      label: ✅ Approval Status
+      description: Approval status by Product Owner and/or Tech Lead
+      options:
+        - ⏳ Pending
+        - ✅ Approved
+        - ❌ Rejected
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: sprint
+    attributes:
+      label: 📅 Target Sprint / Deadline
+      description: When should this task be completed?
+      placeholder: "e.g., Sprint 16, or 2025-06-10"
+    validations:
+      required: false
+
+  - type: textarea
+    id: tech_notes
+    attributes:
+      label: 🛠 Technical Notes
+      description: Implementation notes, external service integrations, or constraints.
+      placeholder: |
+        e.g., Must add new API endpoint and update frontend form. Consider using async queues for email sending.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 📎 Additional Context / References
+      description: Add links to design docs, related issues, screenshots, or other resources.
+      placeholder: "#1234 (related issue), Figma link, Confluence doc, etc."
+    validations:
+      required: false

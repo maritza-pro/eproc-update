@@ -1,0 +1,18 @@
+blank_issues_enabled: false
+
+issue_templates:
+  - name: 🛠️ Change Request / New Feature
+    description: Propose a new feature inside an existing module or service.
+    file: feature.yml
+
+  - name: 🐞 Bug Report
+    description: Report a bug or unexpected behavior in a module or service.
+    file: bug_report.yml
+
+  - name: 🎨 UI/UX Issue
+    description: Report a UI or UX problem.
+    file: ui_issue.yml
+
+  - name: 📝 Meeting Notulen
+    description: Document meeting minutes, decisions, and action items.
+    file: meeting_notulen.yml

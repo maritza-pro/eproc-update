@@ -1,0 +1,141 @@
+name: 🐞 Bug Report
+description: Report a bug or unexpected behavior in the application
+title: '[ISSUE-NUMBER]'
+labels: ['bug']
+
+body:
+  - type: input
+    id: module_name
+    attributes:
+      label: 🧩 Module Name
+      description: Where did the bug occur?
+      placeholder: 'e.g., Billing, User, Notification'
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: 🐞 Bug Description
+      description: Provide a detailed description of the bug or issue.
+      placeholder: 'e.g., When clicking "Download Invoice", nothing happens.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: 🔁 Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to Dashboard
+        2. Click on "Invoices"
+        3. Click "Download PDF"
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: ✅ Expected Behavior
+      description: What should happen instead?
+      placeholder: 'e.g., A PDF should download automatically.'
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: ❌ Actual Behavior
+      description: What actually happens?
+      placeholder: 'e.g., Nothing happens or a 500 error occurs.'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 Severity
+      options:
+        - Critical (app crash, data loss)
+        - High (major feature broken)
+        - Medium (minor bug or UI issue)
+        - Low (cosmetic or rare)
+      default: 2
+    validations:
+      required: true
+
+  - type: input
+    id: user_information
+    attributes:
+      label: 👤 User Information
+      description: Provide details about the user encountering the bug (e.g., username, email).
+      placeholder: 'e.g., user@example.com, john_doe'
+    validations:
+      required: true
+
+  - type: input
+    id: user_roles
+    attributes:
+      label: 🛠️ User Roles
+      description: What roles or permissions does the user have? (e.g., Admin, User, Manager).
+      placeholder: 'e.g., Admin, User, Manager'
+    validations:
+      required: true
+
+  - type: input
+    id: link_to_reproduce
+    attributes:
+      label: 🔗 Link to Reproduce
+      description: Provide a link to the page or feature where the bug can be reproduced (optional).
+      placeholder: 'e.g., https://example.com/invoice'
+    validations:
+      required: false
+
+  - type: textarea
+    id: api_request_body
+    attributes:
+      label: 📝 API Request Body
+      description: Include the request body sent to the API, if applicable.
+      placeholder: |
+        {
+          "invoice_id": "12345",
+          "action": "download"
+        }
+    validations:
+      required: false
+
+  - type: textarea
+    id: api_response_body
+    attributes:
+      label: 📡 API Response Body
+      description: Include the response body from the API, if applicable.
+      placeholder: |
+        {
+          "status": "error",
+          "message": "Failed to download invoice"
+        }
+    validations:
+      required: false
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🧪 Environment
+      options:
+        - Development
+        - Staging
+        - Production
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 📎 Additional Context or Logs
+      description: Screenshots, logs, error messages, or any other helpful context.
+      placeholder: 'e.g., Error message from browser console or server logs.'
+    validations:
+      required: false

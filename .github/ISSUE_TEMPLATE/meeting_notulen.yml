@@ -1,0 +1,79 @@
+name: 📝 Meeting Notulen
+description: Document the minutes of a meeting
+title: "[Meeting] <Topic> - <YYYY-MM-DD>"
+labels: ["meeting", "notulen"]
+assignees: []
+
+body:
+  - type: input
+    id: meeting_datetime
+    attributes:
+      label: 📅🕒 Date & Time
+      description: Enter the meeting date and time (e.g., 2025-05-13 14:00–15:30)
+      placeholder: "e.g., 2025-05-13 10:00–11:30"
+    validations:
+      required: true
+
+  - type: input
+    id: meeting_topic
+    attributes:
+      label: 🧩 Topic / Agenda
+      description: Main topic or purpose of the meeting
+      placeholder: "e.g., Sprint 12 Planning"
+    validations:
+      required: true
+
+  - type: textarea
+    id: attendees
+    attributes:
+      label: 👥 Attendees
+      description: List of people who attended the meeting
+      placeholder: |
+        - John Doe
+        - Jane Smith
+        - Dev Team
+    validations:
+      required: true
+
+  - type: textarea
+    id: discussion_points
+    attributes:
+      label: 💬 Discussion Points
+      description: Summary of topics discussed
+      placeholder: |
+        - Reviewed progress of Sprint 11
+        - Discussed backlog grooming
+        - Agreed on new timeline for feature X
+    validations:
+      required: true
+
+  - type: textarea
+    id: decisions
+    attributes:
+      label: ✅ Decisions Made
+      description: List of decisions or conclusions reached
+      placeholder: |
+        - Feature X moved to Sprint 13
+        - QA to complete open bugs by Friday
+    validations:
+      required: true
+
+  - type: textarea
+    id: action_items
+    attributes:
+      label: 📌 Action Items
+      description: Follow-up tasks with assignees and due dates
+      placeholder: |
+        - [ ] Alice to prepare design mockups by 2025-05-15
+        - [ ] Bob to finalize API specs by 2025-05-16
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: 🗒️ Additional Notes
+      description: Any extra notes, next meeting plans, etc.
+      placeholder: "e.g., Next meeting on 2025-05-20 at 10:00"
+    validations:
+      required: false

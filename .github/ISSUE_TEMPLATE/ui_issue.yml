@@ -1,0 +1,13 @@
+name: UI/UX Issue
+description: Report a UI or UX problem
+title: "[UI/UX] "
+labels: ["ui", "ux"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue. You can also paste or drag a screenshot directly into this box.
+      placeholder: "e.g., The button is overlapping the text on mobile view."
+    validations:
+      required: true
