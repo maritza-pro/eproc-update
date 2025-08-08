@@ -81,9 +81,9 @@ class Vendor extends Model
         return $this->hasOne(VendorBusinessLicense::class);
     }
 
-    public function vendorContact(): HasOne
+    public function vendorContacts(): HasMany
     {
-        return $this->hasOne(VendorContact::class);
+        return $this->hasMany(VendorContact::class);
     }
 
     public function vendorDeed(): HasOne

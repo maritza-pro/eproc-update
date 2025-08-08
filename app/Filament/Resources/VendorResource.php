@@ -54,17 +54,6 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('tax_number'),
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
-                                Forms\Components\Select::make('bank_vendor_id')
-                                    ->label('Akun Bank Vendor')
-                                    ->relationship(
-                                        name: 'bankVendor',
-                                        titleAttribute: 'account_number',
-                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
-                                    )
-                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
-                                    ->searchable()
-                                    ->preload()
-                                    ->placeholder('Pilih akun bank yang sudah ada'),
                                 Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
                                 Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
@@ -114,8 +103,10 @@ class VendorResource extends Resource
                                     ]),
                                 Forms\Components\Tabs\Tab::make('PIC Contact')
                                     ->schema([
-                                        Forms\Components\Group::make()
-                                            ->relationship('vendorContact')
+                                        Forms\Components\Repeater::make('vendorContacts')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add PIC Contact')
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -284,6 +275,32 @@ class VendorResource extends Resource
                                                     ]),
                                             ]),
                                     ]),
+                                Forms\Components\Tabs\Tab::make('Financial')
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('bankVendor')
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\Select::make('bank_id')
+                                                            ->relationship('bank', 'name')
+                                                            ->searchable()
+                                                            ->preload()
+                                                            ->nullable()
+                                                            ->label('Bank Name'),
+                                                        Forms\Components\TextInput::make('account_name')
+                                                            ->label('Account Name')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('account_number')
+                                                            ->label('Account Number')
+                                                            ->nullable(),
+
+                                                        Forms\Components\Toggle::make('is_active')
+                                                            ->nullable(),
+                                                    ]),
+                                            ]),
+                                    ]),
                             ]),
                     ]),
 
@@ -330,7 +347,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendor.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendor', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");
