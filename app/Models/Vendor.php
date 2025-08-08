@@ -100,4 +100,9 @@ class Vendor extends Model
     {
         return $this->hasOne(VendorTaxRegistration::class);
     }
+
+    public function vendorExpertises(): HasMany
+    {
+        return $this->hasMany(VendorExpertise::class);
+    }
 }

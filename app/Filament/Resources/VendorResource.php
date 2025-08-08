@@ -351,6 +351,57 @@ class VendorResource extends Resource
                                                     ]),
                                             ]),
                                     ]),
+                                Forms\Components\Tabs\Tab::make('Expertise')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('vendorExpertises')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Expertise')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->columns(1)
+                                            ->itemLabel(function (array $state): ?string {
+                                                if (!empty($state['expertise'])) {
+                                                    return '- ' . $state['expertise'];
+                                                }
+                                                return 'New Expertise';
+                                            })
+                                            ->schema([
+                                                Forms\Components\TextInput::make('expertise')
+                                                    ->label('Expertise')
+                                                    ->nullable(),
+
+                                                Forms\Components\Select::make('expertise_level')
+                                                    ->label('Expertise Level')
+                                                    ->nullable()
+                                                    ->options([
+                                                        'basic' => 'Basic',
+                                                        'intermediate' => 'Intermediate',
+                                                        'expert' => 'Expert',
+                                                    ]),
+
+                                                Forms\Components\Textarea::make('description')
+                                                    ->label('Description')
+                                                    ->nullable(),
+
+                                                Forms\Components\View::make('expertise_attachment_viewer')
+                                                    ->viewData([
+                                                        'collectionName' => 'expertise_attachment',
+                                                        'viewLabel' => 'Expertise Attachment',
+                                                    ])
+                                                    ->view('filament.forms.components.attachment-viewer')
+                                                    ->visibleOn('view'),
+
+                                                Forms\Components\SpatieMediaLibraryFileUpload::make('expertise_attachment')
+                                                    ->collection('expertise_attachment')
+                                                    ->maxFiles(1)
+                                                    ->label('Expertise Attachment (PDF, max 2MB)')
+                                                    ->acceptedFileTypes(['application/pdf'])
+                                                    ->maxSize(2048)
+                                                    ->downloadable()
+                                                    ->hiddenOn('view'),
+                                            ]),
+                                    ]),
                             ]),
                     ]),
 
