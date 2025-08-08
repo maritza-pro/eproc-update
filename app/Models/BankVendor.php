@@ -12,12 +12,15 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class BankVendor extends Model
+class BankVendor extends Model implements HasMedia
 {
     //
     use Cachable,
         HasFactory,
+        InteractsWithMedia,
         LogsActivity,
         SoftDeletes;
 
@@ -38,6 +41,13 @@ class BankVendor extends Model
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('recent_financial_report_attachment')
+            ->singleFile();
     }
 
     public function getActivitylogOptions(): LogOptions

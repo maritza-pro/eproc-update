@@ -133,7 +133,10 @@ class VendorResource extends Resource
                                                             ->nullable(),
 
                                                         Forms\Components\View::make('vendor_contact_attachment_viewer')
-                                                            ->viewData(['collectionName' => 'vendor_contact_attachment'])
+                                                            ->viewData([
+                                                                'collectionName' => 'vendor_contact_attachment',
+                                                                'viewLabel' => 'Contact Attachment',
+                                                            ])
                                                             ->view('filament.forms.components.attachment-viewer')
                                                             ->visibleOn('view'),
 
@@ -169,7 +172,10 @@ class VendorResource extends Resource
                                                             Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
 
                                                             Forms\Components\View::make('vendor_deed_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_deed_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_deed_attachment',
+                                                                    'viewLabel' => 'Deed Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_deed_attachment')
@@ -196,7 +202,10 @@ class VendorResource extends Resource
                                                             Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
 
                                                             Forms\Components\View::make('vendor_license_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_license_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_license_attachment',
+                                                                    'viewLabel' => 'Business License Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_license_attachment')
@@ -232,8 +241,11 @@ class VendorResource extends Resource
                                                             Forms\Components\TextArea::make('address')->label('Address')->nullable(),
 
                                                             Forms\Components\View::make('vendor_tax_registration_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_tax_registration_attachment'])
-                                                                ->view('filament.forms.components.attachment-viewer')
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_tax_registration_attachment',
+                                                                    'viewLabel' => 'Tax Registration Certificate Attachment',
+                                                                ])
+                                                                ->view('filament.forms.components.attachment-viewer',)
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_tax_registration_attachment')
                                                                 ->collection('vendor_tax_registration_attachment')
@@ -260,7 +272,10 @@ class VendorResource extends Resource
 
                                                             Forms\Components\TextInput::make('classification')->label('Classification')->nullable(),
                                                             Forms\Components\View::make('vendor_certificate_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_certificate_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_certificate_attachment',
+                                                                    'viewLabel' => 'Business Certificate Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_certificate_attachment')
@@ -298,6 +313,21 @@ class VendorResource extends Resource
 
                                                         Forms\Components\Toggle::make('is_active')
                                                             ->nullable(),
+                                                        Forms\Components\View::make('recent_financial_report_attachment_viewer')
+                                                            ->viewData([
+                                                                'collectionName' => 'recent_financial_report_attachment',
+                                                                'viewLabel' => 'Recent Financial Report attachment',
+                                                            ])
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('recent_financial_report_attachment')
+                                                            ->collection('recent_financial_report_attachment')
+                                                            ->label('Recent Financial Report (PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->maxFiles(1)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
                                                     ]),
                                             ]),
                                     ]),
