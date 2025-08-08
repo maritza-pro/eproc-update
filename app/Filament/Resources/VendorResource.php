@@ -107,6 +107,26 @@ class VendorResource extends Resource
                                             ->relationship()
                                             ->label('')
                                             ->addActionLabel('Add PIC Contact')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                $parts = [];
+
+                                                if (!empty($state['name'])) {
+                                                    $firstName = explode(' ', $state['name'])[0];
+                                                    $parts[] = $firstName;
+                                                }
+
+                                                if (!empty($state['position'])) {
+                                                    $parts[] = $state['position'];
+                                                }
+
+                                                if (!empty($parts)) {
+                                                    return implode(' · ', $parts);
+                                                }
+
+                                                return 'New PIC Contact';
+                                            })
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
