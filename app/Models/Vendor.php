@@ -105,4 +105,9 @@ class Vendor extends Model
     {
         return $this->hasMany(VendorExpertise::class);
     }
+
+    public function vendorExperiences(): HasMany
+    {
+        return $this->hasMany(VendorExperience::class);
+    }
 }

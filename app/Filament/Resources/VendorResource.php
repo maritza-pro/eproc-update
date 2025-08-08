@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
@@ -98,7 +98,9 @@ class VendorResource extends Resource
                                                     ]),
 
                                                 Forms\Components\Textarea::make('head_office_address')
-                                                    ->label('Head Office Address'),
+                                                    ->autosize()
+                                                    ->label('Head Office Address')
+                                                    ->nullable(),
                                             ]),
                                     ]),
                                 Forms\Components\Tabs\Tab::make('PIC Contact')
@@ -257,8 +259,13 @@ class VendorResource extends Resource
                                                                     'reporting' => 'Reporting VAT/Luxury Tax',
                                                                 ]),
 
-                                                            Forms\Components\TextInput::make('registered_tax_office')->label('Registered Tax Office')->nullable(),
-                                                            Forms\Components\TextArea::make('address')->label('Address')->nullable(),
+                                                            Forms\Components\TextInput::make('registered_tax_office')
+                                                                ->label('Registered Tax Office')
+                                                                ->nullable(),
+                                                            Forms\Components\TextArea::make('address')
+                                                                ->label('Address')
+                                                                ->autosize()
+                                                                ->nullable(),
 
                                                             Forms\Components\View::make('vendor_tax_registration_attachment_viewer')
                                                                 ->viewData([
@@ -382,24 +389,99 @@ class VendorResource extends Resource
 
                                                 Forms\Components\Textarea::make('description')
                                                     ->label('Description')
-                                                    ->nullable(),
+                                                    ->autosize()
+                                                    ->nullable()
+                                                    ->maxLength(100),
 
-                                                Forms\Components\View::make('expertise_attachment_viewer')
+
+                                                Forms\Components\View::make('vendor_expertise_attachment_viewer')
                                                     ->viewData([
-                                                        'collectionName' => 'expertise_attachment',
+                                                        'collectionName' => 'vendor_expertise_attachment',
                                                         'viewLabel' => 'Expertise Attachment',
                                                     ])
                                                     ->view('filament.forms.components.attachment-viewer')
                                                     ->visibleOn('view'),
 
-                                                Forms\Components\SpatieMediaLibraryFileUpload::make('expertise_attachment')
-                                                    ->collection('expertise_attachment')
+                                                Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_expertise_attachment')
+                                                    ->collection('vendor_expertise_attachment')
                                                     ->maxFiles(1)
                                                     ->label('Expertise Attachment (PDF, max 2MB)')
                                                     ->acceptedFileTypes(['application/pdf'])
                                                     ->maxSize(2048)
                                                     ->downloadable()
                                                     ->hiddenOn('view'),
+                                            ]),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Experience')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('vendorExperiences')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Experience')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                if (!empty($state['project_name'])) {
+                                                    return '- ' . $state['project_name'];
+                                                }
+                                                return 'New Experience';
+                                            })
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('project_name')
+                                                            ->label('Project Name')
+                                                            ->nullable(),
+                                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
+                                                            ->searchable()
+                                                            ->preload()
+                                                            ->nullable()
+                                                            ->label('Business Field'),
+
+                                                        Forms\Components\TextInput::make('location')
+                                                            ->label('Project Location')
+                                                            ->nullable(),
+                                                        Forms\Components\TextInput::make('stakeholder')
+                                                            ->label('Stakeholder')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('contract_number')
+                                                            ->label('Contract Number')
+                                                            ->nullable(),
+                                                        Forms\Components\TextInput::make('project_value')
+                                                            ->label('Project Value')
+                                                            ->nullable(),
+
+                                                        Forms\Components\DatePicker::make('start_date')
+                                                            ->label('Start Date')
+                                                            ->nullable(),
+                                                        Forms\Components\DatePicker::make('end_date')
+                                                            ->label('End Date')
+                                                            ->nullable(),
+
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Description')
+                                                            ->autosize()
+                                                            ->nullable()
+                                                            ->maxLength(100),
+
+
+                                                        Forms\Components\View::make('vendor_experience_attachment_viewer')
+                                                            ->viewData([
+                                                                'collectionName' => 'vendor_experience_attachment',
+                                                                'viewLabel' => 'Experience Attachment',
+                                                            ])
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
+                                                            ->collection('vendor_experience_attachment')
+                                                            ->maxFiles(1)
+                                                            ->label('Experience Attachment (PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
+                                                    ]),
                                             ]),
                                     ]),
                             ]),

@@ -13,7 +13,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class VendorExpertise extends Model implements HasMedia
+class VendorExperience extends Model implements HasMedia
 {
     //
     use Cachable,
@@ -23,9 +23,15 @@ class VendorExpertise extends Model implements HasMedia
 
     protected $fillable = [
         'vendor_id',
-        'expertise',
-        'expertise_level',
+        'business_field_id',
+        'project_name',
         'description',
+        'location',
+        'stakeholder',
+        'contract_number',
+        'start_date',
+        'end_date',
+        'project_value',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -36,12 +42,17 @@ class VendorExpertise extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('vendor_expertise_attachment')
+            ->addMediaCollection('vendor_experience_attachment')
             ->singleFile();
     }
 
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function businessField(): BelongsTo
+    {
+        return $this->belongsTo(VendorBusiness::class);
     }
 }

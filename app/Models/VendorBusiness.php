@@ -18,4 +18,9 @@ class VendorBusiness extends Taxonomy
     {
         return $this->hasMany(Vendor::class);
     }
+
+    public function vendorExperiences(): HasMany
+    {
+        return $this->hasMany(VendorExperience::class);
+    }
 }
