@@ -16,8 +16,8 @@ trait TimestampSoftDelete
     public function registerTimestampSoftDelete(): void
     {
         Blueprint::macro('timestampSoftDelete', function ($index = true) {
-            $this->timestamp('created_at');
-            $this->timestamp('updated_at');
+            $this->timestamp('created_at')->useCurrent();
+            $this->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $this->timestamp('deleted_at')->nullable();
 
             if ($index) {
