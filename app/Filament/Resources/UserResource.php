@@ -7,8 +7,10 @@ namespace App\Filament\Resources;
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,7 +18,6 @@ use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class UserResource extends Resource
 {
@@ -115,6 +116,21 @@ class UserResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('verifyEmail')
+                    ->label('Verify Email')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn(User $record) => is_null($record->email_verified_at))
+                    ->authorize(fn() => Filament::auth()->user()?->roles()->doesntExist() ?? false)
+                    ->action(function (User $record) {
+                        $record->email_verified_at = now();
+                        $record->save();
+                        Notification::make()
+                            ->title('Email verified.')
+                            ->success()
+                            ->send();
+                    }),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 ActivityLogTimelineTableAction::make('Activities'),
