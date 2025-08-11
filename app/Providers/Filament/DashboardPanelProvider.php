@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Register;
 use Boquizo\FilamentLogViewer\FilamentLogViewerPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -44,7 +45,7 @@ class DashboardPanelProvider extends PanelProvider
             ->path('dashboard')
             ->login()
             // ->spa()
-            ->registration()
+            ->registration(Register::class)
             ->unsavedChangesAlerts()
             ->passwordReset()
             ->databaseTransactions()
