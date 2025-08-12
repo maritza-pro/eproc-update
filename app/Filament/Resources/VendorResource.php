@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
+use Filament\Forms\Components\Actions;
+use Filament\Support\Enums\Alignment;
 
 class VendorResource extends Resource
 {
@@ -485,6 +487,29 @@ class VendorResource extends Resource
                                             ]),
                                     ]),
                             ]),
+                        Forms\Components\Section::make('Statement & Agreement')
+                            ->schema([
+                                Actions::make([
+                                    Actions\Action::make('view_agreement')
+                                        ->label('Please read the terms carefully before proceeding.')
+                                        ->link()
+                                        ->color('primary')
+                                        ->modalHeading('Statement & Agreement')
+                                        ->modalContent(fn() => view('filament.forms.components.statement-and-agreement'))
+                                        ->modalSubmitAction(false)
+                                        ->modalCancelActionLabel('Close')
+                                        ->modalFooterActionsAlignment(Alignment::End)
+                                        ->modalWidth('3xl'),
+                                ]),
+                                Forms\Components\Checkbox::make('agreement')
+                                    ->label('By checking the box or clicking "Submit" on this application, the vendor acknowledges that they have read, understood, and agree to be bound by the above Statement and Agreement.')
+                                    ->accepted()
+                                    ->required()
+                                    ->validationMessages([
+                                        'accepted' => 'Please accept the Statement & Agreement to continue.',
+                                    ]),
+                            ])
+                            ->collapsible(),
                     ]),
 
             ]);

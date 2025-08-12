@@ -24,7 +24,7 @@ class CreateVendor extends CreateRecord
         $isSuper = $this->isSuper();
 
         return parent::getCreateFormAction()
-            ->label($isSuper ? 'Create' : 'Register')
+            ->label($isSuper ? 'Create' : 'Submit')
             ->requiresConfirmation()
             ->modalHeading($isSuper ? 'Create vendor?' : 'Submit registration?')
             ->modalDescription($isSuper ? 'This will create the vendor record.' : 'Please review your data before submitting.')
