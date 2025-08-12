@@ -4,7 +4,6 @@ namespace App\Filament\Pages\Auth;
 
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Pages\Auth\Register as BaseRegister;
-use Illuminate\Auth\Events\Registered;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
 
