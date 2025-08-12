@@ -42,7 +42,7 @@ class CreateVendor extends CreateRecord
         return parent::getCancelFormAction()->hidden(! $this->isSuper());
     }
 
-    public function getFormActionsAlignment(): String
+    public function getFormActionsAlignment(): string
     {
         return 'right';
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
@@ -321,8 +321,28 @@ class VendorResource extends Resource
                                     ]),
                                 Forms\Components\Tabs\Tab::make('Financial')
                                     ->schema([
-                                        Forms\Components\Group::make()
-                                            ->relationship('bankVendor')
+                                        Forms\Components\Repeater::make('bankVendors')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Bank Account')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                $account  = $state['account_name'] ?? null;
+                                                $bankName = null;
+
+                                                if (! empty($state['bank_id'])) {
+                                                    $bankName = \App\Models\Bank::query()
+                                                        ->whereKey($state['bank_id'])
+                                                        ->value('name');
+                                                }
+
+                                                if ($bankName && $account) {
+                                                    return "{$bankName} - {$account}";
+                                                }
+
+                                                return 'New Bank Account';
+                                            })
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -488,6 +508,7 @@ class VendorResource extends Resource
                                     ]),
                             ]),
                         Forms\Components\Section::make('Statement & Agreement')
+                            ->visibleOn('create')
                             ->schema([
                                 Actions::make([
                                     Actions\Action::make('view_agreement')
@@ -552,12 +573,12 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
-                Tables\Columns\TextColumn::make('bankVendor.bank.name')
+                Tables\Columns\TextColumn::make('bankVendors.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
-                        })->orWhereHas('bankVendor', function ($q) use ($search) {
+                        })->orWhereHas('bankVendors', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");
                         })
                     )

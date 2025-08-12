@@ -35,9 +35,9 @@ class Vendor extends Model
         'vendor_type_id',
     ];
 
-    public function bankVendor(): HasOne
+    public function bankVendors(): HasMany
     {
-        return $this->hasOne(BankVendor::class);
+        return $this->hasMany(BankVendor::class);
     }
 
     public function bids(): HasMany
