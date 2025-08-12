@@ -16,8 +16,6 @@ class Register extends BaseRegister
 
         $user = $this->handleRegistration($data);
 
-        event(new Registered($user));
-
         $roleId = DB::table('hexa_roles')->where('name', 'Vendor')->value('id');
         if ($roleId) {
             $user->roles()->syncWithoutDetaching([$roleId]);
