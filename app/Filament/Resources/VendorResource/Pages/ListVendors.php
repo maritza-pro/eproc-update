@@ -13,6 +13,13 @@ class ListVendors extends ListRecords
 {
     protected static string $resource = VendorResource::class;
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+
     public function mount(): void
     {
         parent::mount();
@@ -22,18 +29,13 @@ class ListVendors extends ListRecords
         if (! $user?->can(VendorResource::getModelLabel() . '.withoutGlobalScope')) {
             if ($user?->vendor) {
                 $this->redirect(VendorResource::getUrl('view', ['record' => $user->vendor->getKey()]));
+
                 return;
             }
 
             $this->redirect(VendorResource::getUrl('create'));
+
             return;
         }
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
     }
 }

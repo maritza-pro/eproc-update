@@ -91,6 +91,16 @@ class Vendor extends Model
         return $this->hasOne(VendorDeed::class);
     }
 
+    public function vendorExperiences(): HasMany
+    {
+        return $this->hasMany(VendorExperience::class);
+    }
+
+    public function vendorExpertises(): HasMany
+    {
+        return $this->hasMany(VendorExpertise::class);
+    }
+
     public function vendorProfile(): HasOne
     {
         return $this->hasOne(VendorProfile::class);
@@ -99,15 +109,5 @@ class Vendor extends Model
     public function vendorTaxRegistration(): HasOne
     {
         return $this->hasOne(VendorTaxRegistration::class);
-    }
-
-    public function vendorExpertises(): HasMany
-    {
-        return $this->hasMany(VendorExpertise::class);
-    }
-
-    public function vendorExperiences(): HasMany
-    {
-        return $this->hasMany(VendorExperience::class);
     }
 }

@@ -8,7 +8,6 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -38,9 +37,9 @@ class BankVendor extends Model implements HasMedia
         return $this->belongsTo(Bank::class);
     }
 
-    public function vendor(): BelongsTo
+    public function getActivitylogOptions(): LogOptions
     {
-        return $this->belongsTo(Vendor::class);
+        return LogOptions::defaults();
     }
 
     public function registerMediaCollections(): void
@@ -50,8 +49,8 @@ class BankVendor extends Model implements HasMedia
             ->singleFile();
     }
 
-    public function getActivitylogOptions(): LogOptions
+    public function vendor(): BelongsTo
     {
-        return LogOptions::defaults();
+        return $this->belongsTo(Vendor::class);
     }
 }

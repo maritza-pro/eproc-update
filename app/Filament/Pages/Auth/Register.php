@@ -3,8 +3,8 @@
 namespace App\Filament\Pages\Auth;
 
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
-use Filament\Pages\Auth\Register as BaseRegister;
 use Filament\Notifications\Notification;
+use Filament\Pages\Auth\Register as BaseRegister;
 use Hexters\HexaLite\Models\HexaRole;
 
 class Register extends BaseRegister
@@ -15,11 +15,13 @@ class Register extends BaseRegister
 
         $user = $this->handleRegistration($data);
 
-        $roleId = HexaRole::where('name', 'Vendor')->first()->id;;
+        // TODO : ini bisa pake ->value('id') nanti coba diskus sama @kangmaup
+        $roleId = HexaRole::where('name', 'Vendor')->first()->id;
+
         if ($roleId) {
+            // TODO : disini coba makesure harus pake null safety atau engga
             $user->roles()->syncWithoutDetaching([$roleId]);
         }
-
 
         Notification::make()
             ->title('Registration Successful')

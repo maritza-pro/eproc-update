@@ -14,13 +14,13 @@ class VendorBusiness extends Taxonomy
 {
     use WithTaxonomy;
 
-    public function vendors(): HasMany
-    {
-        return $this->hasMany(Vendor::class);
-    }
-
     public function vendorExperiences(): HasMany
     {
         return $this->hasMany(VendorExperience::class);
+    }
+
+    public function vendors(): HasMany
+    {
+        return $this->hasMany(Vendor::class);
     }
 }

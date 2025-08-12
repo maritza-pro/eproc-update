@@ -13,11 +13,6 @@ class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;
 
-    private function isSuper(): bool
-    {
-        return Auth::user()?->can(UserResource::getModelLabel() . '.withoutGlobalScope') ?? false;
-    }
-
     protected function getHeaderActions(): array
     {
         $isSuper = $this->isSuper();
@@ -31,5 +26,10 @@ class ViewUser extends ViewRecord
                 ->hidden(! $isSuper),
             Actions\EditAction::make(),
         ];
+    }
+
+    private function isSuper(): bool
+    {
+        return Auth::user()?->can(UserResource::getModelLabel() . '.withoutGlobalScope') ?? false;
     }
 }

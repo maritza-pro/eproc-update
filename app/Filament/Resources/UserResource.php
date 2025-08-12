@@ -17,10 +17,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class UserResource extends Resource
 {
@@ -76,9 +76,9 @@ class UserResource extends Resource
                                 Forms\Components\TextInput::make('password')
                                     ->password()
                                     ->revealable()
-                                    ->required(fn(string $context): bool => $context === 'create')
+                                    ->required(fn (string $context): bool => $context === 'create')
                                     ->nullable()
-                                    ->dehydrated(fn($state) => filled($state))
+                                    ->dehydrated(fn ($state) => filled($state))
                                     ->hidden($withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
                                     ->disabled($withoutGlobalScope)
@@ -88,7 +88,7 @@ class UserResource extends Resource
                                 Forms\Components\Section::make('Change Password')
                                     ->collapsible()
                                     ->collapsed()
-                                    ->hidden(fn(string $context): bool => $context == 'view' || !$withoutGlobalScope)
+                                    ->hidden(fn (string $context): bool => $context == 'view' || ! $withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
                                             ->label('Current Password')
@@ -182,8 +182,8 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn(User $record) => is_null($record->email_verified_at))
-                    ->authorize(fn() => Filament::auth()->user()?->roles()->doesntExist() ?? false)
+                    ->visible(fn (User $record) => is_null($record->email_verified_at))
+                    ->authorize(fn () => Filament::auth()->user()?->roles()->doesntExist() ?? false)
                     ->action(function (User $record) {
                         $record->email_verified_at = now();
                         $record->save();

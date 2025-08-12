@@ -13,6 +13,13 @@ class ListUsers extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+
     public function mount(): void
     {
         parent::mount();
@@ -21,15 +28,9 @@ class ListUsers extends ListRecords
 
         if (! $user?->can(UserResource::getModelLabel() . '.withoutGlobalScope')) {
             $this->redirect(
+                // TODO: make sure perlu pake nullsafety atau engga
                 UserResource::getUrl('view', ['record' => $user->getKey()])
             );
         }
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
     }
 }

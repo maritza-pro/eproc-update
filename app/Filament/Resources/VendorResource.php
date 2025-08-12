@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources;
 
@@ -8,8 +8,10 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Models\Vendor;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
@@ -18,8 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
-use Filament\Forms\Components\Actions;
-use Filament\Support\Enums\Alignment;
 
 class VendorResource extends Resource
 {
@@ -116,16 +116,16 @@ class VendorResource extends Resource
                                             ->itemLabel(function (array $state): ?string {
                                                 $parts = [];
 
-                                                if (!empty($state['name'])) {
+                                                if (! empty($state['name'])) {
                                                     $firstName = explode(' ', $state['name'])[0];
                                                     $parts[] = $firstName;
                                                 }
 
-                                                if (!empty($state['position'])) {
+                                                if (! empty($state['position'])) {
                                                     $parts[] = $state['position'];
                                                 }
 
-                                                if (!empty($parts)) {
+                                                if (! empty($parts)) {
                                                     return implode(' · ', $parts);
                                                 }
 
@@ -274,7 +274,7 @@ class VendorResource extends Resource
                                                                     'collectionName' => 'vendor_tax_registration_attachment',
                                                                     'viewLabel' => 'Tax Registration Certificate Attachment',
                                                                 ])
-                                                                ->view('filament.forms.components.attachment-viewer',)
+                                                                ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_tax_registration_attachment')
                                                                 ->collection('vendor_tax_registration_attachment')
@@ -328,7 +328,7 @@ class VendorResource extends Resource
                                             ->collapsible()
                                             ->collapsed()
                                             ->itemLabel(function (array $state): ?string {
-                                                $account  = $state['account_name'] ?? null;
+                                                $account = $state['account_name'] ?? null;
                                                 $bankName = null;
 
                                                 if (! empty($state['bank_id'])) {
@@ -390,9 +390,10 @@ class VendorResource extends Resource
                                             ->collapsed()
                                             ->columns(1)
                                             ->itemLabel(function (array $state): ?string {
-                                                if (!empty($state['expertise'])) {
+                                                if (! empty($state['expertise'])) {
                                                     return '- ' . $state['expertise'];
                                                 }
+
                                                 return 'New Expertise';
                                             })
                                             ->schema([
@@ -414,7 +415,6 @@ class VendorResource extends Resource
                                                     ->autosize()
                                                     ->nullable()
                                                     ->maxLength(100),
-
 
                                                 Forms\Components\View::make('vendor_expertise_attachment_viewer')
                                                     ->viewData([
@@ -443,9 +443,10 @@ class VendorResource extends Resource
                                             ->collapsible()
                                             ->collapsed()
                                             ->itemLabel(function (array $state): ?string {
-                                                if (!empty($state['project_name'])) {
+                                                if (! empty($state['project_name'])) {
                                                     return '- ' . $state['project_name'];
                                                 }
+
                                                 return 'New Experience';
                                             })
                                             ->schema([
@@ -487,7 +488,6 @@ class VendorResource extends Resource
                                                             ->nullable()
                                                             ->maxLength(100),
 
-
                                                         Forms\Components\View::make('vendor_experience_attachment_viewer')
                                                             ->viewData([
                                                                 'collectionName' => 'vendor_experience_attachment',
@@ -516,7 +516,7 @@ class VendorResource extends Resource
                                         ->link()
                                         ->color('primary')
                                         ->modalHeading('Statement & Agreement')
-                                        ->modalContent(fn() => view('filament.forms.components.statement-and-agreement'))
+                                        ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
                                         ->modalSubmitAction(false)
                                         ->modalCancelActionLabel('Close')
                                         ->modalFooterActionsAlignment(Alignment::End)
@@ -576,7 +576,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('bankVendors.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn(Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
                         })->orWhereHas('bankVendors', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");

@@ -13,11 +13,6 @@ class ViewVendor extends ViewRecord
 {
     protected static string $resource = VendorResource::class;
 
-    private function isSuper(): bool
-    {
-        return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
-    }
-
     protected function getHeaderActions(): array
     {
         $isSuper = $this->isSuper();
@@ -31,5 +26,10 @@ class ViewVendor extends ViewRecord
                 ->hidden(! $isSuper),
             Actions\EditAction::make(),
         ];
+    }
+
+    private function isSuper(): bool
+    {
+        return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
     }
 }

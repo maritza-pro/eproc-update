@@ -5,18 +5,22 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Filament\Resources\VendorResource;
+use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
-use Filament\Actions;
-use Filament\Support\Enums\Alignment;
 
 class CreateVendor extends CreateRecord
 {
     protected static string $resource = VendorResource::class;
 
-    private function isSuper(): bool
+    protected function getCancelFormAction(): Actions\Action
     {
-        return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
+        return parent::getCancelFormAction()->hidden(! $this->isSuper());
+    }
+
+    protected function getCreateAnotherFormAction(): Actions\Action
+    {
+        return parent::getCreateAnotherFormAction()->hidden(! $this->isSuper());
     }
 
     protected function getCreateFormAction(): Actions\Action
@@ -31,17 +35,6 @@ class CreateVendor extends CreateRecord
             ->modalSubmitActionLabel($isSuper ? 'Yes, Create' : 'Yes, Register');
     }
 
-    protected function getCreateAnotherFormAction(): Actions\Action
-    {
-        return parent::getCreateAnotherFormAction()->hidden(! $this->isSuper());
-    }
-
-
-    protected function getCancelFormAction(): Actions\Action
-    {
-        return parent::getCancelFormAction()->hidden(! $this->isSuper());
-    }
-
     public function getFormActionsAlignment(): string
     {
         return 'right';
@@ -50,5 +43,10 @@ class CreateVendor extends CreateRecord
     public function getTitle(): string
     {
         return $this->isSuper() ? 'Create Vendor' : 'Register Vendor';
+    }
+
+    private function isSuper(): bool
+    {
+        return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
     }
 }

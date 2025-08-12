@@ -34,6 +34,11 @@ class VendorExperience extends Model implements HasMedia
         'project_value',
     ];
 
+    public function businessField(): BelongsTo
+    {
+        return $this->belongsTo(VendorBusiness::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
@@ -49,10 +54,5 @@ class VendorExperience extends Model implements HasMedia
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
-    }
-
-    public function businessField(): BelongsTo
-    {
-        return $this->belongsTo(VendorBusiness::class);
     }
 }
