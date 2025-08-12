@@ -8,8 +8,10 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Models\Vendor;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
@@ -54,17 +56,6 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('tax_number'),
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
-                                Forms\Components\Select::make('bank_vendor_id')
-                                    ->label('Akun Bank Vendor')
-                                    ->relationship(
-                                        name: 'bankVendor',
-                                        titleAttribute: 'account_number',
-                                        modifyQueryUsing: fn (Builder $query) => $query->with(['bank'])
-                                    )
-                                    ->getOptionLabelFromRecordUsing(fn ($record): string => "{$record->bank->name} - {$record->account_number} ({$record->account_name})")
-                                    ->searchable()
-                                    ->preload()
-                                    ->placeholder('Pilih akun bank yang sudah ada'),
                                 Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
                                 Forms\Components\Toggle::make('is_verified')->required()->disabled($withoutGlobalScope),
                                 Forms\Components\Select::make('user_id')->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
@@ -109,13 +100,37 @@ class VendorResource extends Resource
                                                     ]),
 
                                                 Forms\Components\Textarea::make('head_office_address')
-                                                    ->label('Head Office Address'),
+                                                    ->autosize()
+                                                    ->label('Head Office Address')
+                                                    ->nullable(),
                                             ]),
                                     ]),
                                 Forms\Components\Tabs\Tab::make('PIC Contact')
                                     ->schema([
-                                        Forms\Components\Group::make()
-                                            ->relationship('vendorContact')
+                                        Forms\Components\Repeater::make('vendorContacts')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add PIC Contact')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                $parts = [];
+
+                                                if (! empty($state['name'])) {
+                                                    $firstName = explode(' ', $state['name'])[0];
+                                                    $parts[] = $firstName;
+                                                }
+
+                                                if (! empty($state['position'])) {
+                                                    $parts[] = $state['position'];
+                                                }
+
+                                                if (! empty($parts)) {
+                                                    return implode(' · ', $parts);
+                                                }
+
+                                                return 'New PIC Contact';
+                                            })
                                             ->schema([
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
@@ -142,7 +157,10 @@ class VendorResource extends Resource
                                                             ->nullable(),
 
                                                         Forms\Components\View::make('vendor_contact_attachment_viewer')
-                                                            ->viewData(['collectionName' => 'vendor_contact_attachment'])
+                                                            ->viewData([
+                                                                'collectionName' => 'vendor_contact_attachment',
+                                                                'viewLabel' => 'Contact Attachment',
+                                                            ])
                                                             ->view('filament.forms.components.attachment-viewer')
                                                             ->visibleOn('view'),
 
@@ -178,7 +196,10 @@ class VendorResource extends Resource
                                                             Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
 
                                                             Forms\Components\View::make('vendor_deed_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_deed_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_deed_attachment',
+                                                                    'viewLabel' => 'Deed Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_deed_attachment')
@@ -205,7 +226,10 @@ class VendorResource extends Resource
                                                             Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
 
                                                             Forms\Components\View::make('vendor_license_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_license_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_license_attachment',
+                                                                    'viewLabel' => 'Business License Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_license_attachment')
@@ -237,11 +261,19 @@ class VendorResource extends Resource
                                                                     'reporting' => 'Reporting VAT/Luxury Tax',
                                                                 ]),
 
-                                                            Forms\Components\TextInput::make('registered_tax_office')->label('Registered Tax Office')->nullable(),
-                                                            Forms\Components\TextArea::make('address')->label('Address')->nullable(),
+                                                            Forms\Components\TextInput::make('registered_tax_office')
+                                                                ->label('Registered Tax Office')
+                                                                ->nullable(),
+                                                            Forms\Components\TextArea::make('address')
+                                                                ->label('Address')
+                                                                ->autosize()
+                                                                ->nullable(),
 
                                                             Forms\Components\View::make('vendor_tax_registration_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_tax_registration_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_tax_registration_attachment',
+                                                                    'viewLabel' => 'Tax Registration Certificate Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_tax_registration_attachment')
@@ -269,7 +301,10 @@ class VendorResource extends Resource
 
                                                             Forms\Components\TextInput::make('classification')->label('Classification')->nullable(),
                                                             Forms\Components\View::make('vendor_certificate_attachment_viewer')
-                                                                ->viewData(['collectionName' => 'vendor_certificate_attachment'])
+                                                                ->viewData([
+                                                                    'collectionName' => 'vendor_certificate_attachment',
+                                                                    'viewLabel' => 'Business Certificate Attachment',
+                                                                ])
                                                                 ->view('filament.forms.components.attachment-viewer')
                                                                 ->visibleOn('view'),
                                                             Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_certificate_attachment')
@@ -284,7 +319,218 @@ class VendorResource extends Resource
                                                     ]),
                                             ]),
                                     ]),
+                                Forms\Components\Tabs\Tab::make('Financial')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('bankVendors')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Bank Account')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                $account = $state['account_name'] ?? null;
+                                                $bankName = null;
+
+                                                if (! empty($state['bank_id'])) {
+                                                    $bankName = \App\Models\Bank::query()
+                                                        ->whereKey($state['bank_id'])
+                                                        ->value('name');
+                                                }
+
+                                                if ($bankName && $account) {
+                                                    return "{$bankName} - {$account}";
+                                                }
+
+                                                return 'New Bank Account';
+                                            })
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\Select::make('bank_id')
+                                                            ->relationship('bank', 'name')
+                                                            ->searchable()
+                                                            ->preload()
+                                                            ->nullable()
+                                                            ->label('Bank Name'),
+                                                        Forms\Components\TextInput::make('account_name')
+                                                            ->label('Account Name')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('account_number')
+                                                            ->label('Account Number')
+                                                            ->nullable(),
+
+                                                        Forms\Components\Toggle::make('is_active')
+                                                            ->nullable(),
+                                                        Forms\Components\View::make('recent_financial_report_attachment_viewer')
+                                                            ->viewData([
+                                                                'collectionName' => 'recent_financial_report_attachment',
+                                                                'viewLabel' => 'Recent Financial Report attachment',
+                                                            ])
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('recent_financial_report_attachment')
+                                                            ->collection('recent_financial_report_attachment')
+                                                            ->label('Recent Financial Report (PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->maxFiles(1)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
+                                                    ]),
+                                            ]),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Expertise')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('vendorExpertises')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Expertise')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->columns(1)
+                                            ->itemLabel(function (array $state): ?string {
+                                                if (! empty($state['expertise'])) {
+                                                    return '- ' . $state['expertise'];
+                                                }
+
+                                                return 'New Expertise';
+                                            })
+                                            ->schema([
+                                                Forms\Components\TextInput::make('expertise')
+                                                    ->label('Expertise')
+                                                    ->nullable(),
+
+                                                Forms\Components\Select::make('expertise_level')
+                                                    ->label('Expertise Level')
+                                                    ->nullable()
+                                                    ->options([
+                                                        'basic' => 'Basic',
+                                                        'intermediate' => 'Intermediate',
+                                                        'expert' => 'Expert',
+                                                    ]),
+
+                                                Forms\Components\Textarea::make('description')
+                                                    ->label('Description')
+                                                    ->autosize()
+                                                    ->nullable()
+                                                    ->maxLength(100),
+
+                                                Forms\Components\View::make('vendor_expertise_attachment_viewer')
+                                                    ->viewData([
+                                                        'collectionName' => 'vendor_expertise_attachment',
+                                                        'viewLabel' => 'Expertise Attachment',
+                                                    ])
+                                                    ->view('filament.forms.components.attachment-viewer')
+                                                    ->visibleOn('view'),
+
+                                                Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_expertise_attachment')
+                                                    ->collection('vendor_expertise_attachment')
+                                                    ->maxFiles(1)
+                                                    ->label('Expertise Attachment (PDF, max 2MB)')
+                                                    ->acceptedFileTypes(['application/pdf'])
+                                                    ->maxSize(2048)
+                                                    ->downloadable()
+                                                    ->hiddenOn('view'),
+                                            ]),
+                                    ]),
+                                Forms\Components\Tabs\Tab::make('Experience')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('vendorExperiences')
+                                            ->relationship()
+                                            ->label('')
+                                            ->addActionLabel('Add Experience')
+                                            ->collapsible()
+                                            ->collapsed()
+                                            ->itemLabel(function (array $state): ?string {
+                                                if (! empty($state['project_name'])) {
+                                                    return '- ' . $state['project_name'];
+                                                }
+
+                                                return 'New Experience';
+                                            })
+                                            ->schema([
+                                                Forms\Components\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('project_name')
+                                                            ->label('Project Name')
+                                                            ->nullable(),
+                                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
+                                                            ->searchable()
+                                                            ->preload()
+                                                            ->nullable()
+                                                            ->label('Business Field'),
+
+                                                        Forms\Components\TextInput::make('location')
+                                                            ->label('Project Location')
+                                                            ->nullable(),
+                                                        Forms\Components\TextInput::make('stakeholder')
+                                                            ->label('Stakeholder')
+                                                            ->nullable(),
+
+                                                        Forms\Components\TextInput::make('contract_number')
+                                                            ->label('Contract Number')
+                                                            ->nullable(),
+                                                        Forms\Components\TextInput::make('project_value')
+                                                            ->label('Project Value')
+                                                            ->nullable(),
+
+                                                        Forms\Components\DatePicker::make('start_date')
+                                                            ->label('Start Date')
+                                                            ->nullable(),
+                                                        Forms\Components\DatePicker::make('end_date')
+                                                            ->label('End Date')
+                                                            ->nullable(),
+
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Description')
+                                                            ->autosize()
+                                                            ->nullable()
+                                                            ->maxLength(100),
+
+                                                        Forms\Components\View::make('vendor_experience_attachment_viewer')
+                                                            ->viewData([
+                                                                'collectionName' => 'vendor_experience_attachment',
+                                                                'viewLabel' => 'Experience Attachment',
+                                                            ])
+                                                            ->view('filament.forms.components.attachment-viewer')
+                                                            ->visibleOn('view'),
+                                                        Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
+                                                            ->collection('vendor_experience_attachment')
+                                                            ->maxFiles(1)
+                                                            ->label('Experience Attachment (PDF, max 2MB)')
+                                                            ->acceptedFileTypes(['application/pdf'])
+                                                            ->maxSize(2048)
+                                                            ->downloadable()
+                                                            ->hiddenOn('view'),
+                                                    ]),
+                                            ]),
+                                    ]),
                             ]),
+                        Forms\Components\Section::make('Statement & Agreement')
+                            ->visibleOn('create')
+                            ->schema([
+                                Actions::make([
+                                    Actions\Action::make('view_agreement')
+                                        ->label('Please read the terms carefully before proceeding.')
+                                        ->link()
+                                        ->color('primary')
+                                        ->modalHeading('Statement & Agreement')
+                                        ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
+                                        ->modalSubmitAction(false)
+                                        ->modalCancelActionLabel('Close')
+                                        ->modalFooterActionsAlignment(Alignment::End)
+                                        ->modalWidth('3xl'),
+                                ]),
+                                Forms\Components\Checkbox::make('agreement')
+                                    ->label('By checking the box or clicking "Submit" on this application, the vendor acknowledges that they have read, understood, and agree to be bound by the above Statement and Agreement.')
+                                    ->accepted()
+                                    ->required()
+                                    ->validationMessages([
+                                        'accepted' => 'Please accept the Statement & Agreement to continue.',
+                                    ]),
+                            ])
+                            ->collapsible(),
                     ]),
 
             ]);
@@ -327,12 +573,12 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
-                Tables\Columns\TextColumn::make('bankVendor.bank.name')
+                Tables\Columns\TextColumn::make('bankVendors.bank.name')
                     ->label('Bank')
                     ->searchable(
-                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendor.bank', function ($q) use ($search) {
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
-                        })->orWhereHas('bankVendor', function ($q) use ($search) {
+                        })->orWhereHas('bankVendors', function ($q) use ($search) {
                             $q->where('account_number', 'like', "%{$search}%");
                         })
                     )

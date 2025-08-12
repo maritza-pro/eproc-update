@@ -21,4 +21,15 @@ class EditUser extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $state = $this->data;
+
+        if (filled($state['new_password'] ?? null)) {
+            $data['password'] = $state['new_password'];
+        }
+
+        return $data;
+    }
 }

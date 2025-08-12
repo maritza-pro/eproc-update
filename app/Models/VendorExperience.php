@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,27 +13,30 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class BankVendor extends Model implements HasMedia
+class VendorExperience extends Model implements HasMedia
 {
     //
     use Cachable,
-        HasFactory,
         InteractsWithMedia,
         LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
-        'bank_id',
         'vendor_id',
-        'account_name',
-        'account_number',
-        'branch_name',
-        'is_active',
+        'business_field_id',
+        'project_name',
+        'description',
+        'location',
+        'stakeholder',
+        'contract_number',
+        'start_date',
+        'end_date',
+        'project_value',
     ];
 
-    public function bank(): BelongsTo
+    public function businessField(): BelongsTo
     {
-        return $this->belongsTo(Bank::class);
+        return $this->belongsTo(VendorBusiness::class);
     }
 
     public function getActivitylogOptions(): LogOptions
@@ -45,7 +47,7 @@ class BankVendor extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection('recent_financial_report_attachment')
+            ->addMediaCollection('vendor_experience_attachment')
             ->singleFile();
     }
 

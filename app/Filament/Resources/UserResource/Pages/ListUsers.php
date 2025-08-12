@@ -7,6 +7,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Support\Facades\Auth;
 
 class ListUsers extends ListRecords
 {
@@ -17,5 +18,19 @@ class ListUsers extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $user = Auth::user();
+
+        if (! $user?->can(UserResource::getModelLabel() . '.withoutGlobalScope')) {
+            $this->redirect(
+                // TODO: make sure perlu pake nullsafety atau engga
+                UserResource::getUrl('view', ['record' => $user->getKey()])
+            );
+        }
     }
 }

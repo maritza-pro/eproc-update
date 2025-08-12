@@ -33,12 +33,11 @@ class Vendor extends Model
         'user_id',
         'business_field_id',
         'vendor_type_id',
-        'bank_vendor_id',
     ];
 
-    public function bankVendor(): BelongsTo
+    public function bankVendors(): HasMany
     {
-        return $this->belongsTo(BankVendor::class);
+        return $this->hasMany(BankVendor::class);
     }
 
     public function bids(): HasMany
@@ -82,14 +81,24 @@ class Vendor extends Model
         return $this->hasOne(VendorBusinessLicense::class);
     }
 
-    public function vendorContact(): HasOne
+    public function vendorContacts(): HasMany
     {
-        return $this->hasOne(VendorContact::class);
+        return $this->hasMany(VendorContact::class);
     }
 
     public function vendorDeed(): HasOne
     {
         return $this->hasOne(VendorDeed::class);
+    }
+
+    public function vendorExperiences(): HasMany
+    {
+        return $this->hasMany(VendorExperience::class);
+    }
+
+    public function vendorExpertises(): HasMany
+    {
+        return $this->hasMany(VendorExpertise::class);
     }
 
     public function vendorProfile(): HasOne
