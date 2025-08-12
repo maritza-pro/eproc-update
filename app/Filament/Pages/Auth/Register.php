@@ -5,7 +5,7 @@ namespace App\Filament\Pages\Auth;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Pages\Auth\Register as BaseRegister;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\DB;
+use Hexters\HexaLite\Models\HexaRole;
 
 class Register extends BaseRegister
 {
@@ -15,7 +15,7 @@ class Register extends BaseRegister
 
         $user = $this->handleRegistration($data);
 
-        $roleId = DB::table('hexa_roles')->where('name', 'Vendor')->value('id');
+        $roleId = HexaRole::where('name', 'Vendor')->first()->id;;
         if ($roleId) {
             $user->roles()->syncWithoutDetaching([$roleId]);
         }
