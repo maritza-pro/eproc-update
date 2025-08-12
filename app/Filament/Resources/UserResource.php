@@ -86,8 +86,8 @@ class UserResource extends Resource
                                     ->relationship('roles', 'name')
                                     ->placeholder('Superuser'),
                                 Forms\Components\Section::make('Change Password')
-                                    ->description('Fill these fields to change your current password.')
                                     ->collapsible()
+                                    ->collapsed()
                                     ->hidden(fn(string $context): bool => $context == 'view' || !$withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
