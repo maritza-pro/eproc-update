@@ -10,6 +10,7 @@ use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -194,6 +195,20 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 ActivityLogTimelineTableAction::make('Activities'),
+                Tables\Actions\Action::make('resend_verification_email')
+                    ->label('Resend Verification Email')
+                    ->icon('heroicon-o-envelope')
+                    ->authorize(fn (User $record) => ! $record->hasVerifiedEmail())
+                    ->action(function (User $record) {
+                        $notification = new VerifyEmail;
+                        $notification->url = filament()->getVerifyEmailUrl($record);
+                        $record->notify($notification);
+
+                        Notification::make()
+                            ->title('Verification email has been resent.')
+                            ->send();
+                    })
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

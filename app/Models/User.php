@@ -9,16 +9,21 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Hexters\HexaLite\HexaLiteRolePermission;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use Cachable, HasFactory, HexaLiteRolePermission, Notifiable, SoftDeletes;
+    use Cachable,
+        HasFactory,
+        HexaLiteRolePermission,
+        Notifiable,
+        SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
