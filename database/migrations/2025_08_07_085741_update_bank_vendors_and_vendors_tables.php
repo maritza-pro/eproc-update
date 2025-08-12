@@ -22,8 +22,8 @@ return new class extends Migration
 
         Schema::table('bank_vendors', function (Blueprint $table) {
             $table->foreignId('vendor_id')
-                ->constrained()
                 ->nullable()
+                ->constrained()
                 ->onDelete('cascade')
                 ->comment('The ID of the vendor associated with the bank vendor');
             $table->unique(['vendor_id', 'bank_id'])->comment('Unique constraint for vendor_id and bank_id');
