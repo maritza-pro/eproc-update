@@ -28,7 +28,7 @@ class Register extends BaseRegister
             $user->roles()->syncWithoutDetaching([$roleId]);
     
             Notification::make()
-                ->title('Registration Successful')
+                ->title('Registration Successful, please check your email to verify!')
                 ->success()
                 ->send();
             return $this->redirectRoute('filament.dashboard.auth.login', navigate: false);
