@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Concerns\Model\WithSurvey;
+use App\Enums\VendorStatus;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\HtmlString;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -29,11 +31,37 @@ class Vendor extends Model
         'tax_number',
         'business_number',
         'license_number',
-        'is_verified',
         'user_id',
         'business_field_id',
         'vendor_type_id',
+        'verification_status',
+        'rejection_reason',
+        'verified_by',
+        'verified_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'verification_status' => VendorStatus::class,
+            'verified_at' => 'datetime',
+        ];
+    }
+
+    public function getStatusBadgeHtml(): HtmlString
+    {
+        $status = $this->verification_status;
+
+        if ($status === null) {
+            return new HtmlString('');
+        }
+        $color = $status->getColor();
+        $label = $status->getLabel();
+
+        $html = "<span class='fi-badge fi-color-{$color}'>".e($label)."</span>";
+
+        return new HtmlString($html);
+    }
 
     public function bankVendors(): HasMany
     {

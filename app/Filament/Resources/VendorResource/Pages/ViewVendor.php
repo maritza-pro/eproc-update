@@ -25,6 +25,7 @@ class ViewVendor extends ViewRecord
                 ->url(static::getResource()::getUrl('index'))
                 ->hidden(! $isSuper),
             Actions\EditAction::make(),
+            VendorResource::getResubmitAction(),
         ];
     }
 
