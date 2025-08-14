@@ -25,6 +25,10 @@ class BankVendorResource extends Resource
 
     protected static ?string $modelLabel = 'Bank Vendor';
 
+    protected static ?string $navigationGroup = 'Vendors';
+
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
