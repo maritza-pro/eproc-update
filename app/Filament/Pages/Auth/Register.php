@@ -21,7 +21,7 @@ class Register extends BaseRegister
             $user = $this->handleRegistration($data);
     
             // TODO : ini bisa pake ->value('id') nanti coba diskus sama @kangmaup
-            $roleId = HexaRole::where('name', 'Vendor')->value('id');
+            $roleId = HexaRole::where('name', 'User')->value('id');
             
             throw_if(!$roleId, ValidationValidationException::withMessages(['Role' => 'Vendor Role Not Found']));
     
