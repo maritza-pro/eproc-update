@@ -54,6 +54,8 @@ class VendorResource extends Resource
                     ->schema([
                         Forms\Components\ViewField::make('verification_status')
                             ->view('filament.forms.components.status-badge')
+                            ->hidden(fn ($livewire) =>
+                                $livewire instanceof CreateVendor)
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('rejection_reason')
                             ->label('ⓘ Verification Notes')
