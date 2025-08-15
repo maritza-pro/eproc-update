@@ -13,6 +13,11 @@ class ListUsers extends ListRecords
 {
     protected static string $resource = UserResource::class;
 
+    /**
+     * Get the actions for the header.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -20,6 +25,11 @@ class ListUsers extends ListRecords
         ];
     }
 
+    /**
+     * Mount the list page.
+     *
+     * Redirects users without permission to their own view.
+     */
     public function mount(): void
     {
         parent::mount();

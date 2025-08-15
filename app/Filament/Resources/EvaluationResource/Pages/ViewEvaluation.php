@@ -12,6 +12,11 @@ class ViewEvaluation extends ViewRecord
 {
     protected static string $resource = EvaluationResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions to be displayed in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

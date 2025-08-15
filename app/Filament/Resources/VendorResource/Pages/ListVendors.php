@@ -13,6 +13,11 @@ class ListVendors extends ListRecords
 {
     protected static string $resource = VendorResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -20,6 +25,11 @@ class ListVendors extends ListRecords
         ];
     }
 
+    /**
+     * Mount the page.
+     *
+     * Redirects users based on their permissions and vendor association.
+     */
     public function mount(): void
     {
         parent::mount();

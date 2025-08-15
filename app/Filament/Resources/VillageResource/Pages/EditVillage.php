@@ -12,6 +12,11 @@ class EditVillage extends EditRecord
 {
     protected static string $resource = VillageResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -12,6 +12,11 @@ class EditEvaluation extends EditRecord
 {
     protected static string $resource = EvaluationResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

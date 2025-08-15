@@ -12,6 +12,11 @@ class ListSurveys extends ListRecords
 {
     protected static string $resource = SurveyResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list header.
+     */
     protected function getHeaderActions(): array
     {
         return [
