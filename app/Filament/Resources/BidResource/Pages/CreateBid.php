@@ -12,6 +12,11 @@ class CreateBid extends CreateRecord
 {
     protected static string $resource = BidResource::class;
 
+    /**
+     * Perform actions after bid creation.
+     *
+     * Creates BidItem records for each procurement item associated with the bid.
+     */
     protected function afterCreate(): void
     {
         $bid = $this->record;
