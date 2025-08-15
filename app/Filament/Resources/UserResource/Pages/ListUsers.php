@@ -26,9 +26,8 @@ class ListUsers extends ListRecords
 
         $user = Auth::user();
 
-        if (! $user?->can(UserResource::getModelLabel() . '.withoutGlobalScope')) {
+        if (! $user->can(UserResource::getModelLabel() . '.withoutGlobalScope')) {
             $this->redirect(
-                // TODO: make sure perlu pake nullsafety atau engga
                 UserResource::getUrl('view', ['record' => $user->getKey()])
             );
         }

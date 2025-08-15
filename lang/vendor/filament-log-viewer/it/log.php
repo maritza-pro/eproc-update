@@ -40,7 +40,7 @@ return [
             'delete' => [
                 'label' => 'Elimina il log :log',
                 'success' => 'Log eliminato con successo',
-                'error' => 'Errore durante l\'eliminazione del log',
+                'error' => "Errore durante l'eliminazione del log",
                 'bulk' => [
                     'label' => 'Elimina i log selezionati',
                 ],

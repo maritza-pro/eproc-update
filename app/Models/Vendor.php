@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Concerns\Model\WithSurvey;
+use App\Enums\VendorStatus;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,11 +30,22 @@ class Vendor extends Model
         'tax_number',
         'business_number',
         'license_number',
-        'is_verified',
         'user_id',
         'business_field_id',
         'vendor_type_id',
+        'verification_status',
+        'rejection_reason',
+        'verified_by',
+        'verified_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'verification_status' => VendorStatus::class,
+            'verified_at' => 'datetime',
+        ];
+    }
 
     public function bankVendors(): HasMany
     {

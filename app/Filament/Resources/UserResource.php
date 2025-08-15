@@ -88,7 +88,7 @@ class UserResource extends Resource
                                 Forms\Components\Section::make('Change Password')
                                     ->collapsible()
                                     ->collapsed()
-                                    ->hidden(fn (string $context): bool => $context == 'view' || ! $withoutGlobalScope)
+                                    ->hidden(fn (string $context): bool => $context === 'view' || ! $withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
                                             ->label('Current Password')
@@ -182,7 +182,7 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn (User $record) => is_null($record->email_verified_at))
+                    ->visible(fn (User $record): bool => is_null($record->email_verified_at))
                     ->authorize(fn () => Filament::auth()->user()?->roles()->doesntExist() ?? false)
                     ->action(function (User $record) {
                         $record->email_verified_at = now();
@@ -198,10 +198,11 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('resend_verification_email')
                     ->label('Resend Verification Email')
                     ->icon('heroicon-o-envelope')
-                    ->authorize(fn (User $record) => ! $record->hasVerifiedEmail())
+                    ->authorize(fn (User $record): bool => ! $record->hasVerifiedEmail())
                     ->action(function (User $record) {
                         $notification = new VerifyEmail;
                         $notification->url = filament()->getVerifyEmailUrl($record);
+
                         $record->notify($notification);
 
                         Notification::make()
