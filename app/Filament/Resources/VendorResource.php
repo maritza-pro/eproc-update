@@ -44,6 +44,75 @@ class VendorResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListVendors::route('/'),
+            'create' => Pages\CreateVendor::route('/create'),
+            'view' => Pages\ViewVendor::route('/{record}'),
+            'edit' => Pages\EditVendor::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ActivitylogRelationManager::class,
+        ];
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->striped()
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
+                    $query->where('user_id', Auth::id());
+                });
+            })
+            ->columns([
+                Tables\Columns\IconColumn::make('verification_status')
+                    ->label('Status')
+                    ->icon(fn (VendorStatus $state): string => $state->getIcon())
+                    ->color(fn (VendorStatus $state): string => $state->getColor())
+                    ->alignCenter(),
+                Tables\Columns\TextColumn::make('company_name')->searchable(),
+                Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('bankVendors.bank.name')
+                    ->label('Bank')
+                    ->searchable(
+                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        })->orWhereHas('bankVendors', function ($q) use ($search) {
+                            $q->where('account_number', 'like', "%{$search}%");
+                        })
+                    )
+                    ->badge()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('taxonomies.name')->label('Vendor Type')->badge()->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('user.name')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                Tables\Filters\TrashedFilter::make(),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                ActivityLogTimelineTableAction::make('Activities'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                ]),
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
@@ -605,23 +674,6 @@ class VendorResource extends Resource
         return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListVendors::route('/'),
-            'create' => Pages\CreateVendor::route('/create'),
-            'view' => Pages\ViewVendor::route('/{record}'),
-            'edit' => Pages\EditVendor::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ActivitylogRelationManager::class,
-        ];
-    }
-
     public static function getResubmitAction(): Action
     {
         return Action::make('resubmit')
@@ -644,57 +696,5 @@ class VendorResource extends Resource
                     ->success()
                     ->send();
             });
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->striped()
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
-                    $query->where('user_id', Auth::id());
-                });
-            })
-            ->columns([
-                Tables\Columns\IconColumn::make('verification_status')
-                    ->label('Status')
-                    ->icon(fn (VendorStatus $state): string => $state->getIcon())
-                    ->color(fn (VendorStatus $state): string => $state->getColor())
-                    ->alignCenter(),
-                Tables\Columns\TextColumn::make('company_name')->searchable(),
-                Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('phone')->searchable(),
-                Tables\Columns\TextColumn::make('bankVendors.bank.name')
-                    ->label('Bank')
-                    ->searchable(
-                        query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
-                            $q->where('name', 'like', "%{$search}%");
-                        })->orWhereHas('bankVendors', function ($q) use ($search) {
-                            $q->where('account_number', 'like', "%{$search}%");
-                        })
-                    )
-                    ->badge()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('taxonomies.name')->label('Vendor Type')->badge()->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('user.name')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make(),
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                ActivityLogTimelineTableAction::make('Activities'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
     }
 }

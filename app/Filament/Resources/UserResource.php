@@ -37,98 +37,6 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    public static function canEdit(Model $record): bool
-    {
-        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.edit')) {
-            return true;
-        }
-
-        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->id == Auth::id();
-    }
-
-    public static function canView(Model $record): bool
-    {
-        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.view')) {
-            return true;
-        }
-
-        return Auth::user()->can(static::getModelLabel() . '.view') && $record->id == Auth::id();
-    }
-
-    public static function form(Form $form): Form
-    {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->readOnly()
-                                    ->required(),
-                                Forms\Components\DateTimePicker::make('email_verified_at')
-                                    ->disabled($withoutGlobalScope),
-                                Forms\Components\TextInput::make('password')
-                                    ->password()
-                                    ->revealable()
-                                    ->required(fn (string $context): bool => $context === 'create')
-                                    ->nullable()
-                                    ->dehydrated(fn ($state) => filled($state))
-                                    ->hidden($withoutGlobalScope),
-                                Forms\Components\Select::make('roles')
-                                    ->disabled($withoutGlobalScope)
-                                    ->label('Role Name')
-                                    ->relationship('roles', 'name')
-                                    ->placeholder('Superuser'),
-                                Forms\Components\Section::make('Change Password')
-                                    ->collapsible()
-                                    ->collapsed()
-                                    ->hidden(fn (string $context): bool => $context === 'view' || ! $withoutGlobalScope)
-                                    ->schema([
-                                        Forms\Components\TextInput::make('current_password')
-                                            ->label('Current Password')
-                                            ->password()
-                                            ->revealable()
-                                            ->dehydrated(false)
-                                            ->rules([
-                                                'required_with:new_password',
-                                                'current_password',
-                                            ]),
-
-                                        Forms\Components\TextInput::make('new_password')
-                                            ->label('New Password')
-                                            ->password()
-                                            ->revealable()
-                                            ->minLength(8)
-                                            ->rules(['nullable', 'different:current_password'])
-                                            ->confirmed()
-                                            ->dehydrated(false),
-
-                                        Forms\Components\TextInput::make('new_password_confirmation')
-                                            ->label('Confirm New Password')
-                                            ->password()
-                                            ->revealable()
-                                            ->dehydrated(false)
-                                            ->rules(['required_with:new_password']),
-                                    ]),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -217,6 +125,98 @@ class UserResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('email')
+                                    ->email()
+                                    ->readOnly()
+                                    ->required(),
+                                Forms\Components\DateTimePicker::make('email_verified_at')
+                                    ->disabled($withoutGlobalScope),
+                                Forms\Components\TextInput::make('password')
+                                    ->password()
+                                    ->revealable()
+                                    ->required(fn (string $context): bool => $context === 'create')
+                                    ->nullable()
+                                    ->dehydrated(fn ($state) => filled($state))
+                                    ->hidden($withoutGlobalScope),
+                                Forms\Components\Select::make('roles')
+                                    ->disabled($withoutGlobalScope)
+                                    ->label('Role Name')
+                                    ->relationship('roles', 'name')
+                                    ->placeholder('Superuser'),
+                                Forms\Components\Section::make('Change Password')
+                                    ->collapsible()
+                                    ->collapsed()
+                                    ->hidden(fn (string $context): bool => $context === 'view' || ! $withoutGlobalScope)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('current_password')
+                                            ->label('Current Password')
+                                            ->password()
+                                            ->revealable()
+                                            ->dehydrated(false)
+                                            ->rules([
+                                                'required_with:new_password',
+                                                'current_password',
+                                            ]),
+
+                                        Forms\Components\TextInput::make('new_password')
+                                            ->label('New Password')
+                                            ->password()
+                                            ->revealable()
+                                            ->minLength(8)
+                                            ->rules(['nullable', 'different:current_password'])
+                                            ->confirmed()
+                                            ->dehydrated(false),
+
+                                        Forms\Components\TextInput::make('new_password_confirmation')
+                                            ->label('Confirm New Password')
+                                            ->password()
+                                            ->revealable()
+                                            ->dehydrated(false)
+                                            ->rules(['required_with:new_password']),
+                                    ]),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.edit')) {
+            return true;
+        }
+
+        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->id == Auth::id();
+    }
+
+    public static function canView(Model $record): bool
+    {
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.view')) {
+            return true;
+        }
+
+        return Auth::user()->can(static::getModelLabel() . '.view') && $record->id == Auth::id();
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

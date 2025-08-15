@@ -36,40 +36,6 @@ class ProcurementResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->required(),
-                                Forms\Components\Select::make('method')
-                                    ->required()
-                                    ->options(array_combine(Procurement::METHODS, Procurement::METHODS))
-                                    ->searchable(),
-                                Forms\Components\DatePicker::make('start_date')
-                                    ->required()
-                                    ->beforeOrEqual('end_date'),
-                                Forms\Components\DatePicker::make('end_date')
-                                    ->afterOrEqual('start_date'),
-                                Forms\Components\Textarea::make('description')
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -131,6 +97,40 @@ class ProcurementResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->required(),
+                                Forms\Components\Select::make('method')
+                                    ->required()
+                                    ->options(array_combine(Procurement::METHODS, Procurement::METHODS))
+                                    ->searchable(),
+                                Forms\Components\DatePicker::make('start_date')
+                                    ->required()
+                                    ->beforeOrEqual('end_date'),
+                                Forms\Components\DatePicker::make('end_date')
+                                    ->afterOrEqual('start_date'),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

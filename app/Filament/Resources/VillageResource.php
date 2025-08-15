@@ -37,6 +37,63 @@ class VillageResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListVillages::route('/'),
+            'create' => Pages\CreateVillage::route('/create'),
+            'edit' => Pages\EditVillage::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function table(Table $table): Table
+    {
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('district.city.province.country.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('district.city.province.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('district.city.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('district.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Village')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                ActivityLogTimelineTableAction::make('Activities'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -122,63 +179,6 @@ class VillageResource extends Resource
                                     ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
-            ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListVillages::route('/'),
-            'create' => Pages\CreateVillage::route('/create'),
-            'edit' => Pages\EditVillage::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    public static function table(Table $table): Table
-    {
-        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('district.city.province.country.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('district.city.province.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('district.city.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('district.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Village')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
-                Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                ActivityLogTimelineTableAction::make('Activities'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

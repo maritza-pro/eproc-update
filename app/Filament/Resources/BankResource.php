@@ -29,26 +29,6 @@ class BankResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-    public static function form(Form $form): Form
-    {
-        return $form->schema([
-            Forms\Components\Card::make()
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->required()
-                        ->maxLength(255),
-
-                    Forms\Components\TextInput::make('code')
-                        ->required()
-                        ->unique(ignoreRecord: true)
-                        ->maxLength(255),
-
-                    Forms\Components\Toggle::make('is_active')
-                        ->required(),
-                ]),
-        ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -86,5 +66,25 @@ class BankResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+
+                    Forms\Components\TextInput::make('code')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->maxLength(255),
+
+                    Forms\Components\Toggle::make('is_active')
+                        ->required(),
+                ]),
+        ]);
     }
 }

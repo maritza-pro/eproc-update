@@ -37,50 +37,6 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->columnSpanFull(),
-                                Forms\Components\Select::make('type')
-                                    ->required()
-                                    ->options(array_combine(Product::TYPES, Product::TYPES))
-                                    ->searchable(),
-                                Forms\Components\TextInput::make('unit'),
-                                Forms\Components\Select::make('currency_id')
-                                    ->relationship('currency', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->live()
-                                    ->label('Currency'),
-                                Forms\Components\TextInput::make('self_estimated_price')
-                                    ->numeric()
-                                    ->required()
-                                    ->default(0)
-                                    ->prefix(fn (Get $get): ?string => Currency::find($get('currency_id'))?->symbol . ' ')
-                                    ->label('Estimated Price'),
-                                Forms\Components\Textarea::make('description')
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -146,6 +102,50 @@ class ProductResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->columnSpanFull(),
+                                Forms\Components\Select::make('type')
+                                    ->required()
+                                    ->options(array_combine(Product::TYPES, Product::TYPES))
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('unit'),
+                                Forms\Components\Select::make('currency_id')
+                                    ->relationship('currency', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->live()
+                                    ->label('Currency'),
+                                Forms\Components\TextInput::make('self_estimated_price')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(0)
+                                    ->prefix(fn (Get $get): ?string => Currency::find($get('currency_id'))?->symbol . ' ')
+                                    ->label('Estimated Price'),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

@@ -37,6 +37,60 @@ class DistrictResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListDistricts::route('/'),
+            'create' => Pages\CreateDistrict::route('/create'),
+            'edit' => Pages\EditDistrict::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            VillageRelationManager::class,
+        ];
+    }
+
+    public static function table(Table $table): Table
+    {
+        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('city.province.country.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('city.province.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('city.name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('District')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                ActivityLogTimelineTableAction::make('Activities'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -102,60 +156,6 @@ class DistrictResource extends Resource
                                     ->helperText('e.g. 106.816666'),
                             ]),
                     ]),
-            ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListDistricts::route('/'),
-            'create' => Pages\CreateDistrict::route('/create'),
-            'edit' => Pages\EditDistrict::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            VillageRelationManager::class,
-        ];
-    }
-
-    public static function table(Table $table): Table
-    {
-        // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('city.province.country.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('city.province.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('city.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('District')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
-                Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                ActivityLogTimelineTableAction::make('Activities'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

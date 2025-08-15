@@ -35,37 +35,6 @@ class EvaluationResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('bid_id')
-                                    ->relationship('bid', 'id')
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\TextInput::make('technical_score')
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('price_score')
-                                    ->numeric(),
-                                Forms\Components\Textarea::make('notes')
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -125,6 +94,37 @@ class EvaluationResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('bid_id')
+                                    ->relationship('bid', 'id')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('technical_score')
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('price_score')
+                                    ->numeric(),
+                                Forms\Components\Textarea::make('notes')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

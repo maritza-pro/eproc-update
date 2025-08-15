@@ -37,53 +37,6 @@ class CityResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('country_id')
-                                    ->label('Country')
-                                    ->required()
-                                    ->reactive()
-                                    ->options(Country::query()->pluck('name', 'id'))
-                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
-                                    ->afterStateHydrated(function (callable $set, $record) {
-                                        if ($record?->province) {
-                                            $set('country_id', $record->province->country_id);
-                                        }
-                                    }),
-                                Forms\Components\Select::make('province_id')
-                                    ->label('Province')
-                                    ->required()
-                                    ->reactive()
-                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
-                                    ->afterStateHydrated(function (callable $set, $record) {
-                                        $set('province_id', $record?->province_id);
-                                    })
-                                    ->options(
-                                        fn (callable $get) => $get('country_id')
-                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
-                                            : []
-                                    ),
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('latitude')
-                                    ->label('Latitude')
-                                    ->numeric()
-                                    ->helperText('e.g. -6.200000'),
-                                Forms\Components\TextInput::make('longitude')
-                                    ->label('Longitude')
-                                    ->numeric()
-                                    ->helperText('e.g. 106.816666'),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -133,6 +86,53 @@ class CityResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('country_id')
+                                    ->label('Country')
+                                    ->required()
+                                    ->reactive()
+                                    ->options(Country::query()->pluck('name', 'id'))
+                                    ->afterStateUpdated(fn (callable $set) => $set('province_id', null))
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        if ($record?->province) {
+                                            $set('country_id', $record->province->country_id);
+                                        }
+                                    }),
+                                Forms\Components\Select::make('province_id')
+                                    ->label('Province')
+                                    ->required()
+                                    ->reactive()
+                                    ->disabled(fn (callable $get): bool => empty($get('country_id')))
+                                    ->afterStateHydrated(function (callable $set, $record) {
+                                        $set('province_id', $record?->province_id);
+                                    })
+                                    ->options(
+                                        fn (callable $get) => $get('country_id')
+                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            : []
+                                    ),
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
+                            ]),
+                    ]),
             ]);
     }
 }

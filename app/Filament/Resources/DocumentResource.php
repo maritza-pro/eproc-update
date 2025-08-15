@@ -35,37 +35,6 @@ class DocumentResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('documentable_type')
-                                    ->required(),
-                                Forms\Components\TextInput::make('documentable_id')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('filename')
-                                    ->required(),
-                                Forms\Components\TextInput::make('path')
-                                    ->required(),
-                                Forms\Components\TextInput::make('type'),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -127,6 +96,37 @@ class DocumentResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('documentable_type')
+                                    ->required(),
+                                Forms\Components\TextInput::make('documentable_id')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('filename')
+                                    ->required(),
+                                Forms\Components\TextInput::make('path')
+                                    ->required(),
+                                Forms\Components\TextInput::make('type'),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

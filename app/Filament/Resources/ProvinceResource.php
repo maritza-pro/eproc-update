@@ -36,32 +36,6 @@ class ProvinceResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('country_id')
-                                    ->relationship('country', 'name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('latitude')
-                                    ->label('Latitude')
-                                    ->numeric()
-                                    ->helperText('e.g. -6.200000'),
-                                Forms\Components\TextInput::make('longitude')
-                                    ->label('Longitude')
-                                    ->numeric()
-                                    ->helperText('e.g. 106.816666'),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -109,6 +83,32 @@ class ProvinceResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('country_id')
+                                    ->relationship('country', 'name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
+                            ]),
+                    ]),
             ]);
     }
 }
