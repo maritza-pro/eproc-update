@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Dotenv\Exception\ValidationException;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
@@ -23,7 +22,7 @@ class Register extends BaseRegister
             // TODO : ini bisa pake ->value('id') nanti coba diskus sama @kangmaup
             $roleId = HexaRole::where('name', 'User')->value('id');
             
-            throw_if(!$roleId, ValidationValidationException::withMessages(['Role' => 'Vendor Role Not Found']));
+            throw_if(!$roleId, ValidationValidationException::withMessages(['Role' => 'User Role Not Found']));
     
             $user->roles()->syncWithoutDetaching([$roleId]);
     

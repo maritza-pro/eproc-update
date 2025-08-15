@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Enums;
 
-enum VendorStatus:String
+enum VendorStatus: string
 {
     case Pending = 'pending';
     case Approved = 'approved';

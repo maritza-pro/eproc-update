@@ -48,21 +48,6 @@ class Vendor extends Model
         ];
     }
 
-    public function getStatusBadgeHtml(): HtmlString
-    {
-        $status = $this->verification_status;
-
-        if ($status === null) {
-            return new HtmlString('');
-        }
-        $color = $status->getColor();
-        $label = $status->getLabel();
-
-        $html = "<span class='fi-badge fi-color-{$color}'>".e($label)."</span>";
-
-        return new HtmlString($html);
-    }
-
     public function bankVendors(): HasMany
     {
         return $this->hasMany(BankVendor::class);
