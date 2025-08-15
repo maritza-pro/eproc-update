@@ -25,21 +25,39 @@ class City extends Model
         'longitude',
     ];
 
+    /**
+     * Get the districts associated with the city.
+     * Defines a HasMany relationship with the District model.
+     */
     public function districts(): HasMany
     {
         return $this->hasMany(District::class, 'city_id', 'id');
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the province associated with the city.
+     * Defines a belongs-to relationship with the Province model.
+     */
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
 
+    /**
+     * Get the villages associated with the city.
+     *
+     * Defines a HasManyThrough relationship to retrieve villages via districts.
+     */
     public function villages(): HasManyThrough
     {
         return $this->hasManyThrough(

@@ -12,6 +12,11 @@ class ListProcurements extends ListRecords
 {
     protected static string $resource = ProcurementResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list header.
+     */
     protected function getHeaderActions(): array
     {
         return [

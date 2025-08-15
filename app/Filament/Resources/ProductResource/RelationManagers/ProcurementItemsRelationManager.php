@@ -14,6 +14,11 @@ class ProcurementItemsRelationManager extends RelationManager
 
     protected static ?string $title = 'Procurements';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the columns and filters for the procurement items table.
+     */
     public function table(Table $table): Table
     {
         return $table

@@ -14,6 +14,11 @@ class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the columns and actions for the items table.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -50,6 +55,11 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the form for creating or editing a resource.
+     *
+     * Defines the form schema for managing bid items.
+     */
     public function form(Form $form): Form
     {
         return $form->schema([

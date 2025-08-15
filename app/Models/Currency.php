@@ -28,11 +28,21 @@ class Currency extends Model
         'is_default',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the configuration for logging activity on this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the products associated with the currency.
+     *
+     * Defines a has-many relationship with the Product model.
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);

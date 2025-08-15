@@ -12,6 +12,11 @@ class ViewProcurementItem extends ViewRecord
 {
     protected static string $resource = ProcurementItemResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

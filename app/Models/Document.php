@@ -26,11 +26,21 @@ class Document extends Model
         'type',
     ];
 
+    /**
+     * Get the parent documentable model.
+     *
+     * Defines a polymorphic relationship to the documentable model.
+     */
     public function documentable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Defines the default options for activity logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();

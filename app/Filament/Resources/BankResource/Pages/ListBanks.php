@@ -12,6 +12,11 @@ class ListBanks extends ListRecords
 {
     protected static string $resource = BankResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -12,6 +12,11 @@ class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
 
+    /**
+     * Get the actions for the header.
+     *
+     * Defines the actions available in the record edit header.
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -22,6 +27,11 @@ class EditUser extends EditRecord
         ];
     }
 
+    /**
+     * Mutates the form data before saving.
+     *
+     * Updates the password if a new password is provided.
+     */
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $state = $this->data;

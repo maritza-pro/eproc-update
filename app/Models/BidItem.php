@@ -26,16 +26,29 @@ class BidItem extends Model
         'notes',
     ];
 
+    /**
+     * Get the bid associated with the bid item.
+     * Defines a belongs-to relationship with the Bid model.
+     */
     public function bid(): BelongsTo
     {
         return $this->belongsTo(Bid::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the procurement item associated with the bid item.
+     * Defines a belongs-to relationship with ProcurementItem model.
+     */
     public function procurementItem(): BelongsTo
     {
         return $this->belongsTo(ProcurementItem::class);

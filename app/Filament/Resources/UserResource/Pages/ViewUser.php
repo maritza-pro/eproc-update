@@ -13,6 +13,11 @@ class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;
 
+    /**
+     * Get the actions for the header.
+     *
+     * Defines actions available in the record view header.
+     */
     protected function getHeaderActions(): array
     {
         $isSuper = $this->isSuper();
@@ -28,6 +33,10 @@ class ViewUser extends ViewRecord
         ];
     }
 
+    /**
+     * Checks if the current user is a super user.
+     * Determines if the user has permission to bypass global scopes.
+     */
     private function isSuper(): bool
     {
         return Auth::user()?->can(UserResource::getModelLabel() . '.withoutGlobalScope') ?? false;

@@ -15,6 +15,11 @@ class QuestionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'questions';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the table columns, filters, and actions.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -44,6 +49,11 @@ class QuestionsRelationManager extends RelationManager
 
     // protected static ?string $title = 'question';
 
+    /**
+     * Build the form for creating or editing a record.
+     *
+     * Defines the form schema for managing survey questions.
+     */
     public function form(Form $form): Form
     {
         return $form

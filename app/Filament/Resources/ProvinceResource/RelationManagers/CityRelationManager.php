@@ -14,6 +14,11 @@ class CityRelationManager extends RelationManager
 {
     protected static string $relationship = 'cities';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the table columns, filters, and actions for managing cities.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -44,6 +49,11 @@ class CityRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the form for creating or editing a record.
+     *
+     * Defines the form schema for managing city data.
+     */
     public function form(Form $form): Form
     {
         return $form

@@ -11,16 +11,30 @@ trait EncryptUnique
 {
     private $iv = '1234567812345678';
 
+    /**
+     * Get the encrypted ID attribute.
+     *
+     * Returns the encrypted ID of the model.
+     */
     public function getEncryptedIdAttribute(): ?string
     {
         return $this->encrypt($this->attributes['id']);
     }
 
+    /**
+     * Get the route key for the model.
+     *
+     * Returns the encrypted ID for route model binding.
+     */
     public function getRouteKey()
     {
         return $this->encrypted_id;
     }
 
+    /**
+     * Decrypts a value.
+     * Decodes and decrypts a base64 encoded string using AES-256-CBC.
+     */
     private function decrypt(string $value): mixed
     {
         $decoded = base64_decode($value);
@@ -42,6 +56,11 @@ trait EncryptUnique
             : $decrypt;
     }
 
+    /**
+     * Encrypts a value.
+     *
+     * Encrypts the given value using AES-256-CBC and returns the base64 encoded result.
+     */
     private function encrypt(mixed $value): ?string
     {
         if ($value === null) {

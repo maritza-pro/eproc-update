@@ -31,6 +31,11 @@ class Country extends Model
         'longitude',
     ];
 
+    /**
+     * Get the cities associated with the country.
+     *
+     * Defines a hasManyThrough relationship with cities.
+     */
     public function cities(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -43,6 +48,11 @@ class Country extends Model
         );
     }
 
+    /**
+     * Get the districts associated with the country.
+     *
+     * Defines a deep relationship to retrieve districts through provinces and cities.
+     */
     public function districts(): HasManyDeep
     {
         return $this->hasManyDeep(
@@ -56,16 +66,30 @@ class Country extends Model
         );
     }
 
+    /**
+     * Get activitylog options.
+     *
+     * Defines the configuration for logging activity.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the provinces for the country.
+     * Defines a has-many relationship with the Province model.
+     */
     public function provinces(): HasMany
     {
         return $this->hasMany(Province::class, 'country_id', 'id');
     }
 
+    /**
+     * Get the villages associated with the country.
+     *
+     * Defines a deep relationship to retrieve villages through provinces, cities, and districts.
+     */
     public function villages(): HasManyDeep
     {
         return $this->hasManyDeep(

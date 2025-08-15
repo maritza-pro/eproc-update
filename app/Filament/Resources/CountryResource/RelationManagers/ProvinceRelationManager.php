@@ -14,6 +14,11 @@ class ProvinceRelationManager extends RelationManager
 {
     protected static string $relationship = 'provinces';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the table columns, filters, and actions.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -44,6 +49,11 @@ class ProvinceRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the form for creating or editing a record.
+     *
+     * Defines the form schema for managing provinces.
+     */
     public function form(Form $form): Form
     {
         return $form

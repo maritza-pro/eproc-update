@@ -12,6 +12,11 @@ class EditProcurement extends EditRecord
 {
     protected static string $resource = ProcurementResource::class;
 
+    /**
+     * Get the actions for the header.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

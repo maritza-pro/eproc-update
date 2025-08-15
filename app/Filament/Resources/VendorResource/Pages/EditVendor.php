@@ -16,6 +16,11 @@ class EditVendor extends EditRecord
 {
     protected static string $resource = VendorResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -26,6 +31,11 @@ class EditVendor extends EditRecord
         ];
     }
 
+    /**
+     * Mutates the form data before saving.
+     *
+     * Modifies data based on vendor status changes during update.
+     */
     protected function mutateFormDataBeforeSave(array $data): array
     {
         return DB::transaction(function () use ($data): array {
