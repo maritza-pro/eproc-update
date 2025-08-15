@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 trait Gate
 {
+    /**
+     * Define the gates for this resource.
+     *
+     * Returns an array of gate definitions with their descriptions.
+     */
     public function defineGates(): array
     {
         return [
