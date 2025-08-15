@@ -10,6 +10,10 @@ enum VendorStatus: string
     case Pending = 'pending';
     case Rejected = 'rejected';
 
+    /**
+     * Get the color associated with the vendor status.
+     * Returns the color string for the current status.
+     */
     public function getColor(): string
     {
         return match ($this) {
@@ -19,6 +23,10 @@ enum VendorStatus: string
         };
     }
 
+    /**
+     * Get the icon for the vendor status.
+     * Returns the corresponding icon class name based on the status.
+     */
     public function getIcon(): string
     {
         return match ($this) {
@@ -28,6 +36,10 @@ enum VendorStatus: string
         };
     }
 
+    /**
+     * Get the label for the vendor status.
+     * Returns a human-readable label for the enum case.
+     */
     public function getLabel(): string
     {
         return match ($this) {
