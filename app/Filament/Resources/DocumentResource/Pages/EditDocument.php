@@ -12,6 +12,11 @@ class EditDocument extends EditRecord
 {
     protected static string $resource = DocumentResource::class;
 
+    /**
+     * Get the actions for the header.
+     *
+     * Defines the actions available in the record edit header.
+     */
     protected function getHeaderActions(): array
     {
         return [

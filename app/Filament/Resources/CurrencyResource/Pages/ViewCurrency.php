@@ -12,6 +12,11 @@ class ViewCurrency extends ViewRecord
 {
     protected static string $resource = CurrencyResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record view header.
+     */
     protected function getHeaderActions(): array
     {
         return [

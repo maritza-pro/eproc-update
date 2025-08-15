@@ -12,6 +12,11 @@ class ListDocuments extends ListRecords
 {
     protected static string $resource = DocumentResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [
