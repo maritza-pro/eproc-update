@@ -14,6 +14,11 @@ class BidItemsRelationManager extends RelationManager
 
     protected static ?string $title = 'Bids';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the columns and filters for displaying bid items.
+     */
     public function table(Table $table): Table
     {
         return $table
