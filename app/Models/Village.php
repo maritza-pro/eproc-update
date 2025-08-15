@@ -23,11 +23,20 @@ class Village extends Model
         'longitude',
     ];
 
+    /**
+     * Get the district associated with the village.
+     * Defines a belongs-to relationship with the District model.
+     */
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class, 'district_id', 'id');
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();

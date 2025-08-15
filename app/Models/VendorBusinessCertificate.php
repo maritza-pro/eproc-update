@@ -30,11 +30,21 @@ class VendorBusinessCertificate extends Model implements HasMedia
         'classification',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collection for certificate attachments.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -42,6 +52,10 @@ class VendorBusinessCertificate extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the certificate.
+     * Defines a one-to-one relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

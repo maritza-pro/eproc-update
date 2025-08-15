@@ -31,11 +31,21 @@ class VendorTaxRegistration extends Model implements HasMedia
         'registered_tax_office',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collection for vendor tax registration attachments.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -43,6 +53,10 @@ class VendorTaxRegistration extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the tax registration.
+     * Defines a one-to-one relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

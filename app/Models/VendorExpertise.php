@@ -28,11 +28,21 @@ class VendorExpertise extends Model implements HasMedia
         'description',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collections available for this model.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -40,6 +50,10 @@ class VendorExpertise extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the expertise.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

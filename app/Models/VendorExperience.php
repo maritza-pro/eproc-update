@@ -34,16 +34,30 @@ class VendorExperience extends Model implements HasMedia
         'project_value',
     ];
 
+    /**
+     * Get the business field associated with the vendor experience.
+     * Defines a belongs-to relationship with the VendorBusiness model.
+     */
     public function businessField(): BelongsTo
     {
         return $this->belongsTo(VendorBusiness::class);
     }
 
+    /**
+     * Get activitylog options.
+     *
+     * Defines the options for logging activity on this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collections for this model.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -51,6 +65,10 @@ class VendorExperience extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the experience.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

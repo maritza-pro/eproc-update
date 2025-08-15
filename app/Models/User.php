@@ -59,11 +59,20 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         ];
     }
 
+    /**
+     * Determine if the user can access the panel.
+     *
+     * Checks if the user has verified their email address.
+     */
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasVerifiedEmail();
     }
 
+    /**
+     * Get the vendor relationship.
+     * Defines the one-to-one relationship with the Vendor model.
+     */
     public function vendor(): HasOne
     {
         return $this->hasOne(Vendor::class);
