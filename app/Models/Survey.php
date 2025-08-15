@@ -37,6 +37,11 @@ class Survey extends Model
         'properties',
     ];
 
+    /**
+     * Define cast attributes.
+     *
+     * Specifies the data types for certain attributes.
+     */
     protected function casts(): array
     {
         return [
@@ -44,26 +49,51 @@ class Survey extends Model
         ];
     }
 
+    /**
+     * Get the survey category.
+     *
+     * Defines a relationship to the survey's category.
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(SurveyCategory::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the survey's questions.
+     *
+     * Defines a HasMany relationship with SurveyQuestion.
+     */
     public function questions(): HasMany
     {
         return $this->hasMany(SurveyQuestion::class);
     }
 
+    /**
+     * Get the vendor business associated with the survey.
+     *
+     * Defines a relationship to the VendorBusiness model.
+     */
     public function vendorBusiness(): Belongsto
     {
         return $this->belongsTo(VendorBusiness::class, 'properties->vendor_business');
     }
 
+    /**
+     * Get the vendor type relationship.
+     *
+     * Defines the relationship to the VendorType model.
+     */
     public function vendorType(): Belongsto
     {
         return $this->belongsTo(VendorType::class, 'properties->vendor_type');

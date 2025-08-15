@@ -35,21 +35,41 @@ class Product extends Model
         'self_estimated_price',
     ];
 
+    /**
+     * Get the bid items associated with the product.
+     *
+     * Defines a has-many relationship with BidItem model.
+     */
     public function bidItems(): HasMany
     {
         return $this->hasMany(BidItem::class, 'procurement_item_id', 'id');
     }
 
+    /**
+     * Get the currency associated with the product.
+     *
+     * Defines a belongs-to relationship with the Currency model.
+     */
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the procurement items associated with the product.
+     *
+     * Defines a has-many relationship with ProcurementItem.
+     */
     public function procurementItems(): HasMany
     {
         return $this->hasMany(ProcurementItem::class);

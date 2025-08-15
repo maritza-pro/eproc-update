@@ -29,21 +29,41 @@ class SurveyAnswer extends Model
         'is_reviewed',
     ];
 
+    /**
+     * Get the parent answerable model.
+     *
+     * Defines a polymorphic relation to the answerable model.
+     */
     public function answerable(): MorphTo
     {
         return $this->morphTo();
     }
 
+    /**
+     * Get the details associated with the survey answer.
+     *
+     * Defines a has-many relationship with SurveyAnswerDetail.
+     */
     public function details(): HasMany
     {
         return $this->hasMany(SurveyAnswerDetail::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Defines the default options for activity logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the survey associated with the survey answer.
+     *
+     * Defines a belongs-to relationship with the Survey model.
+     */
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);

@@ -26,21 +26,41 @@ class SurveyAnswerDetail extends Model
         'points',
     ];
 
+    /**
+     * Get the survey answer associated with the detail.
+     *
+     * Defines a relationship to the SurveyAnswer model.
+     */
     public function answer(): BelongsTo
     {
         return $this->belongsTo(SurveyAnswer::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures activity logging options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the survey question option.
+     *
+     * Defines a relationship to the SurveyQuestionOption model.
+     */
     public function option(): BelongsTo
     {
         return $this->belongsTo(SurveyQuestionOption::class);
     }
 
+    /**
+     * Get the question associated with the survey answer detail.
+     *
+     * Defines a belongs-to relationship with the SurveyQuestion model.
+     */
     public function question(): BelongsTo
     {
         return $this->belongsTo(SurveyQuestion::class);

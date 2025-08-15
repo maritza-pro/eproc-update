@@ -28,16 +28,31 @@ class Province extends Model
         'longitude',
     ];
 
+    /**
+     * Get the cities associated with the province.
+     *
+     * Defines a one-to-many relationship with the City model.
+     */
     public function cities(): HasMany
     {
         return $this->hasMany(City::class, 'province_id', 'id');
     }
 
+    /**
+     * Get the country.
+     *
+     * Defines a belongs-to relationship with the Country model.
+     */
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country_id', 'id');
     }
 
+    /**
+     * Get the districts associated with the province.
+     *
+     * Defines a HasManyThrough relationship with District model.
+     */
     public function districts(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -50,11 +65,21 @@ class Province extends Model
         );
     }
 
+    /**
+     * Get activitylog options.
+     *
+     * Defines the options for logging activity for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the villages associated with the province.
+     *
+     * Defines a deep relationship to retrieve villages through cities and districts.
+     */
     public function villages(): HasManyDeep
     {
         return $this->hasManyDeep(

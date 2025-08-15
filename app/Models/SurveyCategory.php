@@ -14,6 +14,11 @@ class SurveyCategory extends Taxonomy
 {
     use WithTaxonomy;
 
+    /**
+     * Get the surveys associated with the category.
+     *
+     * Defines a has-many relationship with the Survey model.
+     */
     public function surveys(): HasMany
     {
         return $this->hasMany(Survey::class);
