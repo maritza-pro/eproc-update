@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Schema;
 
 class AddEventColumnToActivityLogTable extends Migration
 {
+    /**
+     * Add the event column to the activity log table.
+     *
+     * Adds a nullable 'event' string column after 'subject_type'.
+     */
     public function up(): void
     {
         Schema::connection(config('activitylog.database_connection'))->table(config('activitylog.table_name'), function (Blueprint $table) {
@@ -15,6 +20,11 @@ class AddEventColumnToActivityLogTable extends Migration
         });
     }
 
+    /**
+     * Reverts the migration.
+     *
+     * Removes the 'event' column from the activity log table.
+     */
     public function down(): void
     {
         Schema::connection(config('activitylog.database_connection'))->table(config('activitylog.table_name'), function (Blueprint $table) {
