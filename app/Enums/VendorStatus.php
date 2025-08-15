@@ -6,18 +6,9 @@ namespace App\Enums;
 
 enum VendorStatus: string
 {
-    case Pending = 'pending';
     case Approved = 'approved';
+    case Pending = 'pending';
     case Rejected = 'rejected';
-
-    public function getLabel(): string
-    {
-        return match ($this) {
-            self::Pending => 'Pending',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-        };
-    }
 
     public function getColor(): string
     {
@@ -34,6 +25,15 @@ enum VendorStatus: string
             self::Pending => 'heroicon-o-clock',
             self::Approved => 'heroicon-o-check-circle',
             self::Rejected => 'heroicon-o-x-circle',
+        };
+    }
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Pending => 'Pending',
+            self::Approved => 'Approved',
+            self::Rejected => 'Rejected',
         };
     }
 }

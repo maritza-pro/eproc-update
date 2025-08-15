@@ -54,8 +54,7 @@ class VendorResource extends Resource
                     ->schema([
                         Forms\Components\ViewField::make('verification_status')
                             ->view('filament.forms.components.status-badge')
-                            ->hidden(fn ($livewire) =>
-                                $livewire instanceof CreateVendor)
+                            ->hidden(fn ($livewire): bool => $livewire instanceof CreateVendor)
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('rejection_reason')
                             ->label('ⓘ Verification Notes')
@@ -73,7 +72,7 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
                                 Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
-                                Forms\Components\Select::make('user_id')->visible(!$withoutGlobalScope)->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
+                                Forms\Components\Select::make('user_id')->visible(! $withoutGlobalScope)->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
 
                         Forms\Components\Tabs::make('Tabs')
@@ -419,7 +418,7 @@ class VendorResource extends Resource
                                             ->defaultItems(0)
                                             ->itemLabel(function (array $state): ?string {
                                                 if (! empty($state['expertise'])) {
-                                                    return '- '.$state['expertise'];
+                                                    return '- ' . $state['expertise'];
                                                 }
 
                                                 return 'New Expertise';
@@ -473,7 +472,7 @@ class VendorResource extends Resource
                                             ->defaultItems(0)
                                             ->itemLabel(function (array $state): ?string {
                                                 if (! empty($state['project_name'])) {
-                                                    return '- '.$state['project_name'];
+                                                    return '- ' . $state['project_name'];
                                                 }
 
                                                 return 'New Experience';
@@ -538,8 +537,7 @@ class VendorResource extends Resource
                             ]),
                         Forms\Components\Section::make('Statement & Agreement')
                             ->visible(
-                                fn ($livewire) =>
-                                $livewire instanceof CreateVendor
+                                fn ($livewire): bool => $livewire instanceof CreateVendor
                                 && $withoutGlobalScope
                             )
                             ->schema([
@@ -566,8 +564,7 @@ class VendorResource extends Resource
                             ->collapsible(),
                         Forms\Components\Group::make()
                             ->visible(
-                                fn ($livewire) =>
-                                $livewire instanceof EditVendor
+                                fn ($livewire): bool => $livewire instanceof EditVendor
                                 && ! $withoutGlobalScope
                                 && $livewire->getRecord()->verification_status === VendorStatus::Pending
                             )
@@ -603,6 +600,28 @@ class VendorResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListVendors::route('/'),
+            'create' => Pages\CreateVendor::route('/create'),
+            'view' => Pages\ViewVendor::route('/{record}'),
+            'edit' => Pages\EditVendor::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ActivitylogRelationManager::class,
+        ];
+    }
+
     public static function getResubmitAction(): Action
     {
         return Action::make('resubmit')
@@ -626,34 +645,12 @@ class VendorResource extends Resource
             });
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListVendors::route('/'),
-            'create' => Pages\CreateVendor::route('/create'),
-            'view' => Pages\ViewVendor::route('/{record}'),
-            'edit' => Pages\EditVendor::route('/{record}/edit'),
-        ];
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ActivitylogRelationManager::class,
-        ];
-    }
-
     public static function table(Table $table): Table
     {
         return $table
             ->striped()
             ->modifyQueryUsing(function (Builder $query) {
-                $query->unless(Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope'), function (Builder $query) {
+                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());
                 });
             })

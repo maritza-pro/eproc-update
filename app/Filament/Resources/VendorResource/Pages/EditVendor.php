@@ -27,22 +27,22 @@ class EditVendor extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        return DB::transaction(function () use ($data):array {
-            
+        return DB::transaction(function () use ($data): array {
+
             if ($record = $this->getRecord()) {
-    
+
                 if ($record->verification_status === VendorStatus::Pending &&
                     isset($data['verification_status']) &&
                     $data['verification_status'] !== VendorStatus::Pending->value) {
-    
+
                     $data['verified_by'] = auth()->id();
-    
+
                     $data['verified_at'] = now();
                     $roleId = HexaRole::where('name', 'Vendor')->value('id');
                     $record->user->roles()->syncWithoutDetaching([$roleId]);
                 }
             }
-    
+
             return $data;
         });
     }

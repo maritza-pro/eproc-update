@@ -71,7 +71,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->label('My Profile')
                     ->icon('heroicon-s-user')
                     ->url(fn (): string => Profile::getUrl())
-                    ->visible(fn () => ! Auth::user()?->can(UserResource::getModelLabel().'.withoutGlobalScope')),
+                    ->visible(fn (): bool => ! Auth::user()?->can(UserResource::getModelLabel() . '.withoutGlobalScope')),
             ])
             ->widgets([
                 Widgets\AccountWidget::class,

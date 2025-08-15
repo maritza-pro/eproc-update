@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Filament\Pages;
 
+use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -16,13 +16,17 @@ class Profile extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    public ?array $data = [];
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static bool $shouldRegisterNavigation = false;
+
+    protected static ?string $slug = 'profile';
 
     protected static ?string $title = 'My Profile';
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static string $view = 'filament.pages.profile';
-    protected static ?string $slug = 'profile';
-    protected static bool $shouldRegisterNavigation = false;
+
+    public ?array $data = [];
 
     public function mount(): void
     {
@@ -95,7 +99,6 @@ class Profile extends Page implements HasForms
 
         $data = $this->form->getState();
 
-
         DB::transaction(function () use ($data): void {
             $user = auth()->user();
 
@@ -104,7 +107,6 @@ class Profile extends Page implements HasForms
                 'email' => $data['email'],
             ]);
 
-            
             if (filled($data['new_password'] ?? null)) {
                 $user->update([
                     'password' => $data['new_password'],
@@ -114,7 +116,7 @@ class Profile extends Page implements HasForms
                 $this->data['new_password'] = null;
                 $this->data['new_password_confirmation'] = null;
             }
-            
+
             $this->form->fill($user->getAttributes());
 
             Notification::make()

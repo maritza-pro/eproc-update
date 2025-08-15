@@ -21,6 +21,8 @@ Tapi kalau mau proyek kamu gak bikin sakit mata, ikuti aturan main berikut. Otom
 - ✅ Otomatisasi, bukan kerja rodi
 - ✅ Ikuti konvensi Laravel & Filament, bukan gaya bebas
 - ✅ Maintainable, bukan sekadar "yang penting jalan"
+- ✅ Gunakan Facades Auth::user(), bukan auth()->user()
+- ✅ Gunakan Facades Auth::id(), bukan auth()->id() apalagi pake auth()->user()->id
 
 ---
 

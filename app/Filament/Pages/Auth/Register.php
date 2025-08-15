@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Filament\Pages\Auth;
 
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
@@ -14,22 +16,20 @@ class Register extends BaseRegister
     public function register(): ?RegistrationResponse
     {
         return DB::transaction(function (): ?RegistrationResponse {
-            
+
             $data = $this->form->getState();
-    
             $user = $this->handleRegistration($data);
-    
-            // TODO : ini bisa pake ->value('id') nanti coba diskus sama @kangmaup
             $roleId = HexaRole::where('name', 'User')->value('id');
-            
-            throw_if(!$roleId, ValidationValidationException::withMessages(['Role' => 'User Role Not Found']));
-    
+
+            throw_if(! $roleId, ValidationValidationException::withMessages(['Role' => 'User Role Not Found']));
+
             $user->roles()->syncWithoutDetaching([$roleId]);
-    
+
             Notification::make()
                 ->title('Registration Successful, please check your email to verify!')
                 ->success()
                 ->send();
+
             return $this->redirectRoute('filament.dashboard.auth.login', navigate: false);
         });
     }
