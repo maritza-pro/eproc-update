@@ -12,6 +12,11 @@ class ListDistricts extends ListRecords
 {
     protected static string $resource = DistrictResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [

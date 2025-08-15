@@ -12,6 +12,11 @@ class EditDistrict extends EditRecord
 {
     protected static string $resource = DistrictResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the record header.
+     */
     protected function getHeaderActions(): array
     {
         return [

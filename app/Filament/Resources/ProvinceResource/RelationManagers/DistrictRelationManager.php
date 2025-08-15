@@ -15,6 +15,11 @@ class DistrictRelationManager extends RelationManager
 {
     protected static string $relationship = 'districts';
 
+    /**
+     * Configure the table for the relation manager.
+     *
+     * Defines the columns, filters, and actions for the districts table.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -45,6 +50,11 @@ class DistrictRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the form for creating or editing a record.
+     *
+     * Defines the form schema for managing districts.
+     */
     public function form(Form $form): Form
     {
         return $form

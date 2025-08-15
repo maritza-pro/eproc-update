@@ -17,6 +17,11 @@ class VillageRelationManager extends RelationManager
 {
     protected static string $relationship = 'villages';
 
+    /**
+     * Configure the table for the villages relation manager.
+     *
+     * Defines the columns, filters, and actions for the villages table.
+     */
     public function table(Table $table): Table
     {
         return $table
@@ -47,6 +52,11 @@ class VillageRelationManager extends RelationManager
             ]);
     }
 
+    /**
+     * Build the form for creating or editing a resource.
+     *
+     * Defines the form schema for creating/editing villages.
+     */
     public function form(Form $form): Form
     {
         return $form

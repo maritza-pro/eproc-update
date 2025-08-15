@@ -12,6 +12,11 @@ class ListProvinces extends ListRecords
 {
     protected static string $resource = ProvinceResource::class;
 
+    /**
+     * Get the header actions.
+     *
+     * Defines the actions available in the list records header.
+     */
     protected function getHeaderActions(): array
     {
         return [
