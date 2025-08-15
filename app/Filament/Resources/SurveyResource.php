@@ -39,55 +39,6 @@ class SurveyResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('category_id')
-                                    ->relationship('category', 'name')
-                                    ->searchable(),
-                                Forms\Components\Select::make('type')
-                                    ->label('Type')
-                                    ->options([
-                                        'vendor' => 'Vendor',
-                                        'procurement' => 'Procurement',
-                                    ])
-                                    ->required()
-                                    ->reactive(),
-                                Forms\Components\Select::make('properties.vendor_type')
-                                    ->label('Vendor Type')
-                                    ->options(fn () => VendorType::query()->pluck('name', 'id'))
-                                    ->required(fn ($get): bool => $get('type') === 'vendor')
-                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
-                                    ->searchable(),
-                                Forms\Components\Select::make('properties.vendor_business')
-                                    ->label('Vendor Business')
-                                    ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
-                                    ->required(fn ($get): bool => $get('type') === 'vendor')
-                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
-                                    ->searchable(),
-                                Forms\Components\TextInput::make('title')
-                                    ->required()
-                                    ->columnSpanFull(),
-                                Forms\Components\Textarea::make('description')
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -154,6 +105,55 @@ class SurveyResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('category_id')
+                                    ->relationship('category', 'name')
+                                    ->searchable(),
+                                Forms\Components\Select::make('type')
+                                    ->label('Type')
+                                    ->options([
+                                        'vendor' => 'Vendor',
+                                        'procurement' => 'Procurement',
+                                    ])
+                                    ->required()
+                                    ->reactive(),
+                                Forms\Components\Select::make('properties.vendor_type')
+                                    ->label('Vendor Type')
+                                    ->options(fn () => VendorType::query()->pluck('name', 'id'))
+                                    ->required(fn ($get): bool => $get('type') === 'vendor')
+                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
+                                    ->searchable(),
+                                Forms\Components\Select::make('properties.vendor_business')
+                                    ->label('Vendor Business')
+                                    ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
+                                    ->required(fn ($get): bool => $get('type') === 'vendor')
+                                    ->visible(fn ($get): bool => $get('type') === 'vendor')
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->columnSpanFull(),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

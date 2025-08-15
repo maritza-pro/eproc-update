@@ -36,35 +36,6 @@ class VendorBusinessResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\Textarea::make('description'),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\TextInput::make('code'),
-                                Forms\Components\Toggle::make('is_active')
-                                    ->inline(false)
-                                    ->required()
-                                    ->default(true),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -143,6 +114,35 @@ class VendorBusinessResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\Textarea::make('description'),
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\TextInput::make('code'),
+                                Forms\Components\Toggle::make('is_active')
+                                    ->inline(false)
+                                    ->required()
+                                    ->default(true),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

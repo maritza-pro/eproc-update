@@ -31,39 +31,6 @@ class BankVendorResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()->schema([
-                    Forms\Components\Select::make('bank_id')
-                        ->relationship('bank', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->required()
-                        ->label('Nama Bank'),
-
-                    Forms\Components\TextInput::make('account_name')
-                        ->required()
-                        ->maxLength(255)
-                        ->label('Nama Pemilik Rekening'),
-
-                    Forms\Components\TextInput::make('account_number')
-                        ->required()
-                        ->maxLength(255)
-                        ->label('Nomor Rekening'),
-
-                    Forms\Components\TextInput::make('branch_name')
-                        ->maxLength(255)
-                        ->label('Nama Cabang (Opsional)'),
-
-                    Forms\Components\Toggle::make('is_active')
-                        ->required()
-                        ->default(true),
-                ])->columns(2),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -121,6 +88,39 @@ class BankVendorResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\Select::make('bank_id')
+                        ->relationship('bank', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->required()
+                        ->label('Nama Bank'),
+
+                    Forms\Components\TextInput::make('account_name')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Nama Pemilik Rekening'),
+
+                    Forms\Components\TextInput::make('account_number')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('Nomor Rekening'),
+
+                    Forms\Components\TextInput::make('branch_name')
+                        ->maxLength(255)
+                        ->label('Nama Cabang (Opsional)'),
+
+                    Forms\Components\Toggle::make('is_active')
+                        ->required()
+                        ->default(true),
+                ])->columns(2),
             ]);
     }
 }

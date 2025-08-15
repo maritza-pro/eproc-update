@@ -36,56 +36,6 @@ class CountryResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required(),
-
-                                Forms\Components\TextInput::make('code')
-                                    ->maxLength(2)
-                                    ->label('Country Code')
-                                    ->helperText('2-letter country code (e.g. ID, US)')
-                                    ->extraAttributes(['style' => 'text-transform: uppercase']),
-
-                                Forms\Components\TextInput::make('currency')
-                                    ->maxLength(10),
-
-                                Forms\Components\TextInput::make('iso')
-                                    ->maxLength(3)
-                                    ->helperText('3-letter ISO code (e.g. IDN, USA)'),
-
-                                Forms\Components\TextInput::make('num_code')
-                                    ->numeric()
-                                    ->maxLength(3)
-                                    ->label('Numeric Code')
-                                    ->helperText('Numeric country code (e.g. 360 for Indonesia)'),
-
-                                Forms\Components\TextInput::make('msisdn_code')
-                                    ->numeric()
-                                    ->maxLength(5)
-                                    ->label('MSISDN Code')
-                                    ->helperText('e.g. 62 for Indonesia'),
-
-                                Forms\Components\TextInput::make('latitude')
-                                    ->label('Latitude')
-                                    ->numeric()
-                                    ->helperText('e.g. -6.200000'),
-
-                                Forms\Components\TextInput::make('longitude')
-                                    ->label('Longitude')
-                                    ->numeric()
-                                    ->helperText('e.g. 106.816666'),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -149,6 +99,56 @@ class CountryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required(),
+
+                                Forms\Components\TextInput::make('code')
+                                    ->maxLength(2)
+                                    ->label('Country Code')
+                                    ->helperText('2-letter country code (e.g. ID, US)')
+                                    ->extraAttributes(['style' => 'text-transform: uppercase']),
+
+                                Forms\Components\TextInput::make('currency')
+                                    ->maxLength(10),
+
+                                Forms\Components\TextInput::make('iso')
+                                    ->maxLength(3)
+                                    ->helperText('3-letter ISO code (e.g. IDN, USA)'),
+
+                                Forms\Components\TextInput::make('num_code')
+                                    ->numeric()
+                                    ->maxLength(3)
+                                    ->label('Numeric Code')
+                                    ->helperText('Numeric country code (e.g. 360 for Indonesia)'),
+
+                                Forms\Components\TextInput::make('msisdn_code')
+                                    ->numeric()
+                                    ->maxLength(5)
+                                    ->label('MSISDN Code')
+                                    ->helperText('e.g. 62 for Indonesia'),
+
+                                Forms\Components\TextInput::make('latitude')
+                                    ->label('Latitude')
+                                    ->numeric()
+                                    ->helperText('e.g. -6.200000'),
+
+                                Forms\Components\TextInput::make('longitude')
+                                    ->label('Longitude')
+                                    ->numeric()
+                                    ->helperText('e.g. 106.816666'),
+                            ]),
+                    ]),
             ]);
     }
 }

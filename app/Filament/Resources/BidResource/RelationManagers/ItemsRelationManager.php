@@ -14,30 +14,6 @@ class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
 
-    public function form(Form $form): Form
-    {
-        return $form->schema([
-            Forms\Components\Select::make('procurement_item_id')
-                ->label('Procurement Item')
-                ->options(\App\Models\ProcurementItem::with('product')->get()->pluck('product.name', 'id'))
-                ->searchable()
-                ->required(),
-
-            Forms\Components\TextInput::make('offered_quantity')
-                ->numeric()
-                ->minValue(1)
-                ->required(),
-
-            Forms\Components\TextInput::make('unit_price')
-                ->numeric()
-                ->minValue(0)
-                ->required(),
-
-            Forms\Components\Textarea::make('notes')
-                ->rows(2),
-        ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table
@@ -72,5 +48,29 @@ class ItemsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Select::make('procurement_item_id')
+                ->label('Procurement Item')
+                ->options(\App\Models\ProcurementItem::with('product')->get()->pluck('product.name', 'id'))
+                ->searchable()
+                ->required(),
+
+            Forms\Components\TextInput::make('offered_quantity')
+                ->numeric()
+                ->minValue(1)
+                ->required(),
+
+            Forms\Components\TextInput::make('unit_price')
+                ->numeric()
+                ->minValue(0)
+                ->required(),
+
+            Forms\Components\Textarea::make('notes')
+                ->rows(2),
+        ]);
     }
 }

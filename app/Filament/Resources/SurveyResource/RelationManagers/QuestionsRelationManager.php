@@ -15,6 +15,33 @@ class QuestionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'questions';
 
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('question')
+            ->columns([
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('question'),
+                Tables\Columns\BooleanColumn::make('required')
+                    ->alignCenter(),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
     // protected static ?string $title = 'question';
 
     public function form(Form $form): Form
@@ -52,33 +79,6 @@ class QuestionsRelationManager extends RelationManager
                     ])
                     ->columnSpan('full')
                     ->hidden(fn (callable $get): bool => ! in_array($get('type'), ['select', 'radio', 'checkbox'])),
-            ]);
-    }
-
-    public function table(Table $table): Table
-    {
-        return $table
-            ->recordTitleAttribute('question')
-            ->columns([
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('question'),
-                Tables\Columns\BooleanColumn::make('required')
-                    ->alignCenter(),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

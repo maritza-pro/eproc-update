@@ -14,21 +14,6 @@ class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
 
-    public function form(Form $form): Form
-    {
-        return $form->schema([
-            Forms\Components\Select::make('product_id')
-                ->label('Product')
-                ->options(\App\Models\Product::pluck('name', 'id'))
-                ->searchable()
-                ->required(),
-            Forms\Components\TextInput::make('quantity')
-                ->numeric()
-                ->minValue(1)
-                ->required(),
-        ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table
@@ -58,5 +43,20 @@ class ItemsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form->schema([
+            Forms\Components\Select::make('product_id')
+                ->label('Product')
+                ->options(\App\Models\Product::pluck('name', 'id'))
+                ->searchable()
+                ->required(),
+            Forms\Components\TextInput::make('quantity')
+                ->numeric()
+                ->minValue(1)
+                ->required(),
+        ]);
     }
 }

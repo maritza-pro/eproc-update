@@ -35,44 +35,6 @@ class ContractResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('procurement_id')
-                                    ->relationship('procurement', 'title')
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\Select::make('vendor_id')
-                                    ->relationship('vendor', 'id')
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\TextInput::make('contract_number')
-                                    ->required(),
-                                Forms\Components\DatePicker::make('signed_date')
-                                    ->required(),
-                                Forms\Components\TextInput::make('value')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('status')
-                                    ->required(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -139,6 +101,44 @@ class ContractResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('procurement_id')
+                                    ->relationship('procurement', 'title')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\Select::make('vendor_id')
+                                    ->relationship('vendor', 'id')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('contract_number')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('signed_date')
+                                    ->required(),
+                                Forms\Components\TextInput::make('value')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('status')
+                                    ->required(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

@@ -17,6 +17,36 @@ class VillageRelationManager extends RelationManager
 {
     protected static string $relationship = 'villages';
 
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('name')
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->label('Longitude'),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -96,36 +126,6 @@ class VillageRelationManager extends RelationManager
                     ->label('Longitude')
                     ->numeric()
                     ->helperText('e.g. 106.816666'),
-            ]);
-    }
-
-    public function table(Table $table): Table
-    {
-        return $table
-            ->recordTitleAttribute('name')
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
-                Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

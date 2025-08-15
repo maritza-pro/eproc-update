@@ -35,42 +35,6 @@ class BidItemResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('bid_id')
-                                    ->relationship('bid', 'id')
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\Select::make('procurement_item_id')
-                                    ->relationship('procurementItem', 'id')
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\TextInput::make('unit_price')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('offered_quantity')
-                                    ->numeric(),
-                                Forms\Components\Textarea::make('notes')
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -136,6 +100,42 @@ class BidItemResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('bid_id')
+                                    ->relationship('bid', 'id')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\Select::make('procurement_item_id')
+                                    ->relationship('procurementItem', 'id')
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\TextInput::make('unit_price')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\TextInput::make('offered_quantity')
+                                    ->numeric(),
+                                Forms\Components\Textarea::make('notes')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

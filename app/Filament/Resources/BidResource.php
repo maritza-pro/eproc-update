@@ -37,49 +37,6 @@ class BidResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
-    {
-        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-        $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query): Builder => $query->where('user_id', Auth::id()))
-            ->pluck('company_name', 'id');
-
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Select::make('vendor_id')
-                                    ->relationship('vendor', 'id')
-                                    ->options($vendorOptions)
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\Select::make('procurement_id')
-                                    ->relationship('procurement', 'title')
-                                    ->options(\App\Models\Procurement::pluck('title', 'id'))
-                                    ->required()
-                                    ->searchable(),
-                                Forms\Components\Textarea::make('notes')
-                                    ->columnSpanFull(),
-                                Forms\Components\Select::make('status')
-                                    ->required()
-                                    ->options(array_combine(Bid::STATUSES, Bid::STATUSES))
-                                    ->default('draft')
-                                    ->disabled(! $withoutGlobalScope)
-                                    ->dehydrated(),
-                            ]),
-                    ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -139,6 +96,49 @@ class BidResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query): Builder => $query->where('user_id', Auth::id()))
+            ->pluck('company_name', 'id');
+
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Select::make('vendor_id')
+                                    ->relationship('vendor', 'id')
+                                    ->options($vendorOptions)
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\Select::make('procurement_id')
+                                    ->relationship('procurement', 'title')
+                                    ->options(\App\Models\Procurement::pluck('title', 'id'))
+                                    ->required()
+                                    ->searchable(),
+                                Forms\Components\Textarea::make('notes')
+                                    ->columnSpanFull(),
+                                Forms\Components\Select::make('status')
+                                    ->required()
+                                    ->options(array_combine(Bid::STATUSES, Bid::STATUSES))
+                                    ->default('draft')
+                                    ->disabled(! $withoutGlobalScope)
+                                    ->dehydrated(),
+                            ]),
+                    ]),
+            ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
             ]);
     }
 }

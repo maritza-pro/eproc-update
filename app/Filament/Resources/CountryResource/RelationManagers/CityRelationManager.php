@@ -15,33 +15,6 @@ class CityRelationManager extends RelationManager
 {
     protected static string $relationship = 'cities';
 
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('province_id')
-                    ->label('Province')
-                    ->options(
-                        fn (RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
-                            ->pluck('name', 'id')
-                    )
-                    ->required()
-                    ->reactive()
-                    ->afterStateHydrated(fn ($set, $record) => $set('province_id', $record?->province_id)),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('latitude')
-                    ->label('Latitude')
-                    ->numeric()
-                    ->helperText('e.g. -6.200000'),
-                Forms\Components\TextInput::make('longitude')
-                    ->label('Longitude')
-                    ->numeric()
-                    ->helperText('e.g. 106.816666'),
-            ]);
-    }
-
     public function table(Table $table): Table
     {
         return $table
@@ -69,6 +42,33 @@ class CityRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('province_id')
+                    ->label('Province')
+                    ->options(
+                        fn (RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
+                            ->pluck('name', 'id')
+                    )
+                    ->required()
+                    ->reactive()
+                    ->afterStateHydrated(fn ($set, $record) => $set('province_id', $record?->province_id)),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->numeric()
+                    ->helperText('e.g. -6.200000'),
+                Forms\Components\TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->numeric()
+                    ->helperText('e.g. 106.816666'),
             ]);
     }
 }

@@ -32,46 +32,6 @@ class CurrencyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Card::make()
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('code')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
-                                    ->maxLength(3)
-                                    ->label('ISO Code'),
-                                Forms\Components\TextInput::make('symbol')
-                                    ->required()
-                                    ->unique(ignoreRecord: true)
-                                    ->maxLength(5),
-                                Forms\Components\TextInput::make('decimals')
-                                    ->required()
-                                    ->numeric()
-                                    ->default(2)
-                                    ->minValue(0)
-                                    ->maxValue(6),
-                                Forms\Components\Select::make('symbol_position')
-                                    ->options([
-                                        'left' => 'Left',
-                                        'right' => 'Right',
-                                    ])
-                                    ->required()
-                                    ->default('left'),
-                                Forms\Components\Toggle::make('is_default')
-                                    ->required(),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
@@ -126,6 +86,46 @@ class CurrencyResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Card::make()
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('code')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(3)
+                                    ->label('ISO Code'),
+                                Forms\Components\TextInput::make('symbol')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(5),
+                                Forms\Components\TextInput::make('decimals')
+                                    ->required()
+                                    ->numeric()
+                                    ->default(2)
+                                    ->minValue(0)
+                                    ->maxValue(6),
+                                Forms\Components\Select::make('symbol_position')
+                                    ->options([
+                                        'left' => 'Left',
+                                        'right' => 'Right',
+                                    ])
+                                    ->required()
+                                    ->default('left'),
+                                Forms\Components\Toggle::make('is_default')
+                                    ->required(),
+                            ]),
+                    ]),
             ]);
     }
 }
