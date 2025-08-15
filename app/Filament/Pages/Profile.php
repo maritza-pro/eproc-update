@@ -10,6 +10,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Profile extends Page implements HasForms
@@ -30,7 +31,7 @@ class Profile extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill(auth()->user()->getAttributes());
+        $this->form->fill(Auth::user()->getAttributes());
     }
 
     public function form(Form $form): Form
@@ -91,7 +92,7 @@ class Profile extends Page implements HasForms
                     ]),
             ])
             ->statePath('data')
-            ->model(auth()->user());
+            ->model(Auth::user());
     }
 
     public function save(): void
@@ -100,7 +101,7 @@ class Profile extends Page implements HasForms
         $data = $this->form->getState();
 
         DB::transaction(function () use ($data): void {
-            $user = auth()->user();
+            $user = Auth::user();
 
             $user->update([
                 'name' => $data['name'],
