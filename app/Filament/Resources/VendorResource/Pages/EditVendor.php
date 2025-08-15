@@ -29,7 +29,7 @@ class EditVendor extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         return DB::transaction(function () use ($data): array {
-
+            // TODO : If condition is always true.
             if ($record = $this->getRecord()) {
 
                 if ($record->verification_status === VendorStatus::Pending &&
