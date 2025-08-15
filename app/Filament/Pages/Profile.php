@@ -29,11 +29,21 @@ class Profile extends Page implements HasForms
 
     public ?array $data = [];
 
+    /**
+     * Mount the form.
+     *
+     * Fills the form with the currently authenticated user's attributes.
+     */
     public function mount(): void
     {
         $this->form->fill(Auth::user()->getAttributes());
     }
 
+    /**
+     * Build the form for the page.
+     *
+     * Defines the form schema for user profile management.
+     */
     public function form(Form $form): Form
     {
         return $form
@@ -95,6 +105,10 @@ class Profile extends Page implements HasForms
             ->model(Auth::user());
     }
 
+    /**
+     * Saves the user's profile data.
+     * Updates user details and password if provided.
+     */
     public function save(): void
     {
 

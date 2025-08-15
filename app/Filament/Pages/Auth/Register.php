@@ -13,6 +13,11 @@ use Illuminate\Validation\ValidationException as ValidationValidationException;
 
 class Register extends BaseRegister
 {
+    /**
+     * Registers a new user.
+     *
+     * Handles user registration, role assignment, and sends a success notification.
+     */
     public function register(): ?RegistrationResponse
     {
         return DB::transaction(function (): ?RegistrationResponse {
