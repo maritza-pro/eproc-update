@@ -1,25 +1,3 @@
-<style>
-    .text-justify { text-align: justify; }
-
-    .numbered-list {
-      list-style-type: decimal;
-      list-style-position: outside;
-      padding-left: 1rem;
-    }
-
-    .numbered-list > li {
-      display: list-item;
-      font-weight: 400;
-    }
-
-    .numbered-list > li::marker {
-      font-weight: 600;
-    }
-
-    .numbered-list .li-title { display: block; font-weight: 600; }
-    .numbered-list .li-desc  { display: block; font-weight: 400; }
-</style>
-
 <div class="space-y-6 text-sm leading-6">
     <section class="space-y-3">
         <h3 class="text-base font-semibold">Statement</h3>

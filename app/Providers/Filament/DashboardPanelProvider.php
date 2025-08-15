@@ -44,6 +44,7 @@ class DashboardPanelProvider extends PanelProvider
         FilamentAsset::register([
             Js::make('custom-script', asset('js/custom.js')),
         ]);
+        
     }
 
     /**
@@ -133,6 +134,7 @@ class DashboardPanelProvider extends PanelProvider
                     ->label('Settings'),
                 NavigationGroup::make()
                     ->label('Systems'),
-            ]);
+            ])
+            ->viteTheme('resources/css/custom.css');
     }
 }
