@@ -32,16 +32,30 @@ class BankVendor extends Model implements HasMedia
         'is_active',
     ];
 
+    /**
+     * Get the bank associated with the bank vendor.
+     * Defines a belongs-to relationship with the Bank model.
+     */
     public function bank(): BelongsTo
     {
         return $this->belongsTo(Bank::class);
     }
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the configuration for logging activity.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collections available for this model.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -49,6 +63,10 @@ class BankVendor extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the bank vendor.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

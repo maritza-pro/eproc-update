@@ -44,31 +44,59 @@ class Bid extends Model
         'status',
     ];
 
+    /**
+     * Get the evaluation associated with the bid.
+     *
+     * Defines a one-to-one relationship with the Evaluation model.
+     */
     public function evaluation(): HasOne
     {
         return $this->hasOne(Evaluation::class);
     }
 
+    /**
+     * Get the evaluations associated with the bid.
+     *
+     * Defines a hasMany relationship with the Evaluation model.
+     */
     public function evaluations(): HasMany
     {
         return $this->hasMany(Evaluation::class);
     }
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the bid items.
+     *
+     * Defines a has-many relationship with BidItem.
+     */
     public function items(): HasMany
     {
         return $this->hasMany(BidItem::class);
     }
 
+    /**
+     * Get the procurement associated with the bid.
+     * Defines a belongs-to relationship with the Procurement model.
+     */
     public function procurement(): BelongsTo
     {
         return $this->belongsTo(Procurement::class);
     }
 
+    /**
+     * Get the vendor associated with the bid.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

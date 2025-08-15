@@ -23,6 +23,11 @@ class Bank extends Model
         'is_active',
     ];
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Configures the activity log options for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();

@@ -41,16 +41,29 @@ class Contract extends Model
         'status',
     ];
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Defines the default options for activity logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the procurement associated with the contract.
+     * Defines a belongs-to relationship with the Procurement model.
+     */
     public function procurement(): BelongsTo
     {
         return $this->belongsTo(Procurement::class);
     }
 
+    /**
+     * Get the vendor associated with the contract.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
