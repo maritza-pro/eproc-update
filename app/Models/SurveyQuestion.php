@@ -48,16 +48,30 @@ class SurveyQuestion extends Model
         'points',
     ];
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Defines the log options for activity logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the options for the survey question.
+     *
+     * Defines a relationship to retrieve associated question options.
+     */
     public function options(): HasMany
     {
         return $this->hasMany(SurveyQuestionOption::class);
     }
 
+    /**
+     * Get the survey associated with the question.
+     * Defines a relationship to the Survey model.
+     */
     public function survey(): BelongsTo
     {
         return $this->belongsTo(Survey::class);

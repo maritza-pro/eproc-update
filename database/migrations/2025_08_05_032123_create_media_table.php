@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Create the media table.
+     *
+     * Creates the database table for storing media information.
+     */
     public function up(): void
     {
         Schema::create('media', function (Blueprint $table) {

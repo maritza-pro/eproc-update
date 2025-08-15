@@ -39,6 +39,11 @@ class Vendor extends Model
         'verified_at',
     ];
 
+    /**
+     * Define cast attributes.
+     *
+     * Specifies the data types for certain attributes.
+     */
     protected function casts(): array
     {
         return [
@@ -47,77 +52,148 @@ class Vendor extends Model
         ];
     }
 
+    /**
+     * Get the bank vendors associated with the vendor.
+     *
+     * Defines a HasMany relationship with BankVendor model.
+     */
     public function bankVendors(): HasMany
     {
         return $this->hasMany(BankVendor::class);
     }
 
+    /**
+     * Get the bids for the vendor.
+     *
+     * Defines a HasMany relationship with the Bid model.
+     */
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
     }
 
+    /**
+     * Get the business field.
+     * Defines the relationship to the VendorBusiness model.
+     */
     public function businessField(): BelongsTo
     {
         return $this->belongsTo(VendorBusiness::class);
     }
 
+    /**
+     * Get the contracts associated with the vendor.
+     *
+     * Defines a HasMany relationship with the Contract model.
+     */
     public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
     }
 
+    /**
+     * Configure activity logging options.
+     *
+     * Defines the default options for logging model activities.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the taxonomies associated with the vendor.
+     * Defines a morph-to-many relationship with Taxonomy.
+     */
     public function taxonomies(): MorphToMany
     {
         return $this->morphToMany(Taxonomy::class, 'relationable', 'taxonomy_relations')
             ->withTimestamps();
     }
 
+    /**
+     * Get the user associated with the vendor.
+     * Defines a belongs-to relationship with the User model.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the vendor's business certificate.
+     *
+     * Defines a one-to-one relationship with VendorBusinessCertificate.
+     */
     public function vendorBusinessCertificate(): HasOne
     {
         return $this->hasOne(VendorBusinessCertificate::class);
     }
 
+    /**
+     * Get the vendor's business license.
+     *
+     * Defines a one-to-one relationship with VendorBusinessLicense.
+     */
     public function vendorBusinessLicense(): HasOne
     {
         return $this->hasOne(VendorBusinessLicense::class);
     }
 
+    /**
+     * Get the vendor's contacts.
+     *
+     * Defines a HasMany relationship with VendorContact.
+     */
     public function vendorContacts(): HasMany
     {
         return $this->hasMany(VendorContact::class);
     }
 
+    /**
+     * Get the vendor's deed.
+     *
+     * Defines a one-to-one relationship with VendorDeed.
+     */
     public function vendorDeed(): HasOne
     {
         return $this->hasOne(VendorDeed::class);
     }
 
+    /**
+     * Get the vendor experiences.
+     * Defines a HasMany relationship with VendorExperience.
+     */
     public function vendorExperiences(): HasMany
     {
         return $this->hasMany(VendorExperience::class);
     }
 
+    /**
+     * Get the vendor's expertises.
+     *
+     * Defines a HasMany relationship with VendorExpertise.
+     */
     public function vendorExpertises(): HasMany
     {
         return $this->hasMany(VendorExpertise::class);
     }
 
+    /**
+     * Get the vendor's profile.
+     *
+     * Defines a one-to-one relationship with the VendorProfile model.
+     */
     public function vendorProfile(): HasOne
     {
         return $this->hasOne(VendorProfile::class);
     }
 
+    /**
+     * Get the vendor's tax registration.
+     *
+     * Defines a one-to-one relationship with VendorTaxRegistration.
+     */
     public function vendorTaxRegistration(): HasOne
     {
         return $this->hasOne(VendorTaxRegistration::class);

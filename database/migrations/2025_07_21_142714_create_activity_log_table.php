@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateActivityLogTable extends Migration
 {
+    /**
+     * Create the activity log table.
+     *
+     * Creates the table to store activity log entries.
+     */
     public function up(): void
     {
         Schema::connection(config('activitylog.database_connection'))->create(config('activitylog.table_name'), function (Blueprint $table) {
@@ -22,6 +27,11 @@ class CreateActivityLogTable extends Migration
         });
     }
 
+    /**
+     * Reverse the migration.
+     *
+     * Drops the activity log table if it exists.
+     */
     public function down(): void
     {
         Schema::connection(config('activitylog.database_connection'))->dropIfExists(config('activitylog.table_name'));

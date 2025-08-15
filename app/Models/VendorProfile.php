@@ -29,11 +29,20 @@ class VendorProfile extends Model
         'employee_count',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity on this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the vendor associated with the profile.
+     * Defines a one-to-one relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

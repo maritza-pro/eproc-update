@@ -33,11 +33,21 @@ class VendorDeed extends Model implements HasMedia
         'latest_approval_number',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity on this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collection for vendor deed attachments.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -45,6 +55,10 @@ class VendorDeed extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the deed.
+     * Defines a one-to-one relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

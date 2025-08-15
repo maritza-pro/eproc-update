@@ -24,11 +24,21 @@ class SurveyQuestionOption extends Model
         'is_correct',
     ];
 
+    /**
+     * Get the options for logging activity.
+     *
+     * Defines the log options for activity logging.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Define a one-to-one relationship with the SurveyQuestion model.
+     *
+     * Retrieves the associated SurveyQuestion for this option.
+     */
     public function surveyQuestion(): BelongsTo
     {
         return $this->belongsTo(SurveyQuestion::class);

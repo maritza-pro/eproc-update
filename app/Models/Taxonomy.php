@@ -35,16 +35,30 @@ class Taxonomy extends Model
 
     protected $table = 'taxonomies';
 
+    /**
+     * Get the children taxonomies.
+     *
+     * Defines a has-many relationship with child taxonomy records.
+     */
     public function children(): HasMany
     {
         return $this->hasMany(Taxonomy::class, 'parent_id');
     }
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the options for logging activity for this model.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Get the parent taxonomy.
+     * Defines an inverse one-to-many relationship with itself.
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class, 'parent_id');
@@ -55,11 +69,20 @@ class Taxonomy extends Model
     //     return $this->morphedByMany($modelClass, 'relationable', 'taxonomy_relations');
     // }
 
+    /**
+     * Get the taxonomy relations.
+     * Returns the HasMany relations to TaxonomyRelation.
+     */
     public function relations(): HasMany
     {
         return $this->hasMany(TaxonomyRelation::class);
     }
 
+    /**
+     * Get the vendors associated with the taxonomy.
+     *
+     * Defines a has-many relationship with the Vendor model.
+     */
     public function vendors(): HasMany
     {
         return $this->hasMany(Vendor::class);

@@ -29,11 +29,21 @@ class VendorBusinessLicense extends Model implements HasMedia
         'expires_at',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the configuration for logging activity.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collection for vendor license attachments.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -41,6 +51,10 @@ class VendorBusinessLicense extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Get the vendor associated with the license.
+     * Defines a one-to-one relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

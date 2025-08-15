@@ -34,6 +34,11 @@ use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
+    /**
+     * Boot the panel.
+     *
+     * Registers a custom JavaScript asset for the Filament panel.
+     */
     public function boot(): void
     {
         FilamentAsset::register([
@@ -41,6 +46,11 @@ class DashboardPanelProvider extends PanelProvider
         ]);
     }
 
+    /**
+     * Configure the Filament panel.
+     *
+     * Defines the panel's settings and components.
+     */
     public function panel(Panel $panel): Panel
     {
         return $panel

@@ -31,11 +31,21 @@ class VendorContact extends Model implements HasMedia
         'identity_number',
     ];
 
+    /**
+     * Get activity log options.
+     *
+     * Defines the configuration for logging activity.
+     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
+    /**
+     * Register media collections.
+     *
+     * Defines the media collections available for this model.
+     */
     public function registerMediaCollections(): void
     {
         $this
@@ -43,6 +53,11 @@ class VendorContact extends Model implements HasMedia
             ->singleFile();
     }
 
+    /**
+     * Register media conversions.
+     *
+     * Defines a thumbnail conversion for media associated with this model.
+     */
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('thumb')
@@ -51,6 +66,10 @@ class VendorContact extends Model implements HasMedia
             ->nonQueued();
     }
 
+    /**
+     * Get the vendor associated with the contact.
+     * Defines a belongs-to relationship with the Vendor model.
+     */
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
