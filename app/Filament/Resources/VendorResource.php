@@ -442,7 +442,10 @@ class VendorResource extends Resource
                                                 Forms\Components\Grid::make(2)
                                                     ->schema([
                                                         Forms\Components\Select::make('bank_id')
-                                                            ->relationship('bank', 'name')
+                                                            ->relationship(
+                                                                name:'bank',
+                                                                titleAttribute: 'name',
+                                                                modifyQueryUsing:fn (Builder $query) => $query->where('is_active', true))
                                                             ->searchable()
                                                             ->preload()
                                                             ->nullable()
