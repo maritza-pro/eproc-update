@@ -99,9 +99,9 @@ class BankVendorResource extends Resource
                 Forms\Components\Section::make()->schema([
                     Forms\Components\Select::make('bank_id')
                         ->relationship(
-                        name: 'bank', 
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn (Builder $query) => $query->where('is_active', true))
+                            name: 'bank',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                         ->searchable()
                         ->preload()
                         ->required()

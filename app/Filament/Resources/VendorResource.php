@@ -445,7 +445,7 @@ class VendorResource extends Resource
                                                             ->relationship(
                                                                 name: 'bank',
                                                                 titleAttribute: 'name',
-                                                                modifyQueryUsing: fn (Builder $query) => $query->where('is_active', true))
+                                                                modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                                                             ->searchable()
                                                             ->preload()
                                                             ->nullable()
