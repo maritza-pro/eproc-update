@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
+use Illuminate\Database\Eloquent\Builder;
 
 class BankVendorResource extends Resource
 {
@@ -97,7 +98,10 @@ class BankVendorResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\Select::make('bank_id')
-                        ->relationship('bank', 'name')
+                        ->relationship(
+                            name: 'bank',
+                            titleAttribute: 'name',
+                            modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                         ->searchable()
                         ->preload()
                         ->required()
