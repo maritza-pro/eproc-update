@@ -686,7 +686,7 @@ class VendorResource extends Resource
             ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected)
             ->requiresConfirmation()
             // TODO : There's a typo in the modal heading. 'Verfication' should be 'Verification'.
-            ->modalHeading('Resubmit Vendor Verfication?')
+            ->modalHeading('Resubmit Vendor Verification?')
             ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
             ->modalSubmitActionLabel('Yes, Resubmit')
             ->action(function ($record) {

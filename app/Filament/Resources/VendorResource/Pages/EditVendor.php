@@ -40,18 +40,17 @@ class EditVendor extends EditRecord
     {
         return DB::transaction(function () use ($data): array {
             // TODO : If condition is always true.
-            if ($record = $this->getRecord()) {
+            $record = $this->getRecord();
 
-                if ($record->verification_status === VendorStatus::Pending &&
-                    isset($data['verification_status']) &&
-                    $data['verification_status'] !== VendorStatus::Pending->value) {
+            if ($record->verification_status === VendorStatus::Pending &&
+                isset($data['verification_status']) &&
+                $data['verification_status'] === VendorStatus::Approved->value) {
 
-                    $data['verified_by'] = Auth::id();
+                $data['verified_by'] = Auth::id();
 
-                    $data['verified_at'] = now();
-                    $roleId = HexaRole::where('name', 'Vendor')->value('id');
-                    $record->user->roles()->syncWithoutDetaching([$roleId]);
-                }
+                $data['verified_at'] = now();
+                $roleId = HexaRole::where('name', 'Vendor')->value('id');
+                $record->user->roles()->syncWithoutDetaching([$roleId]);
             }
 
             return $data;
