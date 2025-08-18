@@ -8,13 +8,11 @@ use App\Concerns\Resource\Gate;
 use App\Enums\VendorStatus;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\Pages\CreateVendor;
-use App\Filament\Resources\VendorResource\Pages\EditVendor;
 use App\Models\Vendor;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
@@ -122,7 +120,7 @@ class VendorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -148,7 +146,7 @@ class VendorResource extends Resource
                                 Forms\Components\TextInput::make('business_number'),
                                 Forms\Components\TextInput::make('license_number'),
                                 Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
-                                Forms\Components\Select::make('user_id')->visible(! $withoutGlobalScope)->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
+                                Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable()->default($withoutGlobalScope ? Auth::id() : null)->disabled($withoutGlobalScope)->dehydrated(),
                             ]),
 
                         Forms\Components\Tabs::make('Tabs')
@@ -617,7 +615,7 @@ class VendorResource extends Resource
                         Forms\Components\Section::make('Statement & Agreement')
                             ->visible(
                                 fn ($livewire): bool => $livewire instanceof CreateVendor
-                                && $withoutGlobalScope
+                                && ! $withoutGlobalScope
                             )
                             ->schema([
                                 Actions::make([
@@ -641,39 +639,6 @@ class VendorResource extends Resource
                                     ]),
                             ])
                             ->collapsible(),
-                        Forms\Components\Group::make()
-                            ->visible(
-                                fn ($livewire): bool => $livewire instanceof EditVendor
-                                && ! $withoutGlobalScope
-                                && $livewire->getRecord()->verification_status === VendorStatus::Pending
-                            )
-                            ->schema([
-                                Forms\Components\ToggleButtons::make('verification_status')
-                                    ->label('Verification Action')
-                                    ->inline()
-                                    ->required()
-                                    ->live()
-                                    ->options([
-                                        VendorStatus::Approved->value => VendorStatus::Approved->getLabel(),
-                                        VendorStatus::Rejected->value => VendorStatus::Rejected->getLabel(),
-                                    ])
-                                    ->icons([
-                                        VendorStatus::Approved->value => 'heroicon-o-check-circle',
-                                        VendorStatus::Rejected->value => 'heroicon-o-x-circle',
-                                    ])
-                                    ->colors([
-                                        VendorStatus::Approved->value => 'success',
-                                        VendorStatus::Rejected->value => 'danger',
-                                    ]),
-
-                                Forms\Components\Textarea::make('rejection_reason')
-                                    ->label('Reason for Rejection')
-                                    ->rows(4)
-                                    ->autosize()
-                                    ->visible(fn (Get $get): bool => $get('verification_status') === VendorStatus::Rejected->value)
-                                    ->required(fn (Get $get): bool => $get('verification_status') === VendorStatus::Rejected->value),
-                            ]),
-
                     ]),
 
             ]);
@@ -682,29 +647,5 @@ class VendorResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
-    }
-
-    public static function getResubmitAction(): Action
-    {
-        return Action::make('resubmit')
-            ->label('Resubmit Verification')
-            ->icon('heroicon-o-arrow-path')
-            ->color('warning')
-            ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected)
-            ->requiresConfirmation()
-            // TODO : There's a typo in the modal heading. 'Verfication' should be 'Verification'.
-            ->modalHeading('Resubmit Vendor Verification?')
-            ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
-            ->modalSubmitActionLabel('Yes, Resubmit')
-            ->action(function ($record) {
-                $record->update([
-                    'verification_status' => VendorStatus::Pending,
-                ]);
-
-                Notification::make()
-                    ->title('Your vendor verification has been resubmitted.')
-                    ->success()
-                    ->send();
-            });
     }
 }
