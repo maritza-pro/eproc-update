@@ -4,13 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources\VendorResource\Pages;
 
+use App\Enums\VendorStatus;
 use App\Filament\Resources\VendorResource;
 use Filament\Actions;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class ListVendors extends ListRecords
 {
+    use ExposesTableToWidgets;
+
     protected static string $resource = VendorResource::class;
 
     /**
@@ -22,6 +28,26 @@ class ListVendors extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            VendorResource\Widgets\OverviewVendorWidget::class,
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All'),
+            'approved' => Tab::make('Approved')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('verification_status', VendorStatus::Approved)),
+            'pending' => Tab::make('Pending')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('verification_status', VendorStatus::Pending)),
+            'rejected' => Tab::make('Rejected')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('verification_status', VendorStatus::Rejected)),
         ];
     }
 

@@ -61,6 +61,13 @@ class VendorResource extends Resource
         ];
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            VendorResource\Widgets\OverviewVendorWidget::class,
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
