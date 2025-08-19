@@ -10,6 +10,7 @@ use App\Models\Vendor;
 use Filament\Widgets\Concerns\InteractsWithPageTable;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
 
 class OverviewVendorWidget extends BaseWidget
 {
@@ -17,11 +18,14 @@ class OverviewVendorWidget extends BaseWidget
     
     protected function getStats(): array
     {
-        $data = Vendor::query();
+        $data = Vendor::query()
+        ->select('verification_status', DB::raw('count(*) as total'))
+        ->groupBy('verification_status')
+        ->pluck('total', 'verification_status');
 
-        $approved = $data->where('verification_status', VendorStatus::Approved)->count();
-        $pending = $data->where('verification_status', VendorStatus::Pending)->count();
-        $rejected = $data->where('verification_status', VendorStatus::Rejected)->count();
+        $approved = $data->get(VendorStatus::Approved->value) ?? 0;
+        $pending = $data->get(VendorStatus::Pending->value) ?? 0;;
+        $rejected = $data->get(VendorStatus::Rejected->value) ?? 0;;
 
         return [
             Stat::make('Approved', $approved),
