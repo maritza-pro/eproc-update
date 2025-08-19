@@ -14,8 +14,8 @@ php8.4 /usr/bin/composer install --no-interaction --no-dev --prefer-dist --apcu-
 php8.4 artisan migrate --force
 
 # build assets
-# yarn install
-# yarn build
+yarn install
+yarn build
 
 # clear cache
 php8.4 artisan modelCache:clear

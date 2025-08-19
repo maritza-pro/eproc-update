@@ -134,8 +134,8 @@ class DashboardPanelProvider extends PanelProvider
                     ->label('Settings'),
                 NavigationGroup::make()
                     ->label('Systems'),
-            ])
-            // TODO : make sure aja pake ini yg terbaik atau bukan, atau pake tailwind class nya langsung di blade
-            ->viteTheme('resources/css/custom.css');
+            ]);
+        // TODO : make sure aja pake ini yg terbaik atau bukan, atau pake tailwind class nya langsung di blade
+        // ->viteTheme('resources/css/custom.css');
     }
 }
