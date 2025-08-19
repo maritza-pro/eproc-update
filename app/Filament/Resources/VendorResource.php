@@ -9,11 +9,9 @@ use App\Enums\VendorStatus;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\Pages\CreateVendor;
 use App\Models\Vendor;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
@@ -76,12 +74,17 @@ class VendorResource extends Resource
                 });
             })
             ->columns([
-                Tables\Columns\IconColumn::make('verification_status')
+                Tables\Columns\TextColumn::make('is_blacklisted')
                     ->label('Status')
+                    ->badge()
+                    ->formatStateUsing(fn ($record) => $record->is_blacklisted ? 'Blacklisted' : 'Active')
+                    ->color(fn ($record) => $record->is_blacklisted ? 'gray' : 'success'),
+                Tables\Columns\TextColumn::make('company_name')->searchable(),
+                Tables\Columns\IconColumn::make('verification_status')
+                    ->label('Verification Status')
                     ->icon(fn (VendorStatus $state): string => $state->getIcon())
                     ->color(fn (VendorStatus $state): string => $state->getColor())
                     ->alignCenter(),
-                Tables\Columns\TextColumn::make('company_name')->searchable(),
                 Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
@@ -120,22 +123,31 @@ class VendorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope');
 
         return $form
             ->schema([
                 Forms\Components\Card::make()
+                ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted ?? $get('is_blacklisted'))
+                ->schema([
+                    Forms\Components\Textarea::make('blacklist_reason')
+                    ->label('ⓘ Vendor is BLACKLISTED')
+                    ->disabled()
+                    ->autosize()
+                    ->placeholder('This vendor is currently blocked from participating in procurements.'),
+                ]),
+                Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\ViewField::make('verification_status')
                             ->view('filament.forms.components.status-badge')
-                            ->hidden(fn ($livewire): bool => $livewire instanceof CreateVendor)
+                            ->hidden(fn ($livewire, ?Vendor $record): bool => $livewire instanceof CreateVendor || $record?->is_blacklisted)
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('rejection_reason')
                             ->label('ⓘ Verification Notes')
                             ->disabled()
                             ->autosize()
                             ->helperText('Please check the notes above and update your details below before resubmitting.')
-                            ->visible(fn (?Vendor $record): bool => $record?->verification_status === VendorStatus::Rejected),
+                            ->visible(fn (?Vendor $record): bool => $record?->verification_status === VendorStatus::Rejected && !$record?->is_blacklisted),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')->required(),

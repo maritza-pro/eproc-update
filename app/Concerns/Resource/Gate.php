@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Concerns\Resource;
 
+use App\Filament\Resources\BidResource;
+use App\Filament\Resources\ProcurementResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,6 +67,28 @@ trait Gate
 
     public static function canViewAny(): bool
     {
-        return Auth::user()->can(static::getModelLabel() . '.viewAny');
+        $restrictedResources = [
+            ProcurementResource::class,
+            BidResource::class,
+        ];
+
+        if (Auth::user()->can(static::getModelLabel().'.withoutGlobalScope') && Auth::user()->can(static::getModelLabel().'.view')) {
+            return true;
+        }
+
+        if (Auth::user()->can(static::getModelLabel().'.viewAny')) {
+            if (in_array(static::class, $restrictedResources)) {
+                return Auth::user()->vendor && ! Auth::user()->vendor->is_blacklisted;
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isSuper(): bool
+    {
+        return Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope') ?? false;
     }
 }

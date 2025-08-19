@@ -26,11 +26,13 @@ class OverviewVendorWidget extends BaseWidget
         $approved = $data->get(VendorStatus::Approved->value) ?? 0;
         $pending = $data->get(VendorStatus::Pending->value) ?? 0;;
         $rejected = $data->get(VendorStatus::Rejected->value) ?? 0;;
+        $blacklisted = Vendor::query()->where('is_blacklisted', true)->count();
 
         return [
             Stat::make('Approved', $approved),
             Stat::make('Pending', $pending),
             Stat::make('Rejected', $rejected),
+            Stat::make('Blacklisted', $blacklisted),
         ];
     }
 
