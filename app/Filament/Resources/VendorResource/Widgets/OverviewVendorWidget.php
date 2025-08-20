@@ -19,6 +19,7 @@ class OverviewVendorWidget extends BaseWidget
     protected function getStats(): array
     {
         $data = Vendor::query()
+        ->where('is_blacklisted', false)
         ->select('verification_status', DB::raw('count(*) as total'))
         ->groupBy('verification_status')
         ->pluck('total', 'verification_status');
