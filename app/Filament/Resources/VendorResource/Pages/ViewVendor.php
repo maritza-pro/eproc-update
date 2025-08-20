@@ -41,7 +41,6 @@ class ViewVendor extends ViewRecord
                 ->color('warning')
                 ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $isSuper)
                 ->requiresConfirmation()
-                // TODO : There's a typo in the modal heading. 'Verfication' should be 'Verification'.
                 ->modalHeading('Resubmit Vendor Verification?')
                 ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
                 ->modalSubmitActionLabel('Yes, Resubmit')
@@ -170,6 +169,6 @@ class ViewVendor extends ViewRecord
      */
     private function isSuper(): bool
     {
-        return Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope') ?? false;
+        return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
     }
 }
