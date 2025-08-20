@@ -49,10 +49,9 @@
     </section>
 
     <hr class="my-6 border-gray-300">
-    <br>
 
     <section class="mt-4">
-        <h3 class="text-base font-semibold mb-2">Agreement</h3>
+        <h3 class="text-base font-semibold mb-2 mt-6">Agreement</h3>
         <p class="text-justify mb-4">
             By participating within this process, the vendor agrees to the following terms:
         </p>

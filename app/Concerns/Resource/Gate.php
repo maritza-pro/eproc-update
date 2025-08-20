@@ -86,9 +86,4 @@ trait Gate
 
         return false;
     }
-
-    private function isSuper(): bool
-    {
-        return Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope') ?? false;
-    }
 }
