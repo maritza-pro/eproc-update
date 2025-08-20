@@ -39,7 +39,7 @@ class ViewVendor extends ViewRecord
                 ->label('Resubmit Verification')
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')
-                ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $isSuper)
+                ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $isSuper && ! $record->is_blacklisted)
                 ->requiresConfirmation()
                 ->modalHeading('Resubmit Vendor Verification?')
                 ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
