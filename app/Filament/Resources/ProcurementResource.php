@@ -16,6 +16,7 @@ use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
@@ -124,6 +125,15 @@ class ProcurementResource extends Resource
                             ]),
                     ]),
             ]);
+    }
+
+    public static function canViewAny(): bool
+    {
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.viewAny')) {
+            return true;
+        }
+        
+        return Auth::user()->can(static::getModelLabel() . '.viewAny') && Auth::user()->vendor->is_blacklisted === false;
     }
 
     public static function getEloquentQuery(): Builder
