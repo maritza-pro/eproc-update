@@ -1,94 +1,122 @@
-<div class="space-y-6 text-sm leading-6">
-    <section class="space-y-3">
-        <h3 class="text-base font-semibold">Statement</h3>
-        <p class="text-justify">
+<div class="text-gray-800">
+    <section class="mb-4">
+        <h3 class="text-base font-semibold mb-2">Statement</h3>
+        <p class="text-justify mb-4">
             By submitting and completing the required data on this system, the undersigned vendor hereby declares that:
         </p>
 
-        <ol class="numbered-list space-y-2">
-            <li class="text-justify">
-                <span class="li-title">Accuracy of Information</span>
-                <span class="li-desc">
-                    All information provided, including but not limited to company details, qualifications, certifications,
-                    financial data, and supporting documents, is true, accurate, and complete to the best of our knowledge.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Compliance with Regulations</span>
-                <span class="li-desc">
-                    The vendor complies with all applicable laws, regulations, and industry standards relevant to the
-                    procurement process and the goods/services offered.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Authorization</span>
-                <span class="li-desc">
-                    The individual submitting this data is duly authorized to act on behalf of the vendor and bind the
-                    vendor to the terms of this agreement.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Data Updates</span>
-                <span class="li-desc">
-                    The vendor agrees to promptly update any changes to the submitted data, including contact information,
-                    certifications, or other relevant details, to ensure ongoing accuracy.
-                </span>
-            </li>
-        </ol>
+        <div class="space-y-4">
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">1.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Accuracy of Information</span>
+                    <span class="text-justify">
+                        All information provided, including but not limited to company details, qualifications, certifications, financial data, and supporting documents, is true, accurate, and complete to the best of our knowledge.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">2.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Compliance with Regulations</span>
+                    <span class="text-justify">
+                        The vendor complies with all applicable laws, regulations, and industry standards relevant to the procurement process and the goods/services offered.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">3.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Authorization</span>
+                    <span class="text-justify">
+                        The individual submitting this data is duly authorized to act on behalf of the vendor and bind the vendor to the terms of this agreement.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">4.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Data Updates</span>
+                    <span class="text-justify">
+                        The vendor agrees to promptly update any changes to the submitted data, including contact information, certifications, or other relevant details, to ensure ongoing accuracy.
+                    </span>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <hr>
+    <hr class="my-6 border-gray-300">
+    <br>
 
-    <section class="space-y-3">
-        <h3 class="text-base font-semibold">Agreement</h3>
-        <p class="text-justify">
+    <section class="mt-4">
+        <h3 class="text-base font-semibold mb-2">Agreement</h3>
+        <p class="text-justify mb-4">
             By participating within this process, the vendor agrees to the following terms:
         </p>
 
-        <ol class="numbered-list space-y-2">
-            <li class="text-justify">
-                <span class="li-title">Adherence to Procurement Policies</span>
-                <span class="li-desc">
-                    The vendor shall adhere to all policies, procedures, and guidelines outlined by our company and the
-                    procuring entity during the procurement process.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Confidentiality</span>
-                <span class="li-desc">
-                    The vendor shall treat all information related to the procurement process, including bidding details
-                    and proprietary data, as confidential and shall not disclose it to unauthorized parties without prior
-                    written consent.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Fair Competition</span>
-                <span class="li-desc">
-                    The vendor commits to engaging in fair and ethical practices, refraining from any form of collusion,
-                    bid rigging, or other anti-competitive behavior.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Liability for Errors</span>
-                <span class="li-desc">
-                    The vendor assumes full responsibility for any errors, omissions, or misrepresentations in the
-                    submitted data and agrees to indemnify the procuring entity against any resulting claims or losses.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Acceptance of Terms</span>
-                <span class="li-desc">
-                    Submission of data constitutes acceptance of the terms and conditions of this platform, including any
-                    additional terms specified in the procurement documentation.
-                </span>
-            </li>
-            <li class="text-justify">
-                <span class="li-title">Data Privacy</span>
-                <span class="li-desc">
-                    The vendor consents to the collection, processing, and storage of submitted data in accordance with
-                    our privacy policy and applicable data protection laws.
-                </span>
-            </li>
-        </ol>
+        <div class="space-y-4">
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">1.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Adherence to Procurement Policies</span>
+                    <span class="text-justify">
+                        The vendor shall adhere to all policies, procedures, and guidelines outlined by our company and the procuring entity during the procurement process.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">2.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Confidentiality</span>
+                    <span class="text-justify">
+                        The vendor shall treat all information related to the procurement process, including bidding details and proprietary data, as confidential and shall not disclose it to unauthorized parties without prior written consent.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">3.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Fair Competition</span>
+                    <span class="text-justify">
+                        The vendor commits to engaging in fair and ethical practices, refraining from any form of collusion, bid rigging, or other anti-competitive behavior.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">4.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Liability for Errors</span>
+                    <span class="text-justify">
+                        The vendor assumes full responsibility for any errors, omissions, or misrepresentations in the submitted data and agrees to indemnify the procuring entity against any resulting claims or losses.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">5.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Acceptance of Terms</span>
+                    <span class="text-justify">
+                        Submission of data constitutes acceptance of the terms and conditions of this platform, including any additional terms specified in the procurement documentation.
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-start">
+                <span class="w-6 font-semibold">6.</span>
+                <div class="flex-1">
+                    <span class="block font-semibold">Data Privacy</span>
+                    <span class="text-justify">
+                        The vendor consents to the collection, processing, and storage of submitted data in accordance with our privacy policy and applicable data protection laws.
+                    </span>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
