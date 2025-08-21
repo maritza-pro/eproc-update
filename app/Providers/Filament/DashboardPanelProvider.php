@@ -69,7 +69,7 @@ class DashboardPanelProvider extends PanelProvider
             // ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
-                'blacklist' => '#374151'
+                'blacklist' => '#374151',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

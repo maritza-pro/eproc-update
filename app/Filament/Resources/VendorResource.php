@@ -57,13 +57,6 @@ class VendorResource extends Resource
         ];
     }
 
-    public static function getWidgets(): array
-    {
-        return [
-            VendorResource\Widgets\OverviewVendorWidget::class,
-        ];
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -123,19 +116,19 @@ class VendorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted ?? $get('is_blacklisted'))
-                ->schema([
-                    Forms\Components\Textarea::make('blacklist_reason')
-                    ->label('ⓘ Vendor is BLACKLISTED')
-                    ->disabled()
-                    ->autosize()
-                    ->placeholder('This vendor is currently blocked from participating in procurements.'),
-                ]),
+                    ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted ?? $get('is_blacklisted'))
+                    ->schema([
+                        Forms\Components\Textarea::make('blacklist_reason')
+                            ->label('ⓘ Vendor is BLACKLISTED')
+                            ->disabled()
+                            ->autosize()
+                            ->placeholder('This vendor is currently blocked from participating in procurements.'),
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\ViewField::make('verification_status')
@@ -147,7 +140,7 @@ class VendorResource extends Resource
                             ->disabled()
                             ->autosize()
                             ->helperText('Please check the notes above and update your details below before resubmitting.')
-                            ->visible(fn (?Vendor $record): bool => $record?->verification_status === VendorStatus::Rejected && !$record?->is_blacklisted),
+                            ->visible(fn (?Vendor $record): bool => $record?->verification_status === VendorStatus::Rejected && ! $record?->is_blacklisted),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')->required(),
@@ -659,5 +652,12 @@ class VendorResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            VendorResource\Widgets\OverviewVendorWidget::class,
+        ];
     }
 }

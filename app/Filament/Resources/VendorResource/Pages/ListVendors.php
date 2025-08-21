@@ -38,27 +38,6 @@ class ListVendors extends ListRecords
         ];
     }
 
-    public function getTabs(): array
-    {
-        return [
-            'all' => Tab::make('All'),
-            'approved' => Tab::make('Approved')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query
-                    ->where('verification_status', VendorStatus::Approved)
-                    ->where('is_blacklisted', false)),
-            'pending' => Tab::make('Pending')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query
-                    ->where('verification_status', VendorStatus::Pending)
-                    ->where('is_blacklisted', false)),
-            'rejected' => Tab::make('Rejected')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query
-                    ->where('verification_status', VendorStatus::Rejected)
-                    ->where('is_blacklisted', false)),
-            'blacklisted' => Tab::make('Blacklisted')
-                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('is_blacklisted', true)),
-        ];
-    }
-
     /**
      * Mount the page.
      *
@@ -81,5 +60,26 @@ class ListVendors extends ListRecords
 
             return;
         }
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All'),
+            'approved' => Tab::make('Approved')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                    ->where('verification_status', VendorStatus::Approved)
+                    ->where('is_blacklisted', false)),
+            'pending' => Tab::make('Pending')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                    ->where('verification_status', VendorStatus::Pending)
+                    ->where('is_blacklisted', false)),
+            'rejected' => Tab::make('Rejected')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                    ->where('verification_status', VendorStatus::Rejected)
+                    ->where('is_blacklisted', false)),
+            'blacklisted' => Tab::make('Blacklisted')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('is_blacklisted', true)),
+        ];
     }
 }
