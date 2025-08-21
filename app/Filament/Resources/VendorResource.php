@@ -77,8 +77,8 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('is_blacklisted')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn ($record) => $record->is_blacklisted ? 'Blacklisted' : 'Active')
-                    ->color(fn ($record) => $record->is_blacklisted ? 'gray' : 'success'),
+                    ->formatStateUsing(fn ($record): string => $record->is_blacklisted ? 'Blacklisted' : 'Active')
+                    ->color(fn ($record): string => $record->is_blacklisted ? 'gray' : 'success'),
                 Tables\Columns\TextColumn::make('company_name')->searchable(),
                 Tables\Columns\IconColumn::make('verification_status')
                     ->label('Verification Status')
