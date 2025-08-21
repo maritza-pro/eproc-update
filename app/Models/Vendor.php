@@ -37,6 +37,8 @@ class Vendor extends Model
         'rejection_reason',
         'verified_by',
         'verified_at',
+        'is_blacklisted',
+        'blacklist_reason',
     ];
 
     /**
@@ -49,6 +51,7 @@ class Vendor extends Model
         return [
             'verification_status' => VendorStatus::class,
             'verified_at' => 'datetime',
+            'is_blacklisted' => 'boolean',
         ];
     }
 

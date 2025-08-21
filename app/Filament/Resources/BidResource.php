@@ -134,6 +134,15 @@ class BidResource extends Resource
             ]);
     }
 
+    public static function canViewAny(): bool
+    {
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.viewAny')) {
+            return true;
+        }
+        
+        return Auth::user()->can(static::getModelLabel() . '.viewAny') && Auth::user()->vendor->is_blacklisted === false;
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
