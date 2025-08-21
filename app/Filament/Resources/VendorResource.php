@@ -628,7 +628,7 @@ class VendorResource extends Resource
                                         ->label('Please read the terms carefully before proceeding.')
                                         ->link()
                                         ->color('primary')
-                                        ->modalHeading('Statement & Agreement')
+                                        ->modalHeading('')
                                         ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
                                         ->modalSubmitAction(false)
                                         ->modalCancelActionLabel('Close')
