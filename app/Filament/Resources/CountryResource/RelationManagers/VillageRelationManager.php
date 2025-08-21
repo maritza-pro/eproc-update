@@ -66,11 +66,7 @@ class VillageRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
-                        if (! $country) {
-                            return [];
-                        }
-
-                        return Province::where('country_id', $country->id)
+                        return Province::query()->where('country_id', $country->id)
                             ->pluck('name', 'id');
                     })
                     ->required()
@@ -92,7 +88,7 @@ class VillageRelationManager extends RelationManager
                             return [];
                         }
 
-                        return City::where('province_id', $provinceId)
+                        return City::query()->where('province_id', $provinceId)
                             ->pluck('name', 'id');
                     })
                     ->required()
@@ -113,7 +109,7 @@ class VillageRelationManager extends RelationManager
                             return [];
                         }
 
-                        return District::where('city_id', $cityId)
+                        return District::query()->where('city_id', $cityId)
                             ->pluck('name', 'id');
                     })
                     ->required()

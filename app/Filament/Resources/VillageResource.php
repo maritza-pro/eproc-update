@@ -113,8 +113,8 @@ class VillageResource extends Resource
                                         $set('district_id', null);
                                     })
                                     ->afterStateHydrated(function (callable $set, $record) {
-                                        if ($record?->district) {
-                                            $set('country_id', $record?->district?->city?->province?->country_id);
+                                        if ($record?->district?->city?->province) {
+                                            $set('country_id', $record->district->city->province->country_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('province_id')
@@ -128,12 +128,12 @@ class VillageResource extends Resource
                                     })
                                     ->options(
                                         fn (callable $get) => $get('country_id')
-                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            ? Province::query()->where('country_id', $get('country_id'))->pluck('name', 'id')
                                             : []
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {
-                                        if ($record?->district) {
-                                            $set('province_id', $record?->district?->city?->province_id);
+                                        if ($record?->district?->city) {
+                                            $set('province_id', $record->district->city->province_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('city_id')
@@ -144,12 +144,12 @@ class VillageResource extends Resource
                                     ->afterStateUpdated(fn (callable $set): mixed => $set('district_id', null))
                                     ->options(
                                         fn (callable $get) => $get('province_id')
-                                            ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
+                                            ? City::query()->where('province_id', $get('province_id'))->pluck('name', 'id')
                                             : []
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {
-                                        if ($record?->district) {
-                                            $set('city_id', $record?->district?->city_id);
+                                        if ($record && $record->district) {
+                                            $set('city_id', $record->district->city_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('district_id')
@@ -159,7 +159,7 @@ class VillageResource extends Resource
                                     ->disabled(fn (callable $get): bool => empty($get('city_id')))
                                     ->options(
                                         fn (callable $get) => $get('city_id')
-                                            ? District::where('city_id', $get('city_id'))->pluck('name', 'id')
+                                            ? District::query()->where('city_id', $get('city_id'))->pluck('name', 'id')
                                             : []
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {

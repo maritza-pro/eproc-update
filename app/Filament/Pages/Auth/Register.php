@@ -24,10 +24,11 @@ class Register extends BaseRegister
 
             $data = $this->form->getState();
             $user = $this->handleRegistration($data);
-            $roleId = HexaRole::where('name', 'User')->value('id');
+            $roleId = HexaRole::query()->where('name', 'User')->value('id');
 
             throw_if(! $roleId, ValidationValidationException::withMessages(['Role' => 'User Role Not Found']));
 
+            /** @var \App\Models\User $user */
             $user->roles()->syncWithoutDetaching([$roleId]);
 
             Notification::make()

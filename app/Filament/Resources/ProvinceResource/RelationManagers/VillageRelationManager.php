@@ -66,11 +66,7 @@ class VillageRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $province = $livewire->getOwnerRecord();
 
-                        if (! $province) {
-                            return [];
-                        }
-
-                        return City::where('province_id', $province->id)
+                        return City::query()->where('province_id', $province->id)
                             ->pluck('name', 'id');
                     })
                     ->required()
@@ -92,7 +88,7 @@ class VillageRelationManager extends RelationManager
                             return [];
                         }
 
-                        return District::where('city_id', $cityId)
+                        return District::query()->where('city_id', $cityId)
                             ->pluck('name', 'id');
                     })
                     ->required()

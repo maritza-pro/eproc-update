@@ -48,7 +48,7 @@ class EditVendor extends EditRecord
                 $data['verified_by'] = Auth::id();
 
                 $data['verified_at'] = now();
-                $roleId = HexaRole::where('name', 'Vendor')->value('id');
+                $roleId = HexaRole::query()->where('name', 'Vendor')->value('id');
                 $record->user->roles()->syncWithoutDetaching([$roleId]);
             }
 

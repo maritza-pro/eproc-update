@@ -118,7 +118,7 @@ class CityResource extends Resource
                                     })
                                     ->options(
                                         fn (callable $get) => $get('country_id')
-                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            ? Province::query()->where('country_id', $get('country_id'))->pluck('name', 'id')
                                             : []
                                     ),
                                 Forms\Components\TextInput::make('name')

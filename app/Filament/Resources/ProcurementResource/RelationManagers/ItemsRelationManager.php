@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources\ProcurementResource\RelationManagers;
 
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -60,7 +61,7 @@ class ItemsRelationManager extends RelationManager
         return $form->schema([
             Forms\Components\Select::make('product_id')
                 ->label('Product')
-                ->options(\App\Models\Product::pluck('name', 'id'))
+                ->options(Product::query()->pluck('name', 'id'))
                 ->searchable()
                 ->required(),
             Forms\Components\TextInput::make('quantity')

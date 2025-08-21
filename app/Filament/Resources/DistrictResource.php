@@ -109,8 +109,8 @@ class DistrictResource extends Resource
                                         $set('city_id', null);
                                     })
                                     ->afterStateHydrated(function (callable $set, $record) {
-                                        if ($record?->city) {
-                                            $set('country_id', $record?->city?->province?->country_id);
+                                        if ($record?->city?->province) {
+                                            $set('country_id', $record->city->province->country_id);
                                         }
                                     }),
                                 Forms\Components\Select::make('province_id')
@@ -121,7 +121,7 @@ class DistrictResource extends Resource
                                     ->afterStateUpdated(fn (callable $set): mixed => $set('city_id', null))
                                     ->options(
                                         fn (callable $get) => $get('country_id')
-                                            ? Province::where('country_id', $get('country_id'))->pluck('name', 'id')
+                                            ? Province::query()->where('country_id', $get('country_id'))->pluck('name', 'id')
                                             : []
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {
@@ -136,7 +136,7 @@ class DistrictResource extends Resource
                                     ->disabled(fn (callable $get): bool => empty($get('province_id')))
                                     ->options(
                                         fn (callable $get) => $get('province_id')
-                                            ? City::where('province_id', $get('province_id'))->pluck('name', 'id')
+                                            ? City::query()->where('province_id', $get('province_id'))->pluck('name', 'id')
                                             : []
                                     )
                                     ->afterStateHydrated(function (callable $set, $record) {

@@ -36,10 +36,10 @@ class ListUsers extends ListRecords
 
         $user = Auth::user();
 
-        if (! $user->can(UserResource::getModelLabel() . '.withoutGlobalScope')) {
-            $this->redirect(
-                UserResource::getUrl('view', ['record' => $user->getKey()])
-            );
+        if (! $user->can(UserResource::getModelLabel() . '.withoutGlobalScope') && $user) {
+            /** @var \App\Models\User $user */
+            $this->redirect(UserResource::getUrl('view', ['record' => $user->getKey()])
+                );          
         }
     }
 }

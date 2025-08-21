@@ -121,7 +121,7 @@ class VendorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted ?? $get('is_blacklisted'))
+                    ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted)
                     ->schema([
                         Forms\Components\Textarea::make('blacklist_reason')
                             ->label('ⓘ Vendor is BLACKLISTED')
@@ -140,7 +140,7 @@ class VendorResource extends Resource
                             ->disabled()
                             ->autosize()
                             ->helperText('Please check the notes above and update your details below before resubmitting.')
-                            ->visible(fn (?Vendor $record): bool => $record?->verification_status === VendorStatus::Rejected && ! $record?->is_blacklisted),
+                            ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('company_name')->required(),
@@ -368,7 +368,7 @@ class VendorResource extends Resource
                                                             Forms\Components\TextInput::make('registered_tax_office')
                                                                 ->label('Registered Tax Office')
                                                                 ->nullable(),
-                                                            Forms\Components\TextArea::make('address')
+                                                            Forms\Components\Textarea::make('address')
                                                                 ->label('Address')
                                                                 ->autosize()
                                                                 ->nullable(),

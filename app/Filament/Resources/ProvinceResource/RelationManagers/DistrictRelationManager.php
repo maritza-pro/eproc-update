@@ -61,7 +61,7 @@ class DistrictRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('city_id')
                     ->label('City')
-                    ->options(fn (RelationManager $livewire) => City::where('province_id', $livewire->getOwnerRecord()->id)
+                    ->options(fn (RelationManager $livewire) => City::query()->where('province_id', $livewire->getOwnerRecord()->id)
                         ->pluck('name', 'id'))
                     ->required()
                     ->reactive()
