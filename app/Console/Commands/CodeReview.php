@@ -27,6 +27,7 @@ class CodeReview extends Command
 
     private array $excludedDirectories = [
         'bootstrap/cache',
+        'app/Console/Commands',
         'bin',
         'config',
         'node_modules',
@@ -204,7 +205,15 @@ Rule:
 - Potential improvements or simplifications
 - Risks or hidden bugs (especially cross-DB differences)
 - Reusability / cleaner approach
-- Jawab dalam bahasa indonesia yang professional
+
+BAHASA:
+- Bahasa Indonesia profesional, ringkas, to the point.
+
+BATASAN & HEURISTIK (agar fokus dan tidak false positive):
+- Penggunaan Eloquent `value('id')` untuk mengambil satu kolom adalah BENAR dan BUKAN isu (jangan sarankan `first()`/`firstOrFail()` kecuali ada kebutuhan akses field lain atau perlu exception semantics).
+- Hardcoded string seperti `'User'` BUKAN isu kritikal KECUALI konteks multi-tenant/i18n/konfigurasi dinamis sehingga berpotensi salah role. Jika tidak terbukti, abaikan.
+- Jangan menilai gaya wording notifikasi, preferensi naming, atau saran kosmetik sebagai kritikal.
+- Jangan sarankan DB::raw, hindari penggunaan DB::raw (flag jika ada).
 
 Definisi **critical** (hanya keluarkan ini):
 - Pelanggaran fatal PSR-12 atau bug yang bisa bikin error runtime atau ubah perilaku data
