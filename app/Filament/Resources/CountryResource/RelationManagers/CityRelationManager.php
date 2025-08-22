@@ -62,7 +62,7 @@ class CityRelationManager extends RelationManager
                 Forms\Components\Select::make('province_id')
                     ->label('Province')
                     ->options(
-                        fn (RelationManager $livewire) => Province::where('country_id', $livewire->getOwnerRecord()->id)
+                        fn (RelationManager $livewire) => Province::query()->where('country_id', $livewire->getOwnerRecord()->id)
                             ->pluck('name', 'id')
                     )
                     ->required()

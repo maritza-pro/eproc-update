@@ -36,7 +36,10 @@ class Profile extends Page implements HasForms
      */
     public function mount(): void
     {
-        $this->form->fill(Auth::user()->getAttributes());
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $this->form->fill($user->getAttributes());
+
     }
 
     /**
@@ -46,6 +49,9 @@ class Profile extends Page implements HasForms
      */
     public function form(Form $form): Form
     {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -102,7 +108,7 @@ class Profile extends Page implements HasForms
                     ]),
             ])
             ->statePath('data')
-            ->model(Auth::user());
+            ->model($user);
     }
 
     /**
@@ -115,6 +121,8 @@ class Profile extends Page implements HasForms
         $data = $this->form->getState();
 
         DB::transaction(function () use ($data): void {
+
+            /** @var \App\Models\User $user */
             $user = Auth::user();
 
             $user->update([

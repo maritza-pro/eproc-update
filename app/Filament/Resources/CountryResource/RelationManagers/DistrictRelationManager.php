@@ -65,12 +65,13 @@ class DistrictRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
-                        if (! $country) {
+                        if ($country == null) {
                             return [];
                         }
 
-                        return Province::where('country_id', $country->id)
+                        return Province::query()->where('country_id', $country->id)
                             ->pluck('name', 'id');
+
                     })
                     ->required()
                     ->reactive()
@@ -91,7 +92,7 @@ class DistrictRelationManager extends RelationManager
                             return [];
                         }
 
-                        return City::where('province_id', $provinceId)
+                        return City::query()->where('province_id', $provinceId)
                             ->pluck('name', 'id');
                     })
                     ->required()

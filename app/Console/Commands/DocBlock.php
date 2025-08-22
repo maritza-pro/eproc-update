@@ -79,8 +79,8 @@ class DocBlock extends Command
             }
 
             $this->info('→ Scanning: ' . $file->getPathname());
-            $lines = file($file->getPathname());
-            $fileContent = file_get_contents($file->getPathname());
+            $lines = (array) file($file->getPathname());
+            $fileContent = (string) file_get_contents($file->getPathname());
             $lineCount = count($lines);
             $modified = false;
 

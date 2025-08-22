@@ -7,7 +7,6 @@ namespace App\Filament\Resources;
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Auth\VerifyEmail;
@@ -90,8 +89,9 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn (User $record): bool => is_null($record->email_verified_at))
-                    ->authorize(fn () => Filament::auth()->user()?->roles()->doesntExist() ?? false)
+                    ->visible(fn (User $record): bool => $record->email_verified_at === null)
+                    // @phpstan-ignore method.nonObject
+                    ->authorize(fn () => Auth::user()->roles()->doesntExist() ?? false)
                     ->action(function (User $record) {
                         $record->email_verified_at = now();
                         $record->save();

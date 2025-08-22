@@ -8,6 +8,8 @@ use App\Concerns\Resource\Gate;
 use App\Filament\Resources\BidResource\Pages;
 use App\Filament\Resources\BidResource\RelationManagers\ItemsRelationManager;
 use App\Models\Bid;
+use App\Models\Procurement;
+use App\Models\Vendor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -102,7 +104,7 @@ class BidResource extends Resource
     public static function form(Form $form): Form
     {
         $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
-        $vendorOptions = \App\Models\Vendor::when(! $withoutGlobalScope, fn (Builder $query): Builder => $query->where('user_id', Auth::id()))
+        $vendorOptions = Vendor::query()->unless($withoutGlobalScope, fn (Builder $query): Builder => $query->where('user_id', Auth::id()))
             ->pluck('company_name', 'id');
 
         return $form
@@ -118,7 +120,7 @@ class BidResource extends Resource
                                     ->searchable(),
                                 Forms\Components\Select::make('procurement_id')
                                     ->relationship('procurement', 'title')
-                                    ->options(\App\Models\Procurement::pluck('title', 'id'))
+                                    ->options(Procurement::query()->pluck('title', 'id'))
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Textarea::make('notes')
@@ -136,11 +138,13 @@ class BidResource extends Resource
 
     public static function canViewAny(): bool
     {
-        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.viewAny')) {
+        $user = Auth::user();
+
+        if ($user->can(static::getModelLabel() . '.withoutGlobalScope') && $user->can(static::getModelLabel() . '.viewAny')) {
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.viewAny') && Auth::user()->vendor->is_blacklisted === false;
+        return $user->can(static::getModelLabel() . '.viewAny') && $user?->vendor->is_blacklisted === false;
     }
 
     public static function getEloquentQuery(): Builder
