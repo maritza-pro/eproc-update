@@ -78,4 +78,15 @@ class CreateVendor extends CreateRecord
     {
         return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
+
+        if (! $withoutGlobalScope) {
+            $data['user_id'] = Auth::id();
+        }
+
+        return $data;
+    }
 }

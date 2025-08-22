@@ -130,7 +130,7 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -142,26 +142,25 @@ class UserResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
-                                    ->readOnly()
                                     ->required(),
                                 Forms\Components\DateTimePicker::make('email_verified_at')
-                                    ->disabled($withoutGlobalScope),
+                                    ->disabled(! $withoutGlobalScope),
                                 Forms\Components\TextInput::make('password')
                                     ->password()
                                     ->revealable()
                                     ->required(fn (string $context): bool => $context === 'create')
                                     ->nullable()
                                     ->dehydrated(fn ($state) => filled($state))
-                                    ->hidden($withoutGlobalScope),
+                                    ->hidden(! $withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
-                                    ->disabled($withoutGlobalScope)
+                                    ->disabled(! $withoutGlobalScope)
                                     ->label('Role Name')
                                     ->relationship('roles', 'name')
                                     ->placeholder('Superuser'),
                                 Forms\Components\Section::make('Change Password')
                                     ->collapsible()
                                     ->collapsed()
-                                    ->hidden(fn (string $context): bool => $context === 'view' || ! $withoutGlobalScope)
+                                    ->hidden(fn (string $context): bool => $context === 'view' || $withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
                                             ->label('Current Password')
