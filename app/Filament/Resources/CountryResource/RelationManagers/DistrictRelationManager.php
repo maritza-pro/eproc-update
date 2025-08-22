@@ -64,13 +64,13 @@ class DistrictRelationManager extends RelationManager
                     ->label('Province')
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
-                        
+
                         if ($country == null) {
                             return [];
                         }
 
                         return Province::query()->where('country_id', $country->id)
-                        ->pluck('name', 'id');
+                            ->pluck('name', 'id');
 
                     })
                     ->required()

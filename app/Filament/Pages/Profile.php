@@ -121,10 +121,10 @@ class Profile extends Page implements HasForms
         $data = $this->form->getState();
 
         DB::transaction(function () use ($data): void {
-            
+
             /** @var \App\Models\User $user */
             $user = Auth::user();
-            
+
             $user->update([
                 'name' => $data['name'],
                 'email' => $data['email'],

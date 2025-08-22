@@ -81,7 +81,7 @@ class DocBlock extends Command
             $this->info('→ Scanning: ' . $file->getPathname());
             $lines = (array) file($file->getPathname());
             $fileContent = (string) file_get_contents($file->getPathname());
-            $lineCount = (int) count($lines);
+            $lineCount = count($lines);
             $modified = false;
 
             for ($i = 0; $i < $lineCount; $i++) {
