@@ -79,10 +79,9 @@ class DocBlock extends Command
             }
 
             $this->info('→ Scanning: ' . $file->getPathname());
-            $lines = file($file->getPathname());
-            $fileContent = file_get_contents($file->getPathname());
-            // TODO : @vheins mang tolong yang ini ya buat phpstannya
-            $lineCount = count($lines);
+            $lines = (array) file($file->getPathname());
+            $fileContent = (string) file_get_contents($file->getPathname());
+            $lineCount = (int) count($lines);
             $modified = false;
 
             for ($i = 0; $i < $lineCount; $i++) {
@@ -108,7 +107,6 @@ class DocBlock extends Command
                         }
 
                         if ($dryRun || $write) {
-                            // TODO : @vheins mang tolong yang ini ya buat phpstannya
                             $docblock = $this->generateDocBlockWithGeminiAPI($fileContent, $functionCode); // ?? $this->generateDocBlockWithOllama($command, $fileContent, $functionCode);
 
                             if ($docblock) {
