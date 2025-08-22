@@ -26,19 +26,25 @@ class CodeReview extends Command
     protected $signature = 'code-review {--path= : Path to directory}';
 
     private array $excludedDirectories = [
-        'vendor',
+        'bootstrap/cache',
+        'bin',
+        'config',
         'node_modules',
         'storage',
-        'bootstrap/cache',
         'tests',
+        'vendor',
     ];
 
     private array $excludedFiles = [
         '.ide.helper.php',
+        '_ide_helper.php',
+        '_ide_helper_models.php',
         '.ide.model.php',
+        'rector.php',
     ];
 
-    private string $geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemma-3-27b-it:generateContent';
+    // private string $geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemma-3-27b-it:generateContent';
+    private string $geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
     /**
      * Execute the console command.
@@ -53,7 +59,6 @@ class CodeReview extends Command
             return $this::FAILURE;
         }
 
-        $missing = 0;
         $this->info('Scanning...');
         $basePath = base_path();
 
@@ -85,10 +90,12 @@ class CodeReview extends Command
 
                 continue;
             }
+
             $prompt = $this->getPrompt() . $code;
+
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post($this->geminiEndpoint . '?key=' . config('app.gemini_api_key'), [
+            ])->post($this->geminiEndpoint . '?key=' . $apiKey, [
                 'contents' => [
                     [
                         'parts' => [
@@ -101,84 +108,149 @@ class CodeReview extends Command
             if ($response->failed()) {
                 $this->error('🚨 Error: ' . $response->body());
 
-                exit();
+                return $this::FAILURE;
             }
 
-            $review = trim($response->json('candidates.0.content.parts.0.text') ?? '');
+            $rawReview = (string) ($response->json('candidates.0.content.parts.0.text') ?? '');
+            $review = trim($rawReview);
+
             $this->info("📝 Review: {$review}");
 
-            if (strtolower($review) === 'ok') {
-                $marker = "/** @CodeReview:OK */\n\n";
-
-                if (str_starts_with($code, '<?php')) {
-                    $code = preg_replace('/^<\?php\s*/', "<?php\n\n" . (string) $marker, $code, 1);
-                } else {
-                    $code = "{$marker}{$code}";
-                }
+            if ($this->isOkReview($review) || $review === '') {
+                $code = $this->insertOkMarker($code);
                 file_put_contents($file->getPathname(), $code);
+                $this->info('✅ Marked as OK.');
+                sleep(1);
 
                 continue;
             }
 
-            if (strtolower($review) === 'ok') {
-                $marker = "/** @CodeReview:OK */\n\n";
-                $code = preg_replace('/^<\?php\s*/', "<?php\n\n" . $marker, $code, 1);
+            $todoItems = $this->extractTodoItems($review);
+
+            if (empty($todoItems)) {
+                $this->info('ℹ️  No actionable items detected → Mark as OK.');
+                $code = $this->insertOkMarker($code);
                 file_put_contents($file->getPathname(), $code);
+                sleep(1);
 
                 continue;
             }
 
-            if ($review !== '') {
-                $lines = explode("\n", $review);
-                $docblockLines = [];
-                $todoLines = [];
+            $code = $this->insertTodoMarker($code, $todoItems);
+            file_put_contents($file->getPathname(), $code);
 
-                foreach ($lines as $line) {
-                    if (preg_match('/^\s*5\./', $line) || stripos($line, 'TODO:') !== false) {
-                        $todoLines[] = preg_replace('/^\s*5\.\s*/', '', $line);
-                    } else {
-                        $docblockLines[] = $line;
-                    }
-                }
+            $this->info('🛠️  Marked with TODO list.');
 
-                $comment = "/**\n * @CodeReview\n" .
-                           collect($docblockLines)
-                               ->map(fn ($line) => ' * ' . trim($line))
-                               ->implode("\n") .
-                           "\n */\n\n";
-
-                if (! empty($todoLines)) {
-                    foreach ($todoLines as $todo) {
-                        // @phpstan-ignore argument.type
-                        $comment .= '// TODO: ' . trim((string) preg_replace('/^TODO:\s*/i', '', $todo)) . "\n";
-                    }
-                    $comment .= "\n";
-                }
-
-                // Sisipkan setelah <?php
-                $code = preg_replace('/^<\?php\s*/', "<?php\n\n" . $comment, $code, 1);
-
-                file_put_contents($file->getPathname(), $code);
-                sleep(3);
-            }
+            sleep(3);
         }
 
         return $this::SUCCESS;
     }
 
+    private function extractTodoItems(string $review): array
+    {
+        $items = [];
+
+        foreach (preg_split('/\R/u', $review) ?: [] as $line) {
+            $trim = trim($line);
+
+            if ($trim === '') {
+                continue;
+            }
+
+            if (preg_match('/^(?:-|\*)\s+(.+)$/u', $trim, $m)) {
+                $items[] = trim($m[1]);
+
+                continue;
+            }
+
+            if (preg_match('/^\d+\.\s+(.+)$/u', $trim, $m)) {
+                $items[] = trim($m[1]);
+
+                continue;
+            }
+
+            if (stripos($trim, 'TODO:') === 0) {
+                $items[] = trim((string) preg_replace('/^TODO:\s*/i', '', $trim));
+
+                continue;
+            }
+        }
+
+        // Unik + rapikan
+        return array_values(array_unique(array_map(fn ($v) => rtrim($v, '.'), $items)));
+    }
+
     private function getPrompt(): string
     {
         return <<<'PROMPT'
-Anda adalah reviewer senior Laravel.
-Tinjau kode berikut dan berikan hasil review singkat, berikan TODO jika ada yang perlu diperbaiki.
+Anda adalah reviewer senior Laravel Filament.
+Tinjau kode berikut dan berikan hasil review singkat.
 
-Jika kode sudah baik dan tidak ada yang perlu diperbaiki, jawab hanya dengan "OK" jangan tambahkan komentar apapun dan hilangkan poin-poin.
-Jawab **dalam bahasa Indonesia**, singkat, to the point dan wajib plaint text tanpa symbol apapun.
+Jika kode sudah baik dan tidak ada yang perlu diperbaiki, jawab hanya dengan:
+OK
+
+Jika ADA isu **critical**, jawab hanya dalam bentuk daftar poin (satu poin per baris) tanpa awalan angka:
+- Jelaskan singkat apa yang perlu diperbaiki
+- Jangan menuliskan isu non-critical (minor/major) dalam output.
+
+Jangan gunakan simbol selain "- " di awal baris untuk setiap poin. Jangan bungkus dengan markdown/code fence.
+
+Rule:
+- PSR-12 compliance
+- Laravel filament best practices
+- Hindari penggunaan DB::raw
+- Maintainability and readability
+- Potential improvements or simplifications
+- Risks or hidden bugs (especially cross-DB differences)
+- Reusability / cleaner approach
+- Jawab dalam bahasa Jaksel
+
+Definisi **critical** (hanya keluarkan ini):
+- Pelanggaran fatal PSR-12 atau bug yang bisa bikin error runtime atau ubah perilaku data
+- Antipattern Filament yang bikin form/table/aksi gagal jalan atau menyebabkan data corruption
+- Masalah kompatibilitas DB (MySQL/PostgreSQL) yang bisa bikin migration/query fail atau data salah
+- Isu performa berat (N+1 jelas, missing index pada kolom yang jelas dipakai filter/join besar)
+- Masalah security (mass assignment berbahaya, authorization bolong di Action/Page/RelationManager)
+- Hal yang menghambat deploy/CI/CD (misconfig env/queue/cache yang pasti gagal)
 
 Kode:
 
 PROMPT;
 
+    }
+
+    private function insertOkMarker(string $code): string
+    {
+        $marker = "/** @CodeReview:OK */\n\n";
+
+        if (str_contains($code, '/** @CodeReview:OK */')) {
+            return $code;
+        }
+
+        if (str_starts_with($code, '<?php')) {
+            return (string) preg_replace('/^<\?php\s*/', "<?php\n\n{$marker}", $code, 1);
+        }
+
+        return $marker . $code;
+    }
+
+    private function insertTodoMarker(string $code, array $items): string
+    {
+        $lines = array_map(
+            fn (string $i) => ' * - ' . trim($i, " \t\n\r\0\x0B"),
+            array_filter($items, fn ($v) => $v !== '')
+        );
+
+        $comment = "/** @CodeReview:TODO \n*\n" .
+            implode("\n", $lines) .
+            "\n*/\n\n";
+
+        if (str_starts_with($code, '<?php')) {
+            return (string) preg_replace('/^<\?php\s*/', "<?php\n\n{$comment}", $code, 1);
+        }
+
+        return $comment . $code;
     }
 
     private function isExcluded(string $path): bool
@@ -189,6 +261,27 @@ PROMPT;
             }
         }
 
-        return array_any($this->excludedFiles, fn ($excludedFile): bool => str_ends_with($path, DIRECTORY_SEPARATOR . $excludedFile) || basename($path) === $excludedFile);
+        return array_any(
+            $this->excludedFiles,
+            fn (string $excludedFile): bool => str_ends_with($path, DIRECTORY_SEPARATOR . $excludedFile)
+                || basename($path) === $excludedFile
+        );
+    }
+
+    private function isOkReview(string $review): bool
+    {
+        $clean = $this->normalizeOk($review);
+
+        return $clean === 'ok';
+    }
+
+    private function normalizeOk(string $text): string
+    {
+        $t = trim($text);
+        $t = (string) preg_replace('/^```[a-zA-Z0-9]*\s*|\s*```$/m', '', $t);
+        $t = str_replace('`', '', $t);
+        $t = str_replace(['**', '*', '"', '\''], '', $t);
+
+        return strtolower(trim((string) preg_replace('/[^a-z]/', '', $t)));
     }
 }
