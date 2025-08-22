@@ -66,6 +66,10 @@ class VillageRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $province = $livewire->getOwnerRecord();
 
+                        if ($province == null) {
+                            return [];
+                        }
+
                         return City::query()->where('province_id', $province->id)
                             ->pluck('name', 'id');
                     })

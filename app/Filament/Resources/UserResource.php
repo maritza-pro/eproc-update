@@ -91,8 +91,8 @@ class UserResource extends Resource
                     ->color('success')
                     ->requiresConfirmation()
                     ->visible(fn (User $record): bool => is_null($record->email_verified_at))
-                    // @phpstan-ignore method.nonObject
-                    ->authorize(fn () => Auth::user()->roles()->doesntExist() ?? false)
+                    // @phpstan-ignore method.notFound
+                    ->authorize(fn () => Auth::user()?->roles()->doesntExist() ?? false)
                     ->action(function (User $record) {
                         $record->email_verified_at = now();
                         $record->save();

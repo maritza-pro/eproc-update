@@ -121,7 +121,7 @@ class VendorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->visible(fn ($record, callable $get): bool => (bool) $record?->is_blacklisted)
+                    ->visible(fn ($record, callable $get): bool => (bool) ($record->is_blacklisted ?? $get('is_blacklisted')))
                     ->schema([
                         Forms\Components\Textarea::make('blacklist_reason')
                             ->label('ⓘ Vendor is BLACKLISTED')
