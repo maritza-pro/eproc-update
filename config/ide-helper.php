@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'filename' => '_ide_helper.php',
+    'filename' => '.ide.helper.php',
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'models_filename' => '_ide_helper_models.php',
+    'models_filename' => '.ide.model.php',
 
     /*
     |--------------------------------------------------------------------------
