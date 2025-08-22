@@ -204,7 +204,7 @@ Rule:
 - Potential improvements or simplifications
 - Risks or hidden bugs (especially cross-DB differences)
 - Reusability / cleaner approach
-- Jawab dalam bahasa Jaksel
+- Jawab dalam bahasa indonesia yang professional
 
 Definisi **critical** (hanya keluarkan ini):
 - Pelanggaran fatal PSR-12 atau bug yang bisa bikin error runtime atau ubah perilaku data
