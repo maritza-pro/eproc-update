@@ -17,27 +17,9 @@ class FinancialTab
             ->schema([
                 Forms\Components\Repeater::make('bankVendors')
                     ->relationship()
-                    ->label('')
+                    ->hiddenLabel()
                     ->addActionLabel('Add Bank Account')
-                    ->collapsible()
-                    ->collapsed()
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
-                        $account = $state['account_name'] ?? null;
-                        $bankName = null;
-
-                        if (! empty($state['bank_id'])) {
-                            $bankName = \App\Models\Bank::query()
-                                ->whereKey($state['bank_id'])
-                                ->value('name');
-                        }
-
-                        if ($bankName && $account) {
-                            return "{$bankName} - {$account}";
-                        }
-
-                        return 'New Bank Account';
-                    })
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
@@ -57,9 +39,6 @@ class FinancialTab
                                 Forms\Components\TextInput::make('account_number')
                                     ->label('Account Number')
                                     ->nullable(),
-
-                                Forms\Components\Toggle::make('is_active')
-                                    ->nullable(),
                                 Forms\Components\View::make('recent_financial_report_attachment_viewer')
                                     ->viewData([
                                         'collectionName' => 'recent_financial_report_attachment',
@@ -75,6 +54,9 @@ class FinancialTab
                                     ->maxFiles(1)
                                     ->downloadable()
                                     ->hiddenOn('view'),
+                                    
+                                Forms\Components\Toggle::make('is_active')
+                                    ->nullable(),
                             ]),
                     ]),
             ]);
