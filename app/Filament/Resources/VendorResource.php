@@ -147,19 +147,47 @@ class VendorResource extends Resource
                             ->autosize()
                             ->helperText('Please check the notes above and update your details below before resubmitting.')
                             ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
-                        Forms\Components\Grid::make(2)
+                        Forms\Components\Grid::make(12)
                             ->schema([
-                                Forms\Components\TextInput::make('company_name')->required(),
-                                Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
-                                Forms\Components\TextInput::make('email')->email()->required(),
-                                Forms\Components\TextInput::make('phone')->tel(),
-                                Forms\Components\TextInput::make('tax_number'),
-                                Forms\Components\TextInput::make('business_number'),
-                                Forms\Components\TextInput::make('license_number'),
-                                Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
-                                Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
-                            ]),
+                                Forms\Components\Group::make([
+                                    Forms\Components\View::make('vendor_logo_attachment_viewer')
+                                        ->viewData([
+                                            'collectionName' => 'vendor_logo_attachment',
+                                            'viewLabel' => 'Company Logo',
+                                        ])
+                                        ->view('filament.forms.components.attachment-viewer')
+                                        ->visibleOn('view'),
+                                    Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_logo_attachment')
+                                        ->collection('vendor_logo_attachment')
+                                        ->maxFiles(1)
+                                        ->label('Logo (JPEG, PNG, max 2MB)')
+                                        ->acceptedFileTypes(['image/*'])
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->hiddenOn('view'),
+                                ])
+                                ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 3,
+                                    ]),
 
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('company_name')->required(),
+                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
+                                        Forms\Components\TextInput::make('email')->email()->required(),
+                                        Forms\Components\TextInput::make('phone')->tel(),
+                                        Forms\Components\TextInput::make('tax_number'),
+                                        Forms\Components\TextInput::make('business_number'),
+                                        Forms\Components\TextInput::make('license_number'),
+                                        Forms\Components\Select::make('taxonomies')->relationship('taxonomies', 'name')->searchable()->preload()->required()->label('Vendor Type'),
+                                        Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
+                                    ])
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 9,
+                                    ]),
+                            ]),
                         Forms\Components\Tabs::make('Tabs')
                             ->tabs([
                                 GeneralInformationTab::make(),

@@ -15,10 +15,15 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Vendor extends Model
+class Vendor extends Model implements HasMedia
+
 {
     use Cachable,
+        InteractsWithMedia,
         LogsActivity,
         SoftDeletes,
         WithSurvey;
@@ -53,6 +58,22 @@ class Vendor extends Model
             'verified_at' => 'datetime',
             'is_blacklisted' => 'boolean',
         ];
+    }
+
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('vendor_logo_attachment')
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonQueued()
+            ->width(200)
+            ->height(200);
     }
 
     /**
