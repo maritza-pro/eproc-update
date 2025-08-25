@@ -11,7 +11,7 @@ use App\Filament\Resources\VendorResource\Components\ExpertisesTab;
 use App\Filament\Resources\VendorResource\Components\FinancialTab;
 use App\Filament\Resources\VendorResource\Components\GeneralInformationTab;
 use App\Filament\Resources\VendorResource\Components\LegalityLicensingTab;
-use App\Filament\Resources\VendorResource\Components\PicContactsTab;
+use App\Filament\Resources\VendorResource\Components\ContactsTab;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\Pages\CreateVendor;
 use App\Models\Vendor;
@@ -163,7 +163,7 @@ class VendorResource extends Resource
                         Forms\Components\Tabs::make('Tabs')
                             ->tabs([
                                 GeneralInformationTab::make(),
-                                PicContactsTab::make(),
+                                ContactsTab::make(),
                                 LegalityLicensingTab::make(),
                                 FinancialTab::make(),
                                 ExpertisesTab::make(),

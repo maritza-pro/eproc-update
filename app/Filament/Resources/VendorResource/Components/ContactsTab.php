@@ -8,7 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
 
 // TODO : ganti jadi ContactsTab langsung
-class PicContactsTab
+class ContactsTab
 {
     public static function make(): Tab
     {
