@@ -4,15 +4,54 @@ declare(strict_types = 1);
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Forms;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
 use Hexters\HexaLite\Models\HexaRole;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
 
 class Register extends BaseRegister
 {
+    protected function getForms(): array
+    {
+        return [
+            'form' => $this->form(
+                $this->makeForm()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Business Name')
+                            ->required()
+                            ->maxLength(255)
+                            ->autofocus(),
+                        Forms\Components\TextInput::make('email')
+                            ->label('Business Email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255)
+                            ->unique($this->getUserModel()),
+                        Forms\Components\TextInput::make('password')
+                            ->label('Password')
+                            ->password()
+                            ->revealable(filament()->arePasswordsRevealable())
+                            ->required()
+                            ->rule(Password::default())
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->same('passwordConfirmation'),
+                        Forms\Components\TextInput::make('passwordConfirmation')
+                            ->label('Confirm Password')
+                            ->password()
+                            ->revealable(filament()->arePasswordsRevealable())
+                            ->required()
+                            ->dehydrated(false),
+                    ])
+                    ->statePath('data'),
+            ),
+        ];
+    }
     /**
      * Registers a new user.
      *
