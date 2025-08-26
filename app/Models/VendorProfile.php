@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\VendorBusinessEntityType;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,6 +29,13 @@ class VendorProfile extends Model
         'established_year',
         'employee_count',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'business_entity_type' => VendorBusinessEntityType::class,
+        ];
+    }
 
     /**
      * Get activity log options.

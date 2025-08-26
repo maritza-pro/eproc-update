@@ -222,4 +222,9 @@ class Vendor extends Model implements HasMedia
     {
         return $this->hasOne(VendorTaxRegistration::class);
     }
+
+    public function vendorType(): BelongsTo
+    {
+        return $this->belongsTo(VendorType::class);
+    }
 }

@@ -67,7 +67,7 @@ class CreateVendor extends CreateRecord
      */
     public function getTitle(): string
     {
-        return $this->isSuper() ? 'Create Vendor' : 'Register Vendor';
+        return $this->isSuper() ? 'Create Vendor' : 'General Information';
     }
 
     /**
