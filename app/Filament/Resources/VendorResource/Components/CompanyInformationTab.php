@@ -11,7 +11,7 @@ class CompanyInformationTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Commpany Information')
+        return Tab::make('Company Information')
             ->schema([
                 Forms\Components\Group::make()
                     ->relationship(
