@@ -11,8 +11,6 @@ use Filament\Pages\Auth\Register as BaseRegister;
 use Hexters\HexaLite\Models\HexaRole;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Support\Facades\Hash;
 
 class Register extends BaseRegister
 {
@@ -32,21 +30,10 @@ class Register extends BaseRegister
                             ->email()
                             ->required()
                             ->maxLength(255)
-                            ->unique($this->getUserModel()),
-                        Forms\Components\TextInput::make('password')
-                            ->label('Password')
-                            ->password()
-                            ->revealable(filament()->arePasswordsRevealable())
-                            ->required()
-                            ->rule(Password::default())
-                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                            ->same('passwordConfirmation'),
-                        Forms\Components\TextInput::make('passwordConfirmation')
-                            ->label('Confirm Password')
-                            ->password()
-                            ->revealable(filament()->arePasswordsRevealable())
-                            ->required()
-                            ->dehydrated(false),
+                            ->unique($this->getUserModel())
+                            ->helperText('*registered email will be used as primary email'),
+                        $this->getPasswordFormComponent(),
+                        $this->getPasswordConfirmationFormComponent(),
                     ])
                     ->statePath('data'),
             ),
