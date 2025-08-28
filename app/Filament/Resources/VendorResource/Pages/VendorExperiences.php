@@ -1,0 +1,134 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace App\Filament\Resources\VendorResource\Pages;
+
+use App\Filament\Resources\VendorResource;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class VendorExperiences extends ManageRelatedRecords
+{
+    protected static string $resource = VendorResource::class;
+
+    protected static string $relationship = 'vendorExperiences';
+
+    protected static ?string $title = 'Experiences';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Experiences';
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('project_name')
+                    ->label('Project Name')
+                    ->nullable(),
+                Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->nullable()
+                    ->label('Business Field'),
+
+                Forms\Components\TextInput::make('location')
+                    ->label('Project Location')
+                    ->nullable(),
+                Forms\Components\TextInput::make('stakeholder')
+                    ->label('Stakeholder')
+                    ->nullable(),
+
+                Forms\Components\TextInput::make('contract_number')
+                    ->label('Contract Number')
+                    ->nullable(),
+                Forms\Components\TextInput::make('project_value')
+                    ->label('Project Value')
+                    ->nullable(),
+
+                Forms\Components\DatePicker::make('start_date')
+                    ->label('Start Date')
+                    ->nullable(),
+                Forms\Components\DatePicker::make('end_date')
+                    ->label('End Date')
+                    ->nullable(),
+
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
+                    ->autosize()
+                    ->nullable()
+                    ->maxLength(100),
+
+                Forms\Components\View::make('vendor_experience_attachment_viewer')
+                    ->viewData([
+                        'collectionName' => 'vendor_experience_attachment',
+                        'viewLabel' => 'Experience Attachment',
+                    ])
+                    ->view('filament.forms.components.attachment-viewer')
+                    ->visibleOn('view'),
+                Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
+                    ->collection('vendor_experience_attachment')
+                    ->maxFiles(1)
+                    ->label('Experience Attachment (PDF, max 2MB)')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(2048)
+                    ->downloadable()
+                    ->hiddenOn('view'),
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('project_name')
+            ->defaultSort('start_date', 'desc')
+            ->columns([
+                Tables\Columns\TextColumn::make('project_name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('businessField.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('stakeholder')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date('d M Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date('d M Y')
+                    ->sortable(),
+            ])
+            ->filters([
+                Tables\Filters\TrashedFilter::make()
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Add Experience')
+                    ->modalHeading('Add Experience'),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                ]),
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]));
+    }
+}

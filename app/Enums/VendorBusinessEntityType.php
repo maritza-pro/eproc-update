@@ -30,8 +30,8 @@ enum VendorBusinessEntityType: string implements HasLabel
     public function prefix(): string
     {
         return match ($this) {
-            self::PT         => 'PT. ',
-            self::CV         => 'CV. ',
+            self::PT         => 'PT ',
+            self::CV         => 'CV ',
             self::Yayasan    => 'Yayasan ',
             self::Perseorangan => 'Perseorangan',
         };

@@ -1,0 +1,136 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace App\Filament\Resources\VendorResource\Pages;
+
+use App\Enums\VendorBusinessEntityType;
+use App\Enums\VendorStatus;
+use App\Models\Vendor;
+use Filament\Forms;
+use App\Filament\Resources\VendorResource;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Auth;
+
+class VendorInformation extends Page implements HasForms
+{
+    use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
+    protected static string $resource = VendorResource::class;
+
+    protected static string $view = 'filament.resources.vendor-resource.pages.vendor-information';
+
+    protected static ?string $title = 'Company information';
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Company Information';
+    }
+
+    public ?array $data = [];
+
+    public function mount(int|string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+        $this->form->fill($this->record->attributesToArray());
+    }
+
+    public function form(Form $form): Form
+    {
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
+
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->visible(fn ($record, callable $get): bool => (bool) ($record->is_blacklisted ?? $get('is_blacklisted')))
+                    ->schema([
+                        Forms\Components\Textarea::make('blacklist_reason')
+                            ->label('ⓘ Vendor is BLACKLISTED')
+                            ->disabled()
+                            ->autosize()
+                            ->placeholder('This vendor is currently blocked from participating in procurements.'),
+                    ]),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\ViewField::make('verification_status')
+                            ->view('filament.forms.components.status-badge')
+                            ->hidden(fn ($livewire, ?Vendor $record): bool => $livewire instanceof CreateVendor || $record?->is_blacklisted)
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('rejection_reason')
+                            ->label('ⓘ Verification Notes')
+                            ->disabled()
+                            ->autosize()
+                            ->helperText('Please check the notes above and update your details below before resubmitting.')
+                            ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
+                        Forms\Components\Grid::make(12)
+                            ->schema([
+                                Forms\Components\Group::make([
+                                    Forms\Components\View::make('vendor_logo_attachment_viewer')
+                                        ->viewData([
+                                            'collectionName' => 'vendor_logo_attachment',
+                                            'viewLabel' => 'Company Logo',
+                                        ])
+                                        ->view('filament.forms.components.logo-viewer')
+                                        ->visibleOn('view'),
+                                    Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_logo_attachment')
+                                        ->collection('vendor_logo_attachment')
+                                        ->maxFiles(1)
+                                        ->label('Company Logo (JPEG, PNG, max 2MB)')
+                                        ->acceptedFileTypes(['image/*'])
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->hiddenOn('view'),
+                                ])
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 3,
+                                    ]),
+
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Group::make()
+                                            ->relationship('vendorProfile')
+                                            ->schema([
+                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->required()->label('Business Entity Type'),
+                                            ]),
+                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): ?string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
+                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
+                                        Forms\Components\TextInput::make('email')->email()->required(),
+                                        Forms\Components\TextInput::make('phone')->tel(),
+                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label('Vendor Type'),
+                                        Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
+                                    ])
+                                    ->columnSpan([
+                                        'default' => 12,
+                                        'md' => 9,
+                                    ]),
+                            ]),
+                    ]),
+            ])
+            ->statePath('data')
+            // @phpstan-ignore argument.type
+            ->model($this->record);
+    }
+
+    public function save(): void
+    {
+        $data = $this->form->getState();
+
+        /** @var \App\Models\Vendor $vendor */
+        $vendor = $this->getRecord();
+
+        $vendor->fill($data);
+        $vendor->save();
+
+        Notification::make()
+            ->title('Company Information updated successfully')
+            ->success()
+            ->send();
+    }
+}

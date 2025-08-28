@@ -8,11 +8,9 @@ use App\Concerns\Resource\Gate;
 use App\Enums\VendorBusinessEntityType;
 use App\Enums\VendorStatus;
 use App\Filament\Resources\VendorResource\Components\ExperiencesTab;
-use App\Filament\Resources\VendorResource\Components\ExpertisesTab;
 use App\Filament\Resources\VendorResource\Components\FinancialTab;
 use App\Filament\Resources\VendorResource\Components\CompanyInformationTab;
 use App\Filament\Resources\VendorResource\Components\LegalityLicensingTab;
-use App\Filament\Resources\VendorResource\Components\ContactsTab;
 use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\Pages\CreateVendor;
 use App\Models\Vendor;
@@ -24,6 +22,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Pages\Page;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -55,6 +54,9 @@ class VendorResource extends Resource
             'create' => Pages\CreateVendor::route('/create'),
             'view' => Pages\ViewVendor::route('/{record}'),
             'edit' => Pages\EditVendor::route('/{record}/edit'),
+            'company' => Pages\VendorInformation::route('/{record}/company'),
+            'contacts' => Pages\VendorContacts::route('/{record}/contacts'),
+            'experiences' => Pages\VendorExperiences::route('/{record}/experiences'),
         ];
     }
 
@@ -64,6 +66,19 @@ class VendorResource extends Resource
             ActivitylogRelationManager::class,
         ];
     }
+
+    public static function getRecordSubNavigation(Page $page): array
+{
+    $items = $page->generateNavigationItems([
+        Pages\VendorInformation::class,
+        Pages\VendorContacts::class,
+        Pages\VendorExperiences::class,
+
+    ]);
+
+    return array_map(fn ($item) => $item->icon(null), $items);
+    
+}
 
     public static function table(Table $table): Table
     {
@@ -195,7 +210,6 @@ class VendorResource extends Resource
                         Forms\Components\Tabs::make('Tabs')
                             ->tabs([
                                 CompanyInformationTab::make(),
-                                ContactsTab::make(),
                                 LegalityLicensingTab::make(),
                                 FinancialTab::make(),
                                 ExperiencesTab::make(),
