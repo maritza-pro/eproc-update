@@ -52,18 +52,10 @@ class VendorContacts extends ManageRelatedRecords
                     ->label('National ID (KTP) Number')
                     ->nullable(),
 
-                Forms\Components\View::make('vendor_contact_attachment_viewer')
-                    ->viewData([
-                        'collectionName' => 'vendor_contact_attachment',
-                        'viewLabel' => 'Contact Attachment',
-                    ])
-                    ->view('filament.forms.components.attachment-viewer')
-                    ->visibleOn('view'),
-
                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_contact_attachment')
                     ->collection('vendor_contact_attachment')
                     ->maxFiles(1)
-                    ->label('Contact Attachment (JPEG, PNG, PDF, max 2MB)')
+                    ->label('Attachment (JPEG, PNG, PDF, max 2MB)')
                     ->acceptedFileTypes(['image/*', 'application/pdf'])
                     ->maxSize(2048)
                     ->downloadable()
