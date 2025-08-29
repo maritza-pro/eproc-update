@@ -57,6 +57,7 @@ class VendorResource extends Resource
             'company' => Pages\VendorInformation::route('/{record}/company'),
             'contacts' => Pages\VendorContacts::route('/{record}/contacts'),
             'experiences' => Pages\VendorExperiences::route('/{record}/experiences'),
+            'legality-licensing' => Pages\VendorLegalityLicensing::route('/{record}/legality-licensing'),
         ];
     }
 
@@ -73,6 +74,7 @@ class VendorResource extends Resource
         Pages\VendorInformation::class,
         Pages\VendorContacts::class,
         Pages\VendorExperiences::class,
+        Pages\VendorLegalityLicensing::class,
 
     ]);
 

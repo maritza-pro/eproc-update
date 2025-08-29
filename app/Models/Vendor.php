@@ -227,4 +227,9 @@ class Vendor extends Model implements HasMedia
     {
         return $this->belongsTo(VendorType::class);
     }
+
+    public function vendorDocuments(): HasMany
+    {
+        return $this->hasMany(VendorDocument::class);
+    }
 }

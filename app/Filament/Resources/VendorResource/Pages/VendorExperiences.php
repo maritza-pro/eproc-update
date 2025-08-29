@@ -66,13 +66,6 @@ class VendorExperiences extends ManageRelatedRecords
                     ->nullable()
                     ->maxLength(100),
 
-                Forms\Components\View::make('vendor_experience_attachment_viewer')
-                    ->viewData([
-                        'collectionName' => 'vendor_experience_attachment',
-                        'viewLabel' => 'Experience Attachment',
-                    ])
-                    ->view('filament.forms.components.attachment-viewer')
-                    ->visibleOn('view'),
                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
                     ->collection('vendor_experience_attachment')
                     ->maxFiles(1)
@@ -105,6 +98,13 @@ class VendorExperiences extends ManageRelatedRecords
                 Tables\Columns\TextColumn::make('end_date')
                     ->date('d M Y')
                     ->sortable(),
+                Tables\Columns\ViewColumn::make('vendor_experience_attachment')
+                    ->label('Attachment')
+                    ->viewData([
+                        'collectionName' => 'vendor_experience_attachment',
+                        'viewLabel' => 'Experience Attachment',
+                    ])
+                    ->view('filament.forms.components.table-attachment-viewer'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
