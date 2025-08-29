@@ -8,6 +8,7 @@ use App\Filament\Resources\VendorResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -84,7 +85,9 @@ class VendorContacts extends ManageRelatedRecords
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Add PIC Contact')
-                    ->modalHeading('Add PIC Contact'),
+                    ->modalHeading('Add PIC Contact')
+                    ->createAnother(false)
+                    ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

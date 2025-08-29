@@ -8,6 +8,7 @@ use App\Filament\Resources\VendorResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -112,7 +113,9 @@ class VendorExperiences extends ManageRelatedRecords
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Add Experience')
-                    ->modalHeading('Add Experience'),
+                    ->modalHeading('Add Experience')
+                    ->createAnother(false)
+                    ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
