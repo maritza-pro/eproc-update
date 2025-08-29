@@ -22,7 +22,7 @@ class LicensingDocumentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('type')->label('Type')->options(VendorDocumentType::options('licensing'))->preload()->required(),
+                Forms\Components\Select::make('type')->label('Type')->options(VendorDocumentType::options('licensing'))->searchable()->preload()->required(),
                 Forms\Components\Hidden::make('category')->default('licensing'),
                 Forms\Components\TextInput::make('document_number')->label('Document Number')->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),

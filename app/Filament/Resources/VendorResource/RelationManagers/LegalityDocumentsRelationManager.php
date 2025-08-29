@@ -23,7 +23,7 @@ class LegalityDocumentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('type')->label('Type')->options(VendorDocumentType::options('legality'))->preload()->required(),
+                Forms\Components\Select::make('type')->label('Type')->options(VendorDocumentType::options('legality'))->searchable()->preload()->required(),
                 Forms\Components\Hidden::make('category')->default('legality'),
                 Forms\Components\TextInput::make('document_number')->label('Document Number')->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
