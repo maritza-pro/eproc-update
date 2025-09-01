@@ -7,6 +7,7 @@ namespace App\Filament\Resources\VendorResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,10 +66,12 @@ class BankVendorsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->modalFooterActionsAlignment(Alignment::End),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

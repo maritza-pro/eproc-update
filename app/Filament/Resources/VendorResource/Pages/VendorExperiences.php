@@ -118,7 +118,8 @@ class VendorExperiences extends ManageRelatedRecords
                     ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->modalFooterActionsAlignment(Alignment::End),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),

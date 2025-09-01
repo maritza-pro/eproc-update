@@ -83,7 +83,8 @@ class LicensingDocumentsRelationManager extends RelationManager
                     ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->modalFooterActionsAlignment(Alignment::End),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
