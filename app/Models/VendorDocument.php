@@ -36,6 +36,8 @@ class VendorDocument extends Model implements HasMedia
     {
         return [
             'type' => VendorDocumentType::class,
+            'issue_date' => 'date',
+            'expiry_date' => 'date',
             'properties' => 'array',
         ];
     }

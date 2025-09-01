@@ -20,7 +20,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Vendor extends Model implements HasMedia
-
 {
     use Cachable,
         InteractsWithMedia,
@@ -65,6 +64,10 @@ class Vendor extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('vendor_logo_attachment')
+            ->singleFile();
+
+        $this
+            ->addMediaCollection('vendor_financial_report_attachment')
             ->singleFile();
     }
 

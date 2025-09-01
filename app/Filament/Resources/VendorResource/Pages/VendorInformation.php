@@ -5,8 +5,6 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Enums\VendorBusinessEntityType;
-use App\Enums\VendorStatus;
-use App\Models\Vendor;
 use Filament\Forms;
 use App\Filament\Resources\VendorResource;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -48,26 +46,7 @@ class VendorInformation extends Page implements HasForms
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->visible(fn ($record, callable $get): bool => (bool) ($record->is_blacklisted ?? $get('is_blacklisted')))
                     ->schema([
-                        Forms\Components\Textarea::make('blacklist_reason')
-                            ->label('ⓘ Vendor is BLACKLISTED')
-                            ->disabled()
-                            ->autosize()
-                            ->placeholder('This vendor is currently blocked from participating in procurements.'),
-                    ]),
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\ViewField::make('verification_status')
-                            ->view('filament.forms.components.status-badge')
-                            ->hidden(fn ($livewire, ?Vendor $record): bool => $livewire instanceof CreateVendor || $record?->is_blacklisted)
-                            ->columnSpanFull(),
-                        Forms\Components\Textarea::make('rejection_reason')
-                            ->label('ⓘ Verification Notes')
-                            ->disabled()
-                            ->autosize()
-                            ->helperText('Please check the notes above and update your details below before resubmitting.')
-                            ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
                         Forms\Components\Grid::make(12)
                             ->schema([
                                 Forms\Components\Group::make([
