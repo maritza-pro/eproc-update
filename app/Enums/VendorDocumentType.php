@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Enums;
 
@@ -9,16 +9,15 @@ use Filament\Support\Contracts\HasLabel;
 enum VendorDocumentType: string implements HasLabel
 {
     case DeedInformation = 'deed_information';
-    case PengesahanSkKemenkumham = 'pengesahan_sk_kemenkumham';
-    case DirectorInformation = 'director_information';
+    case PengesahanKemenkumham = 'pengesahan_sk_kemenkumham';
 
-    case TradingBusinessLicenseSiup = 'trading_business_license_siup';
-    case CompanyRegistrationTdp = 'company_registration_tdp';
-    case BusinessDomicileLetterSkdu = 'business_domicile_letter_skdu';
-    case TaxableEntrepreneurSppkp = 'taxable_entrepreneur_confirmation_letter_sppkp';
-    case BusinessIdentificationNumberNib = 'business_identification_number_nib';
-    case HinderOrdonantieHo = 'hinder_ordonantie_ho';
-    case BusinessEntityCertificateSbu = 'business_entity_certificate_sbu';
+    case TradingBusinessLicenseSIUP = 'trading_business_license_siup';
+    case CompanyRegistrationTDP = 'company_registration_tdp';
+    case BusinessDomicileLetterSKDU = 'business_domicile_letter_skdu';
+    case TaxableEntrepreneurSPPKP = 'taxable_entrepreneur_confirmation_letter_sppkp';
+    case BusinessIdentificationNumberNIB = 'business_identification_number_nib';
+    case HinderOrdonantieHO = 'hinder_ordonantie_ho';
+    case BusinessEntityCertificateSBU = 'business_entity_certificate_sbu';
 
     /**
      * Get the label for the vendor status.
@@ -28,55 +27,44 @@ enum VendorDocumentType: string implements HasLabel
     {
         return match ($this) {
             self::DeedInformation => 'Deed Information',
-            self::PengesahanSkKemenkumham => 'Pengesahan (SK Kemenkumham)',
-            self::DirectorInformation => 'Director Information',
+            self::PengesahanKemenkumham => 'Pengesahan (SK Kemenkumham)',
 
-            self::TradingBusinessLicenseSiup => 'Trading Business License (SIUP)',
-            self::CompanyRegistrationTdp => 'Company Registration (TDP)',
-            self::BusinessDomicileLetterSkdu => 'Business Domicile Letter (SKDU)',
-            self::TaxableEntrepreneurSppkp => 'Taxable Entrepreneur Confirmation Letter (SPPKP)',
-            self::BusinessIdentificationNumberNib => 'Business Identification Number (NIB)',
-            self::HinderOrdonantieHo => 'Hinder Ordonantie (HO)',
-            self::BusinessEntityCertificateSbu => 'Business Entity Certificate (SBU)',
+            self::TradingBusinessLicenseSIUP => 'Trading Business License (SIUP)',
+            self::CompanyRegistrationTDP => 'Company Registration (TDP)',
+            self::BusinessDomicileLetterSKDU => 'Business Domicile Letter (SKDU)',
+            self::TaxableEntrepreneurSPPKP => 'Taxable Entrepreneur Confirmation Letter (SPPKP)',
+            self::BusinessIdentificationNumberNIB => 'Business Identification Number (NIB)',
+            self::HinderOrdonantieHO => 'Hinder Ordonantie (HO)',
+            self::BusinessEntityCertificateSBU => 'Business Entity Certificate (SBU)',
         };
     }
 
-    public function group(): string
+    public function category(): string
     {
         return match ($this) {
             self::DeedInformation,
-            self::PengesahanSkKemenkumham,
-            self::DirectorInformation => 'legality',
+            self::PengesahanKemenkumham=> 'legality',
 
-            self::TradingBusinessLicenseSiup,
-            self::CompanyRegistrationTdp,
-            self::BusinessDomicileLetterSkdu,
-            self::TaxableEntrepreneurSppkp,
-            self::BusinessIdentificationNumberNib,
-            self::HinderOrdonantieHo,
-            self::BusinessEntityCertificateSbu => 'licensing',
+            self::TradingBusinessLicenseSIUP,
+            self::CompanyRegistrationTDP,
+            self::BusinessDomicileLetterSKDU,
+            self::TaxableEntrepreneurSPPKP,
+            self::BusinessIdentificationNumberNIB,
+            self::HinderOrdonantieHO,
+            self::BusinessEntityCertificateSBU => 'licensing',
         };
     }
 
     public static function options(?string $group = null): array
     {
         $cases = $group
-            ? array_filter(self::cases(), fn (self $c) => $c->group() === $group)
+            ? array_filter(self::cases(), fn (self $case) => $case->category() === $group)
             : self::cases();
 
-        $out = [];
-        foreach ($cases as $c) {
-            $out[$c->value] = $c->getLabel();
+        $filtered = [];
+        foreach ($cases as $case) {
+            $filtered[$case->value] = $case->getLabel();
         }
-        return $out;
-    }
-
-    public static function values(?string $group = null): array
-    {
-        $cases = $group
-            ? array_filter(self::cases(), fn (self $c) => $c->group() === $group)
-            : self::cases();
-
-        return array_map(fn (self $c) => $c->value, $cases);
+        return $filtered;
     }
 }

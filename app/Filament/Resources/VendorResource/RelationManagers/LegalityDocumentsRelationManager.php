@@ -1,13 +1,15 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Filament\Resources\VendorResource\RelationManagers;
 
 use App\Enums\VendorDocumentType;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,19 +25,33 @@ class LegalityDocumentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('type')->label('Type')->options(VendorDocumentType::options('legality'))->searchable()->preload()->required(),
-                Forms\Components\Hidden::make('category')->default('legality'),
-                Forms\Components\TextInput::make('document_number')->label('Document Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_document_attachment')
-                    ->collection('vendor_document_attachment')
-                    ->maxFiles(1)
-                    ->label('Attachment (PDF, max 2MB)')
-                    ->acceptedFileTypes(['application/pdf'])
-                    ->maxSize(2048)
-                    ->downloadable()
-                    ->hiddenOn('view'),
+                Forms\Components\Grid::make(2)
+                    ->schema(function (Get $get): array {
+                        return [
+                            Forms\Components\Select::make('type')
+                                ->label('Type')
+                                ->options(VendorDocumentType::options('legality'))
+                                ->searchable()
+                                ->preload()
+                                ->required()
+                                ->live()
+                                ->disabledOn('edit')
+                                ->afterStateUpdated(fn (callable $set) => $set('properties', [])),
+                            Forms\Components\Hidden::make('category')->default('legality'),
+                            Forms\Components\Hidden::make('properties')->default([]),
+
+                            ...$this->dynamicSchema($get('type')),
+
+                            Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_document_attachment')
+                                ->collection('vendor_document_attachment')
+                                ->maxFiles(1)
+                                ->label('Attachment (PDF, max 2MB)')
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->maxSize(2048)
+                                ->downloadable()
+                                ->visible(fn (Get $get) => filled($get('type'))),
+                        ];
+                    }),
             ]);
     }
 
@@ -62,10 +78,14 @@ class LegalityDocumentsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Add')
-                    ->icon('heroicon-m-plus'),
+                    ->modalHeading('Add Legality Document')
+                    ->icon('heroicon-m-plus')
+                    ->createAnother(false)
+                    ->modalFooterActionsAlignment(Alignment::End),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalFooterActionsAlignment(Alignment::End),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -75,5 +95,27 @@ class LegalityDocumentsRelationManager extends RelationManager
             ])
             ->emptyStateHeading('No Documents')
             ->emptyStateDescription('Create a document to get started.');
+    }
+
+    protected function dynamicSchema(?string $documentType): array
+    {
+        $type = $documentType ? VendorDocumentType::from($documentType) : null;
+
+        return match ($type) {
+            VendorDocumentType::DeedInformation => [
+                Forms\Components\TextInput::make('document_number')->label('Deed Number')->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label('Deed Date')->nullable(),
+                Forms\Components\TextInput::make('properties.notary_name')->label('Notary Name')->nullable(),
+                Forms\Components\TextInput::make('properties.latest_amendment_number')->label('Latest Amendment Number')->nullable(),
+                Forms\Components\DatePicker::make('properties.latest_amendment_date')->label('Latest Amendment Date')->nullable(),
+                Forms\Components\TextInput::make('properties.latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
+            ],
+            VendorDocumentType::PengesahanKemenkumham => [
+                Forms\Components\TextInput::make('document_number')->label('Approval Number')->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
+            ],
+
+            default => [],
+        };
     }
 }
