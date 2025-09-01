@@ -57,6 +57,11 @@ class Register extends BaseRegister
             /** @var \App\Models\User $user */
             $user->roles()->syncWithoutDetaching([$roleId]);
 
+            $user->vendor()->create([
+                'company_name' => data_get($data, 'name'),
+                'email' => data_get($data, 'email'),
+            ]);
+
             Notification::make()
                 ->title('Registration Successful, please check your email to verify!')
                 ->success()
