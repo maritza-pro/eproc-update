@@ -58,6 +58,7 @@ class VendorResource extends Resource
             'contacts' => Pages\VendorContacts::route('/{record}/contacts'),
             'experiences' => Pages\VendorExperiences::route('/{record}/experiences'),
             'legality-licensing' => Pages\VendorLegalityLicensing::route('/{record}/legality-licensing'),
+            'financial' => Pages\VendorFinancial::route('/{record}/financial'),
         ];
     }
 
@@ -75,6 +76,7 @@ class VendorResource extends Resource
         Pages\VendorContacts::class,
         Pages\VendorExperiences::class,
         Pages\VendorLegalityLicensing::class,
+        Pages\VendorFinancial::class,
 
     ]);
 
@@ -86,6 +88,9 @@ class VendorResource extends Resource
     {
         return $table
             ->striped()
+            ->recordUrl(fn ($record) => static::getUrl('company', [
+            'record' => $record,
+        ]))
             ->modifyQueryUsing(function (Builder $query) {
                 $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());

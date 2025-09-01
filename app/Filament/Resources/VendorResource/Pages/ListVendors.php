@@ -51,7 +51,7 @@ class ListVendors extends ListRecords
 
         if (! $user?->can(VendorResource::getModelLabel() . '.withoutGlobalScope')) {
             if ($user?->vendor) {
-                $this->redirect(VendorResource::getUrl('view', ['record' => $user->vendor->getKey()]));
+                $this->redirect(VendorResource::getUrl('company', ['record' => $user->vendor->getKey()]));
 
                 return;
             }
