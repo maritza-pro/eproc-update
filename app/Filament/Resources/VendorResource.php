@@ -7,19 +7,12 @@ namespace App\Filament\Resources;
 use App\Concerns\Resource\Gate;
 use App\Enums\VendorBusinessEntityType;
 use App\Enums\VendorStatus;
-use App\Filament\Resources\VendorResource\Components\ExperiencesTab;
-use App\Filament\Resources\VendorResource\Components\FinancialTab;
-use App\Filament\Resources\VendorResource\Components\CompanyInformationTab;
-use App\Filament\Resources\VendorResource\Components\LegalityLicensingTab;
 use App\Filament\Resources\VendorResource\Pages;
-use App\Filament\Resources\VendorResource\Pages\CreateVendor;
 use App\Models\Vendor;
 use Filament\Forms;
-use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Pages\Page;
@@ -59,6 +52,7 @@ class VendorResource extends Resource
             'experiences' => Pages\VendorExperiences::route('/{record}/experiences'),
             'legality-licensing' => Pages\VendorLegalityLicensing::route('/{record}/legality-licensing'),
             'financial' => Pages\VendorFinancial::route('/{record}/financial'),
+            'verification' => Pages\VendorVerificationStatus::route('/{record}/verification'),
         ];
     }
 
@@ -70,29 +64,30 @@ class VendorResource extends Resource
     }
 
     public static function getRecordSubNavigation(Page $page): array
-{
-    $items = $page->generateNavigationItems([
-        Pages\VendorInformation::class,
-        Pages\VendorContacts::class,
-        Pages\VendorExperiences::class,
-        Pages\VendorLegalityLicensing::class,
-        Pages\VendorFinancial::class,
+    {
+        $items = $page->generateNavigationItems([
+            Pages\VendorVerificationStatus::class,
+            Pages\VendorInformation::class,
+            Pages\VendorContacts::class,
+            Pages\VendorExperiences::class,
+            Pages\VendorLegalityLicensing::class,
+            Pages\VendorFinancial::class,
 
-    ]);
+        ]);
 
-    return array_map(fn ($item) => $item->icon(null), $items);
-    
-}
+        return array_map(fn ($item) => $item->icon(null), $items);
+
+    }
 
     public static function table(Table $table): Table
     {
         return $table
             ->striped()
-            ->recordUrl(fn ($record) => static::getUrl('company', [
-            'record' => $record,
-        ]))
+            ->recordUrl(fn ($record) => static::getUrl('verification', [
+                'record' => $record,
+            ]))
             ->modifyQueryUsing(function (Builder $query) {
-                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
+                $query->unless(Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());
                 });
             })
@@ -146,31 +141,12 @@ class VendorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope');
 
         return $form
             ->schema([
                 Forms\Components\Card::make()
-                    ->visible(fn ($record, callable $get): bool => (bool) ($record->is_blacklisted ?? $get('is_blacklisted')))
                     ->schema([
-                        Forms\Components\Textarea::make('blacklist_reason')
-                            ->label('ⓘ Vendor is BLACKLISTED')
-                            ->disabled()
-                            ->autosize()
-                            ->placeholder('This vendor is currently blocked from participating in procurements.'),
-                    ]),
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\ViewField::make('verification_status')
-                            ->view('filament.forms.components.status-badge')
-                            ->hidden(fn ($livewire, ?Vendor $record): bool => $livewire instanceof CreateVendor || $record?->is_blacklisted)
-                            ->columnSpanFull(),
-                        Forms\Components\Textarea::make('rejection_reason')
-                            ->label('ⓘ Verification Notes')
-                            ->disabled()
-                            ->autosize()
-                            ->helperText('Please check the notes above and update your details below before resubmitting.')
-                            ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
                         Forms\Components\Grid::make(12)
                             ->schema([
                                 Forms\Components\Group::make([
@@ -200,13 +176,13 @@ class VendorResource extends Resource
                                         Forms\Components\Group::make()
                                             ->relationship('vendorProfile')
                                             ->schema([
-                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->required()->label('Business Entity Type'),
+                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->label('Business Entity Type'),
                                             ]),
                                         Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): ?string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
-                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
+                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->label('Business Field'),
                                         Forms\Components\TextInput::make('email')->email()->required(),
                                         Forms\Components\TextInput::make('phone')->tel(),
-                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->required()->label('Vendor Type'),
+                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label('Vendor Type'),
                                         Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
                                     ])
                                     ->columnSpan([
@@ -214,41 +190,6 @@ class VendorResource extends Resource
                                         'md' => 9,
                                     ]),
                             ]),
-                        Forms\Components\Tabs::make('Tabs')
-                            ->tabs([
-                                CompanyInformationTab::make(),
-                                LegalityLicensingTab::make(),
-                                FinancialTab::make(),
-                                ExperiencesTab::make(),
-                            ]),
-
-                        Forms\Components\Section::make('Statement & Agreement')
-                            ->visible(
-                                fn ($livewire): bool => $livewire instanceof CreateVendor
-                                && ! $withoutGlobalScope
-                            )
-                            ->schema([
-                                Actions::make([
-                                    Actions\Action::make('view_agreement')
-                                        ->label('Please read the terms carefully before proceeding.')
-                                        ->link()
-                                        ->color('primary')
-                                        ->modalHeading('')
-                                        ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
-                                        ->modalSubmitAction(false)
-                                        ->modalCancelActionLabel('Close')
-                                        ->modalFooterActionsAlignment(Alignment::End)
-                                        ->modalWidth('3xl'),
-                                ]),
-                                Forms\Components\Checkbox::make('agreement')
-                                    ->label('By checking the box or clicking "Submit" on this application, the vendor acknowledges that they have read, understood, and agree to be bound by the above Statement and Agreement.')
-                                    ->accepted()
-                                    ->required()
-                                    ->validationMessages([
-                                        'accepted' => 'Please accept the Statement & Agreement to continue.',
-                                    ]),
-                            ])
-                            ->collapsible(),
                     ]),
 
             ]);
