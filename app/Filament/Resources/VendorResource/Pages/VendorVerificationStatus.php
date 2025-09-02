@@ -9,9 +9,9 @@ use App\Filament\Resources\VendorResource;
 use App\Models\Vendor;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Forms\Components\Actions as FormActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Components\Actions as FormActions;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
@@ -20,28 +20,99 @@ use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\Page;
 use Filament\Support\Enums\Alignment;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class VendorVerificationStatus extends Page implements HasForms
 {
-    use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
+    use HasUnsavedDataChangesAlert, InteractsWithForms, InteractsWithRecord;
+
     protected static string $resource = VendorResource::class;
+
+    protected static ?string $title = 'Verification Status';
 
     protected static string $view = 'filament.resources.vendor-resource.pages.vendor-verification-status';
 
     public ?array $data = [];
 
-    protected static ?string $title = 'Verification Status';
-
-    public static function getNavigationLabel(): string
+    protected function getFormActions(): array
     {
-        return 'Verification Status';
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
+
+        return [
+            FormActions\Action::make('cancel')
+                ->label('Cancel')
+                ->color('gray')
+                ->outlined()
+                ->url(fn () => static::getResource()::getUrl('view', ['record' => $this->getRecord()]))
+                ->visible($withoutGlobalScope),
+            FormActions\Action::make('save')
+                ->label('Save')
+                ->submit('save')
+                ->visible($withoutGlobalScope),
+        ];
+    }
+
+    protected function getHeaderActions(): array
+    {
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
+
+        return
+            [
+                Actions\Action::make('submit')
+                    ->label('Submit Verification')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('primary')
+                    ->modalHeading('')
+                    ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
+                    ->modalWidth('3xl')
+                    ->modalFooterActionsAlignment(Alignment::End)
+                    ->form([
+                        Forms\Components\Checkbox::make('agreement')
+                            ->label('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.')
+                            ->accepted()
+                            ->required(),
+                    ])
+                    ->action(function ($record) {
+                        $record->update([
+                            'verification_status' => VendorStatus::Pending,
+                        ]);
+
+                        Notification::make()
+                            ->title('Your vendor verification has been submitted.')
+                            ->success()
+                            ->send();
+                    }),
+
+                Actions\Action::make('resubmit')
+                    ->label('Resubmit Verification')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $withoutGlobalScope && ! $record->is_blacklisted)
+                    ->requiresConfirmation()
+                    ->modalHeading('Resubmit Vendor Verification?')
+                    ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
+                    ->modalSubmitActionLabel('Yes, Resubmit')
+                    ->action(function ($record) {
+                        $record->update([
+                            'verification_status' => VendorStatus::Pending,
+                        ]);
+
+                        Notification::make()
+                            ->title('Your vendor verification has been resubmitted.')
+                            ->success()
+                            ->send();
+                    }),
+            ];
+    }
+
+    public function mount(int|string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+        $this->form->fill($this->record->attributesToArray());
     }
 
     public function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
-
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
 
         $isRejected = fn (Get $get): bool => $get('verification_status') === VendorStatus::Rejected->value;
 
@@ -110,90 +181,13 @@ class VendorVerificationStatus extends Page implements HasForms
                             ->label('Blacklist Reason')
                             ->rows(5)
                             ->dehydrated(fn ($state) => filled($state))
-                            ->visible(fn (Get $get) => (bool) $get('is_blacklisted'))
-                            ->required(fn (Get $get) => (bool) $get('is_blacklisted')),
+                            ->visible(fn (Get $get): bool => (bool) $get('is_blacklisted'))
+                            ->required(fn (Get $get): bool => (bool) $get('is_blacklisted')),
                     ]),
             ])
             ->statePath('data')
             // @phpstan-ignore argument.type
             ->model($this->record);
-    }
-
-    protected function getFormActions(): array
-    {
-        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
-
-        return [
-            FormActions\Action::make('cancel')
-                ->label('Cancel')
-                ->color('gray')
-                ->outlined()
-                ->url(fn () => static::getResource()::getUrl('view', ['record' => $this->getRecord()]))
-                ->visible($withoutGlobalScope),
-            FormActions\Action::make('save')
-                ->label('Save')
-                ->submit('save')
-                ->visible($withoutGlobalScope),
-        ];
-    }
-
-    protected function getHeaderActions(): array
-    {
-        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
-
-        return
-            [
-                Actions\Action::make('submit')
-                    ->label('Submit Verification')
-                    ->icon('heroicon-o-paper-airplane')
-                    ->color('primary')
-                    ->modalHeading('')
-                    ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
-                    ->modalWidth('3xl')
-                    ->modalFooterActionsAlignment(Alignment::End)
-                    ->form([
-                        Forms\Components\Checkbox::make('agreement')
-                            ->label('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.')
-                            ->accepted()
-                            ->required(),
-                    ])
-                    ->action(function ($record) {
-                        $record->update([
-                            'verification_status' => VendorStatus::Pending,
-                        ]);
-
-                        Notification::make()
-                            ->title('Your vendor verification has been submitted.')
-                            ->success()
-                            ->send();
-                    }),
-
-                Actions\Action::make('resubmit')
-                    ->label('Resubmit Verification')
-                    ->icon('heroicon-o-arrow-path')
-                    ->color('warning')
-                    ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $withoutGlobalScope && ! $record->is_blacklisted)
-                    ->requiresConfirmation()
-                    ->modalHeading('Resubmit Vendor Verification?')
-                    ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
-                    ->modalSubmitActionLabel('Yes, Resubmit')
-                    ->action(function ($record) {
-                        $record->update([
-                            'verification_status' => VendorStatus::Pending,
-                        ]);
-
-                        Notification::make()
-                            ->title('Your vendor verification has been resubmitted.')
-                            ->success()
-                            ->send();
-                    }),
-            ];
-    }
-
-    public function mount(int|string $record): void
-    {
-        $this->record = $this->resolveRecord($record);
-        $this->form->fill($this->record->attributesToArray());
     }
 
     public function save(): void
@@ -210,5 +204,10 @@ class VendorVerificationStatus extends Page implements HasForms
             ->title('Verification Status updated successfully')
             ->success()
             ->send();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Verification Status';
     }
 }

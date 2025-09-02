@@ -16,18 +16,20 @@ use Filament\Resources\Pages\Page;
 
 class VendorFinancial extends Page implements HasForms
 {
-    use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
+    use HasUnsavedDataChangesAlert, InteractsWithForms, InteractsWithRecord;
+
     protected static string $resource = VendorResource::class;
+
+    protected static ?string $title = 'Financial';
 
     protected static string $view = 'filament.resources.vendor-resource.pages.vendor-financial';
 
     public ?array $data = [];
 
-    protected static ?string $title = 'Financial';
-
-    public static function getNavigationLabel(): string
+    public function mount(int|string $record): void
     {
-        return 'Financial';
+        $this->record = $this->resolveRecord($record);
+        $this->form->fill($this->record->attributesToArray());
     }
 
     public function form(Form $form): Form
@@ -47,12 +49,6 @@ class VendorFinancial extends Page implements HasForms
             ->model($this->record);
     }
 
-    public function mount(int|string $record): void
-    {
-        $this->record = $this->resolveRecord($record);
-        $this->form->fill($this->record->attributesToArray());
-    }
-
     public function save(): void
     {
         $data = $this->form->getState();
@@ -69,4 +65,8 @@ class VendorFinancial extends Page implements HasForms
             ->send();
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return 'Financial';
+    }
 }

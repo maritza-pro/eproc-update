@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Filament\Resources\VendorResource;
-use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -15,19 +14,15 @@ use Filament\Resources\Pages\Page;
 
 class VendorLegalityLicensing extends Page implements HasForms
 {
-    use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
+    use HasUnsavedDataChangesAlert, InteractsWithForms, InteractsWithRecord;
+
     protected static string $resource = VendorResource::class;
+
+    protected static ?string $title = 'Legality & Licensing';
 
     protected static string $view = 'filament.resources.vendor-resource.pages.vendor-legality-licensing';
 
     public ?array $data = [];
-
-    protected static ?string $title = 'Legality & Licensing';
-
-    public static function getNavigationLabel(): string
-    {
-        return 'Legality & Licensing';
-    }
 
     public function mount(int|string $record): void
     {
@@ -49,5 +44,10 @@ class VendorLegalityLicensing extends Page implements HasForms
             ->title('Legality & Licensing updated successfully')
             ->success()
             ->send();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Legality & Licensing';
     }
 }

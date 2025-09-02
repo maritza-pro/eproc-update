@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Models;
 
@@ -41,7 +41,6 @@ class VendorDocument extends Model implements HasMedia
             'properties' => 'array',
         ];
     }
-
 
     public function getActivitylogOptions(): LogOptions
     {

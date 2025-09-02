@@ -16,15 +16,68 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VendorExperiences extends ManageRelatedRecords
 {
-    protected static string $resource = VendorResource::class;
-
     protected static string $relationship = 'vendorExperiences';
+
+    protected static string $resource = VendorResource::class;
 
     protected static ?string $title = 'Experiences';
 
-    public static function getNavigationLabel(): string
+    public function table(Table $table): Table
     {
-        return 'Experiences';
+        return $table
+            ->recordTitleAttribute('project_name')
+            ->defaultSort('start_date', 'desc')
+            ->columns([
+                Tables\Columns\TextColumn::make('project_name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('businessField.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('stakeholder')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date('d M Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date('d M Y')
+                    ->sortable(),
+                Tables\Columns\ViewColumn::make('vendor_experience_attachment')
+                    ->label('Attachment')
+                    ->viewData([
+                        'collectionName' => 'vendor_experience_attachment',
+                        'viewLabel' => 'Experience Attachment',
+                    ])
+                    ->view('filament.forms.components.table-attachment-viewer'),
+            ])
+            ->filters([
+                Tables\Filters\TrashedFilter::make(),
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Add Experience')
+                    ->modalHeading('Add Experience')
+                    ->createAnother(false)
+                    ->modalFooterActionsAlignment(Alignment::End),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->modalFooterActionsAlignment(Alignment::End),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                ]),
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]));
     }
 
     public function form(Form $form): Form
@@ -78,61 +131,8 @@ class VendorExperiences extends ManageRelatedRecords
             ]);
     }
 
-    public function table(Table $table): Table
+    public static function getNavigationLabel(): string
     {
-        return $table
-            ->recordTitleAttribute('project_name')
-            ->defaultSort('start_date', 'desc')
-            ->columns([
-                Tables\Columns\TextColumn::make('project_name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('businessField.name')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stakeholder')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date('d M Y')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->date('d M Y')
-                    ->sortable(),
-                Tables\Columns\ViewColumn::make('vendor_experience_attachment')
-                    ->label('Attachment')
-                    ->viewData([
-                        'collectionName' => 'vendor_experience_attachment',
-                        'viewLabel' => 'Experience Attachment',
-                    ])
-                    ->view('filament.forms.components.table-attachment-viewer'),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Add Experience')
-                    ->modalHeading('Add Experience')
-                    ->createAnother(false)
-                    ->modalFooterActionsAlignment(Alignment::End),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                ->modalFooterActionsAlignment(Alignment::End),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                ]),
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]));
+        return 'Experiences';
     }
 }

@@ -59,7 +59,7 @@ enum VendorDocumentType: string implements HasLabel
     public static function options(?string $group = null): array
     {
         $cases = $group
-            ? array_filter(self::cases(), fn (self $case) => $case->category() === $group)
+            ? array_filter(self::cases(), fn (self $case): bool => $case->category() === $group)
             : self::cases();
 
         $filtered = [];

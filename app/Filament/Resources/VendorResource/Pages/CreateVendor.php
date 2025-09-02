@@ -50,6 +50,17 @@ class CreateVendor extends CreateRecord
             ->modalSubmitActionLabel($isSuper ? 'Yes, Create' : 'Yes, Register');
     }
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
+
+        if (! $withoutGlobalScope) {
+            $data['user_id'] = Auth::id();
+        }
+
+        return $data;
+    }
+
     /**
      * Get the form actions alignment.
      *
@@ -77,16 +88,5 @@ class CreateVendor extends CreateRecord
     private function isSuper(): bool
     {
         return Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope') ?? false;
-    }
-
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
-
-        if (! $withoutGlobalScope) {
-            $data['user_id'] = Auth::id();
-        }
-
-        return $data;
     }
 }

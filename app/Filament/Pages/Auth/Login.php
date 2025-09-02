@@ -30,4 +30,3 @@ class Login extends BaseLogin
         ];
     }
 }
-

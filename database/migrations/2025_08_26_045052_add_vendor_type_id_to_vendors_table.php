@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('vendors', function (Blueprint $table) {
-             $table->foreignId('vendor_type_id')->nullable()->after('business_field_id')->constrained('taxonomies')->comment('The ID of the vendor type associated with the vendor');
+            $table->foreignId('vendor_type_id')->nullable()->after('business_field_id')->constrained('taxonomies')->comment('The ID of the vendor type associated with the vendor');
         });
     }
 

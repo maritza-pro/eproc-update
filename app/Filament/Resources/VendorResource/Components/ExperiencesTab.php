@@ -22,7 +22,7 @@ class ExperiencesTab
                     ->defaultItems(0)
                     ->itemLabel(function (array $state): ?string {
                         if (! empty($state['project_name'])) {
-                            return '- '.$state['project_name'];
+                            return '- ' . $state['project_name'];
                         }
 
                         return 'New Experience';

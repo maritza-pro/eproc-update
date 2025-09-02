@@ -16,15 +16,54 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VendorContacts extends ManageRelatedRecords
 {
-    protected static string $resource = VendorResource::class;
-
     protected static string $relationship = 'vendorContacts';
+
+    protected static string $resource = VendorResource::class;
 
     protected static ?string $title = 'PIC Contacts';
 
-    public static function getNavigationLabel(): string
+    public function table(Table $table): Table
     {
-        return 'PIC Contacts';
+        return $table
+            ->recordTitleAttribute('name')
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('position')
+                    ->label('Job Title / Position')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('phone_number'),
+            ])
+            ->filters([
+                Tables\Filters\TrashedFilter::make(),
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Add PIC Contact')
+                    ->modalHeading('Add PIC Contact')
+                    ->createAnother(false)
+                    ->modalFooterActionsAlignment(Alignment::End),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->modalFooterActionsAlignment(Alignment::End),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                ]),
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]));
     }
 
     public function form(Form $form): Form
@@ -64,47 +103,8 @@ class VendorContacts extends ManageRelatedRecords
             ]);
     }
 
-    public function table(Table $table): Table
+    public static function getNavigationLabel(): string
     {
-        return $table
-            ->recordTitleAttribute('name')
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('position')
-                    ->label('Job Title / Position')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('phone_number'),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Add PIC Contact')
-                    ->modalHeading('Add PIC Contact')
-                    ->createAnother(false)
-                    ->modalFooterActionsAlignment(Alignment::End),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                ->modalFooterActionsAlignment(Alignment::End),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                ]),
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]));
+        return 'PIC Contacts';
     }
 }

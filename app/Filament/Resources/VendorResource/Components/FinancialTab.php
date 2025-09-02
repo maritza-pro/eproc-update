@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
-
 class FinancialTab
 {
     public static function make(): Tab
@@ -54,7 +53,7 @@ class FinancialTab
                                     ->maxFiles(1)
                                     ->downloadable()
                                     ->hiddenOn('view'),
-                                    
+
                                 Forms\Components\Toggle::make('is_active')
                                     ->nullable(),
                             ]),

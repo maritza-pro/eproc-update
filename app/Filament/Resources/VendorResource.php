@@ -12,10 +12,10 @@ use App\Models\Vendor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Pages\Page;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,31 +63,15 @@ class VendorResource extends Resource
         ];
     }
 
-    public static function getRecordSubNavigation(Page $page): array
-    {
-        $items = $page->generateNavigationItems([
-            Pages\VendorVerificationStatus::class,
-            Pages\VendorInformation::class,
-            Pages\VendorContacts::class,
-            Pages\VendorExperiences::class,
-            Pages\VendorLegalityLicensing::class,
-            Pages\VendorFinancial::class,
-
-        ]);
-
-        return array_map(fn ($item) => $item->icon(null), $items);
-
-    }
-
     public static function table(Table $table): Table
     {
         return $table
             ->striped()
-            ->recordUrl(fn ($record) => static::getUrl('verification', [
+            ->recordUrl(fn ($record): string => static::getUrl('verification', [
                 'record' => $record,
             ]))
             ->modifyQueryUsing(function (Builder $query) {
-                $query->unless(Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope'), function (Builder $query) {
+                $query->unless(Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope'), function (Builder $query) {
                     $query->where('user_id', Auth::id());
                 });
             })
@@ -141,7 +125,7 @@ class VendorResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel().'.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -198,6 +182,22 @@ class VendorResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        $items = $page->generateNavigationItems([
+            Pages\VendorVerificationStatus::class,
+            Pages\VendorInformation::class,
+            Pages\VendorContacts::class,
+            Pages\VendorExperiences::class,
+            Pages\VendorLegalityLicensing::class,
+            Pages\VendorFinancial::class,
+
+        ]);
+
+        return array_map(fn ($item): \Filament\Navigation\NavigationItem => $item->icon(null), $items);
+
     }
 
     public static function getWidgets(): array

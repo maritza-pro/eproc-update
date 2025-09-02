@@ -59,26 +59,6 @@ class Vendor extends Model implements HasMedia
         ];
     }
 
-
-    public function registerMediaCollections(): void
-    {
-        $this
-            ->addMediaCollection('vendor_logo_attachment')
-            ->singleFile();
-
-        $this
-            ->addMediaCollection('vendor_financial_report_attachment')
-            ->singleFile();
-    }
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->nonQueued()
-            ->width(200)
-            ->height(200);
-    }
-
     /**
      * Get the bank vendors associated with the vendor.
      *
@@ -126,6 +106,25 @@ class Vendor extends Model implements HasMedia
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('vendor_logo_attachment')
+            ->singleFile();
+
+        $this
+            ->addMediaCollection('vendor_financial_report_attachment')
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonQueued()
+            ->width(200)
+            ->height(200);
     }
 
     /**
@@ -187,6 +186,11 @@ class Vendor extends Model implements HasMedia
         return $this->hasOne(VendorDeed::class);
     }
 
+    public function vendorDocuments(): HasMany
+    {
+        return $this->hasMany(VendorDocument::class);
+    }
+
     /**
      * Get the vendor experiences.
      * Defines a HasMany relationship with VendorExperience.
@@ -229,10 +233,5 @@ class Vendor extends Model implements HasMedia
     public function vendorType(): BelongsTo
     {
         return $this->belongsTo(VendorType::class);
-    }
-
-    public function vendorDocuments(): HasMany
-    {
-        return $this->hasMany(VendorDocument::class);
     }
 }

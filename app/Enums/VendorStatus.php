@@ -7,9 +7,9 @@ namespace App\Enums;
 enum VendorStatus: string
 {
     case Approved = 'approved';
+    case Draft = 'draft';
     case Pending = 'pending';
     case Rejected = 'rejected';
-    case Draft = 'draft';
 
     /**
      * Get the color associated with the vendor status.

@@ -39,6 +39,7 @@ class Register extends BaseRegister
             ),
         ];
     }
+
     /**
      * Registers a new user.
      *

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Enums\VendorBusinessEntityType;
-use Filament\Forms;
 use App\Filament\Resources\VendorResource;
+use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -19,17 +19,13 @@ use Illuminate\Support\Facades\Auth;
 
 class VendorInformation extends Page implements HasForms
 {
-    use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
-    protected static string $resource = VendorResource::class;
+    use HasUnsavedDataChangesAlert, InteractsWithForms, InteractsWithRecord;
 
-    protected static string $view = 'filament.resources.vendor-resource.pages.vendor-information';
+    protected static string $resource = VendorResource::class;
 
     protected static ?string $title = 'Company information';
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Company Information';
-    }
+    protected static string $view = 'filament.resources.vendor-resource.pages.vendor-information';
 
     public ?array $data = [];
 
@@ -41,7 +37,7 @@ class VendorInformation extends Page implements HasForms
 
     public function form(Form $form): Form
     {
-        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel().'.withoutGlobalScope');
+        $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
 
         return $form
             ->schema([
@@ -111,5 +107,10 @@ class VendorInformation extends Page implements HasForms
             ->title('Company Information updated successfully')
             ->success()
             ->send();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Company Information';
     }
 }
