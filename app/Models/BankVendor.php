@@ -30,7 +30,19 @@ class BankVendor extends Model implements HasMedia
         'account_number',
         'branch_name',
         'is_active',
+        'is_default',
     ];
+
+    protected static function booted()
+    {
+        static::saving(function (self $model) {
+            if ($model->is_default && $model->vendor_id) {
+                static::query()->where('vendor_id', $model->vendor_id)
+                    ->when($model->exists, fn ($bankVendor) => $bankVendor->whereKeyNot($model->getKey()))
+                    ->update(['is_default' => false]);
+            }
+        });
+    }
 
     /**
      * Get the bank associated with the bank vendor.

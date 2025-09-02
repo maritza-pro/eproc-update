@@ -7,11 +7,11 @@ namespace App\Filament\Resources\VendorResource\Components;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
 
-class GeneralInformationTab
+class CompanyInformationTab
 {
     public static function make(): Tab
     {
-        return Tab::make('General Information')
+        return Tab::make('Company Information')
             ->schema([
                 Forms\Components\Group::make()
                     ->relationship(
@@ -23,9 +23,9 @@ class GeneralInformationTab
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('business_entity_type')
-                                    ->label('Business Entity Type')
-                                    ->nullable(),
+                                // Forms\Components\TextInput::make('business_entity_type')
+                                //     ->label('Business Entity Type')
+                                //     ->nullable(),
 
                                 Forms\Components\TextInput::make('tax_identification_number')
                                     ->label('Tax Identification Number (NPWP)')

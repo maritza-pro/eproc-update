@@ -23,7 +23,7 @@ class ExpertisesTab
                     ->defaultItems(0)
                     ->itemLabel(function (array $state): ?string {
                         if (! empty($state['expertise'])) {
-                            return '- '.$state['expertise'];
+                            return '- ' . $state['expertise'];
                         }
 
                         return 'New Expertise';

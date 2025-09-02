@@ -4,53 +4,56 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
-use App\Enums\VendorBusinessEntityType;
+use App\Enums\VendorDocumentType;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class VendorProfile extends Model
+class VendorDocument extends Model implements HasMedia
 {
     //
     use Cachable,
+        InteractsWithMedia,
         LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
         'vendor_id',
-        'business_entity_type',
-        'tax_identification_number',
-        'business_identification_number',
-        'head_office_address',
-        'website',
-        'established_year',
-        'employee_count',
+        'type',
+        'category',
+        'document_number',
+        'issue_date',
+        'expiry_date',
+        'properties',
     ];
 
     protected function casts(): array
     {
         return [
-            'business_entity_type' => VendorBusinessEntityType::class,
+            'type' => VendorDocumentType::class,
+            'issue_date' => 'date',
+            'expiry_date' => 'date',
+            'properties' => 'array',
         ];
     }
 
-    /**
-     * Get activity log options.
-     *
-     * Defines the options for logging activity on this model.
-     */
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
     }
 
-    /**
-     * Get the vendor associated with the profile.
-     * Defines a one-to-one relationship with the Vendor model.
-     */
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('vendor_document_attachment')
+            ->singleFile();
+    }
+
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

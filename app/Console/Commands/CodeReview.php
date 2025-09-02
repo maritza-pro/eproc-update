@@ -179,7 +179,7 @@ class CodeReview extends Command
         }
 
         // Unik + rapikan
-        return array_values(array_unique(array_map(fn ($v) => rtrim($v, '.'), $items)));
+        return array_values(array_unique(array_map(fn ($v): string => rtrim($v, '.'), $items)));
     }
 
     private function getPrompt(): string
@@ -249,8 +249,8 @@ PROMPT;
     private function insertTodoMarker(string $code, array $items): string
     {
         $lines = array_map(
-            fn (string $i) => ' * - ' . trim($i, " \t\n\r\0\x0B"),
-            array_filter($items, fn ($v) => $v !== '')
+            fn (string $i): string => ' * - ' . trim($i, " \t\n\r\0\x0B"),
+            array_filter($items, fn ($v): bool => $v !== '')
         );
 
         $comment = "/** @CodeReview:TODO \n*\n" .
@@ -291,7 +291,7 @@ PROMPT;
         $t = trim($text);
         $t = (string) preg_replace('/^```[a-zA-Z0-9]*\s*|\s*```$/m', '', $t);
         $t = str_replace('`', '', $t);
-        $t = str_replace(['**', '*', '"', '\''], '', $t);
+        $t = str_replace(['**', '*', '"', "'"], '', $t);
 
         return strtolower(trim((string) preg_replace('/[^a-z]/', '', $t)));
     }

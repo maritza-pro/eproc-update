@@ -7,6 +7,7 @@ namespace App\Enums;
 enum VendorStatus: string
 {
     case Approved = 'approved';
+    case Draft = 'draft';
     case Pending = 'pending';
     case Rejected = 'rejected';
 
@@ -20,6 +21,7 @@ enum VendorStatus: string
             self::Pending => 'warning',
             self::Approved => 'success',
             self::Rejected => 'danger',
+            self::Draft => 'gray',
         };
     }
 
@@ -33,6 +35,7 @@ enum VendorStatus: string
             self::Pending => 'heroicon-o-clock',
             self::Approved => 'heroicon-o-check-circle',
             self::Rejected => 'heroicon-o-x-circle',
+            self::Draft => 'heroicon-o-pencil',
         };
     }
 
@@ -46,6 +49,7 @@ enum VendorStatus: string
             self::Pending => 'Pending',
             self::Approved => 'Approved',
             self::Rejected => 'Rejected',
+            self::Draft => 'Draft',
         };
     }
 }

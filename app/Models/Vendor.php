@@ -15,10 +15,14 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Vendor extends Model
+class Vendor extends Model implements HasMedia
 {
     use Cachable,
+        InteractsWithMedia,
         LogsActivity,
         SoftDeletes,
         WithSurvey;
@@ -104,6 +108,25 @@ class Vendor extends Model
         return LogOptions::defaults();
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('vendor_logo_attachment')
+            ->singleFile();
+
+        $this
+            ->addMediaCollection('vendor_financial_report_attachment')
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->nonQueued()
+            ->width(200)
+            ->height(200);
+    }
+
     /**
      * Get the taxonomies associated with the vendor.
      * Defines a morph-to-many relationship with Taxonomy.
@@ -163,6 +186,11 @@ class Vendor extends Model
         return $this->hasOne(VendorDeed::class);
     }
 
+    public function vendorDocuments(): HasMany
+    {
+        return $this->hasMany(VendorDocument::class);
+    }
+
     /**
      * Get the vendor experiences.
      * Defines a HasMany relationship with VendorExperience.
@@ -200,5 +228,10 @@ class Vendor extends Model
     public function vendorTaxRegistration(): HasOne
     {
         return $this->hasOne(VendorTaxRegistration::class);
+    }
+
+    public function vendorType(): BelongsTo
+    {
+        return $this->belongsTo(VendorType::class);
     }
 }

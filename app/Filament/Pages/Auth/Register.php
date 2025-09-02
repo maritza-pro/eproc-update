@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Pages\Auth;
 
+use Filament\Forms;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register as BaseRegister;
@@ -13,6 +14,32 @@ use Illuminate\Validation\ValidationException as ValidationValidationException;
 
 class Register extends BaseRegister
 {
+    protected function getForms(): array
+    {
+        return [
+            'form' => $this->form(
+                $this->makeForm()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Business Name')
+                            ->required()
+                            ->maxLength(255)
+                            ->autofocus(),
+                        Forms\Components\TextInput::make('email')
+                            ->label('Business Email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255)
+                            ->unique($this->getUserModel())
+                            ->helperText('*registered email will be used as primary email'),
+                        $this->getPasswordFormComponent(),
+                        $this->getPasswordConfirmationFormComponent(),
+                    ])
+                    ->statePath('data'),
+            ),
+        ];
+    }
+
     /**
      * Registers a new user.
      *
@@ -30,6 +57,11 @@ class Register extends BaseRegister
 
             /** @var \App\Models\User $user */
             $user->roles()->syncWithoutDetaching([$roleId]);
+
+            $user->vendor()->create([
+                'company_name' => data_get($data, 'name'),
+                'email' => data_get($data, 'email'),
+            ]);
 
             Notification::make()
                 ->title('Registration Successful, please check your email to verify!')
