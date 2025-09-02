@@ -8,16 +8,33 @@ use Filament\Support\Contracts\HasLabel;
 
 enum VendorDocumentType: string implements HasLabel
 {
+    // TODO : Make sure aja nanti bisa multi bahasa
+    case BusinessDomicileLetterSKDU = 'business_domicile_letter_skdu';
+    case BusinessEntityCertificateSBU = 'business_entity_certificate_sbu';
+    case BusinessIdentificationNumberNIB = 'business_identification_number_nib';
+    case CompanyRegistrationTDP = 'company_registration_tdp';
     case DeedInformation = 'deed_information';
+    case HinderOrdonantieHO = 'hinder_ordonantie_ho';
     case PengesahanKemenkumham = 'pengesahan_sk_kemenkumham';
+    case TaxableEntrepreneurSPPKP = 'taxable_entrepreneur_confirmation_letter_sppkp';
 
     case TradingBusinessLicenseSIUP = 'trading_business_license_siup';
-    case CompanyRegistrationTDP = 'company_registration_tdp';
-    case BusinessDomicileLetterSKDU = 'business_domicile_letter_skdu';
-    case TaxableEntrepreneurSPPKP = 'taxable_entrepreneur_confirmation_letter_sppkp';
-    case BusinessIdentificationNumberNIB = 'business_identification_number_nib';
-    case HinderOrdonantieHO = 'hinder_ordonantie_ho';
-    case BusinessEntityCertificateSBU = 'business_entity_certificate_sbu';
+
+    public function category(): string
+    {
+        return match ($this) {
+            self::DeedInformation,
+            self::PengesahanKemenkumham => 'legality',
+
+            self::TradingBusinessLicenseSIUP,
+            self::CompanyRegistrationTDP,
+            self::BusinessDomicileLetterSKDU,
+            self::TaxableEntrepreneurSPPKP,
+            self::BusinessIdentificationNumberNIB,
+            self::HinderOrdonantieHO,
+            self::BusinessEntityCertificateSBU => 'licensing',
+        };
+    }
 
     /**
      * Get the label for the vendor status.
@@ -39,22 +56,6 @@ enum VendorDocumentType: string implements HasLabel
         };
     }
 
-    public function category(): string
-    {
-        return match ($this) {
-            self::DeedInformation,
-            self::PengesahanKemenkumham=> 'legality',
-
-            self::TradingBusinessLicenseSIUP,
-            self::CompanyRegistrationTDP,
-            self::BusinessDomicileLetterSKDU,
-            self::TaxableEntrepreneurSPPKP,
-            self::BusinessIdentificationNumberNIB,
-            self::HinderOrdonantieHO,
-            self::BusinessEntityCertificateSBU => 'licensing',
-        };
-    }
-
     public static function options(?string $group = null): array
     {
         $cases = $group
@@ -62,9 +63,11 @@ enum VendorDocumentType: string implements HasLabel
             : self::cases();
 
         $filtered = [];
+
         foreach ($cases as $case) {
             $filtered[$case->value] = $case->getLabel();
         }
+
         return $filtered;
     }
 }

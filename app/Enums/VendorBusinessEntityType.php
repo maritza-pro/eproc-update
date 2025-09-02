@@ -8,8 +8,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum VendorBusinessEntityType: string implements HasLabel
 {
-    case PT = 'pt';
+    // TODO : Make sure aja nanti bisa multi bahasa
     case CV = 'cv';
+    case PT = 'pt';
     case Perseorangan = 'perseorangan';
     case Yayasan = 'yayasan';
 
@@ -30,14 +31,14 @@ enum VendorBusinessEntityType: string implements HasLabel
     public function prefix(): string
     {
         return match ($this) {
-            self::PT         => 'PT ',
-            self::CV         => 'CV ',
-            self::Yayasan    => 'Yayasan ',
+            self::PT => 'PT ',
+            self::CV => 'CV ',
+            self::Yayasan => 'Yayasan ',
             self::Perseorangan => 'Perseorangan',
         };
     }
 
-    public static function fromMixed(null|string|self $value): ?self
+    public static function fromMixed(self|string|null $value): ?self
     {
         return $value instanceof self ? $value
              : (is_string($value) ? self::tryFrom($value) : null);
