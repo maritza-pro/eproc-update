@@ -51,7 +51,7 @@ class ListVendors extends ListRecords
 
         if (! $user?->can(VendorResource::getModelLabel() . '.withoutGlobalScope')) {
             if ($user?->vendor) {
-                $this->redirect(VendorResource::getUrl('company', ['record' => $user->vendor->getKey()]));
+                $this->redirect(VendorResource::getUrl('verification', ['record' => $user->vendor->getKey()]));
 
                 return;
             }
@@ -65,7 +65,10 @@ class ListVendors extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make('All'),
+            'all' => Tab::make('All')
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                    ->where('verification_status', '!=', VendorStatus::Draft)
+                    ->where('is_blacklisted', false)),
             'approved' => Tab::make('Approved')
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query
                     ->where('verification_status', VendorStatus::Approved)
