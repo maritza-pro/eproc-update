@@ -14,14 +14,14 @@ use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\Page;
 
-class VendorFinancial extends Page implements  HasForms
+class VendorFinancial extends Page implements HasForms
 {
     use InteractsWithForms, InteractsWithRecord, HasUnsavedDataChangesAlert;
     protected static string $resource = VendorResource::class;
 
     protected static string $view = 'filament.resources.vendor-resource.pages.vendor-financial';
 
-     public ?array $data = [];
+    public ?array $data = [];
 
     protected static ?string $title = 'Financial';
 
