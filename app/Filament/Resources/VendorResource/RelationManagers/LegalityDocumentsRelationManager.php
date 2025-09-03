@@ -51,7 +51,6 @@ class LegalityDocumentsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('document_number')->label('Document Number'),
                 Tables\Columns\TextColumn::make('type')->label('Document Type'),
                 Tables\Columns\TextColumn::make('issue_date')->label('Issue Date')->date('d M Y'),
-                Tables\Columns\TextColumn::make('expiry_date')->label('Expiry Date')->date('d M Y'),
                 Tables\Columns\ViewColumn::make('vendor_document_attachment')
                     ->label('Attachment')
                     ->viewData([
