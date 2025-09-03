@@ -67,7 +67,7 @@ class VendorResource extends Resource
     {
         return $table
             ->striped()
-            ->recordUrl(fn ($record): string => static::getUrl('verification', [
+            ->recordUrl(fn ($record): string => static::getUrl('company', [
                 'record' => $record,
             ]))
             ->modifyQueryUsing(function (Builder $query) {
@@ -187,12 +187,12 @@ class VendorResource extends Resource
     public static function getRecordSubNavigation(Page $page): array
     {
         $items = $page->generateNavigationItems([
-            Pages\VendorVerificationStatus::class,
             Pages\VendorInformation::class,
-            Pages\VendorContacts::class,
-            Pages\VendorExperiences::class,
             Pages\VendorLegalityLicensing::class,
             Pages\VendorFinancial::class,
+            Pages\VendorContacts::class,
+            Pages\VendorExperiences::class,
+            Pages\VendorVerificationStatus::class,
 
         ]);
 
