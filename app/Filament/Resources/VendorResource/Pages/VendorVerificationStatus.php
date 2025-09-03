@@ -61,6 +61,7 @@ class VendorVerificationStatus extends Page implements HasForms
                     ->label('Submit Verification')
                     ->icon('heroicon-o-paper-airplane')
                     ->color('primary')
+                    ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Draft && ! $withoutGlobalScope && ! $record->is_blacklisted)
                     ->modalHeading('')
                     ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
                     ->modalWidth('3xl')
