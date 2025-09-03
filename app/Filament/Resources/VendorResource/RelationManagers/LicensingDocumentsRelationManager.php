@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\RelationManagers;
 
 use App\Enums\VendorDocumentType;
+use App\Models\VendorBusiness;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -30,7 +31,14 @@ class LicensingDocumentsRelationManager extends RelationManager
                 Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
                 Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
-                Forms\Components\TextInput::make('properties.business_field')->label('Business Field')->nullable(),
+                Forms\Components\Select::make('properties.business_field_id')
+                    ->label('Business Field')
+                    ->options(fn () => VendorBusiness::query()
+                        ->where('is_active', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    ),
             ],
             VendorDocumentType::CompanyRegistrationTDP => [
                 Forms\Components\TextInput::make('document_number')->label('TDP Number')->nullable(),
@@ -62,7 +70,14 @@ class LicensingDocumentsRelationManager extends RelationManager
                         'medium-high' => 'Medium to High',
                         'high' => 'High',
                     ]),
-                Forms\Components\TextInput::make('properties.business_field')->label('Business Field')->nullable(),
+                 Forms\Components\Select::make('properties.business_field_id')
+                    ->label('Business Field')
+                    ->options(fn () => VendorBusiness::query()
+                        ->where('is_active', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    ),
             ],
             VendorDocumentType::HinderOrdonantieHO => [
                 Forms\Components\TextInput::make('document_number')->label('HO Number')->nullable(),
@@ -82,7 +97,14 @@ class LicensingDocumentsRelationManager extends RelationManager
                         'Medium' => 'Medium',
                         'Large' => 'Large',
                     ]),
-                Forms\Components\TextInput::make('properties.business_field')->label('Business Field')->nullable(),
+                Forms\Components\Select::make('properties.business_field_id')
+                    ->label('Business Field')
+                    ->options(fn () => VendorBusiness::query()
+                        ->where('is_active', true)
+                        ->orderBy('name')
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    ),
             ],
 
             default => [],
