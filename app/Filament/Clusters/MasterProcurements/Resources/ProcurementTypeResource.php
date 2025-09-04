@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\MasterProcurements\Resources;
 
 use App\Filament\Clusters\MasterProcurements;
-use App\Filament\Resources\ProcurementTypeResource\Pages;
+use App\Filament\Clusters\MasterProcurements\Resources\ProcurementTypeResource\Pages;
 use App\Models\ProcurementType;
 use Filament\Forms;
 use Filament\Forms\Form;

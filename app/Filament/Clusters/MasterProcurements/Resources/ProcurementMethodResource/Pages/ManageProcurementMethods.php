@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\ProcurementMethodResource\Pages;
+namespace App\Filament\Clusters\MasterProcurements\Resources\ProcurementMethodResource\Pages;
 
-use App\Filament\Resources\ProcurementMethodResource;
+use App\Filament\Clusters\MasterProcurements\Resources\ProcurementMethodResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

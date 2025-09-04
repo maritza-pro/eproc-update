@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\MasterProcurements\Resources;
 
 use App\Filament\Clusters\MasterProcurements;
-use App\Filament\Resources\ProcurementMethodResource\Pages;
-use App\Models\ProcurementMethod;
+use App\Filament\Clusters\MasterProcurements\Resources\ProcurementAgendaResource\Pages;
+use App\Models\ProcurementAgenda;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,23 +18,23 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
-class ProcurementMethodResource extends Resource
+class ProcurementAgendaResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Method';
+    protected static ?string $modelLabel = 'Agenda';
 
-    protected static ?string $model = ProcurementMethod::class;
+    protected static ?string $model = ProcurementAgenda::class;
 
     protected static ?string $cluster = MasterProcurements::class;
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageProcurementMethods::route('/'),
+            'index' => Pages\ManageProcurementAgendas::route('/'),
         ];
     }
 
@@ -118,5 +118,4 @@ class ProcurementMethodResource extends Resource
     {
         return parent::getEloquentQuery()->withoutGlobalScopes([SoftDeletingScope::class]);
     }
-
 }
