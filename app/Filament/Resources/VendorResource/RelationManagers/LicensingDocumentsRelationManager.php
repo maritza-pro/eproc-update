@@ -6,6 +6,7 @@ namespace App\Filament\Resources\VendorResource\RelationManagers;
 
 use App\Enums\VendorDocumentType;
 use App\Models\VendorBusiness;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -33,12 +34,7 @@ class LicensingDocumentsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options(fn () => VendorBusiness::query()
-                        ->where('is_active', true)
-                        ->orderBy('name')
-                        ->pluck('name', 'id')
-                        ->toArray()
-                    ),
+                    ->options($this->getBusinessFieldOptions())
             ],
             VendorDocumentType::CompanyRegistrationTDP => [
                 Forms\Components\TextInput::make('document_number')->label('TDP Number')->nullable(),
@@ -70,14 +66,9 @@ class LicensingDocumentsRelationManager extends RelationManager
                         'medium-high' => 'Medium to High',
                         'high' => 'High',
                     ]),
-                 Forms\Components\Select::make('properties.business_field_id')
+                Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options(fn () => VendorBusiness::query()
-                        ->where('is_active', true)
-                        ->orderBy('name')
-                        ->pluck('name', 'id')
-                        ->toArray()
-                    ),
+                    ->options($this->getBusinessFieldOptions())
             ],
             VendorDocumentType::HinderOrdonantieHO => [
                 Forms\Components\TextInput::make('document_number')->label('HO Number')->nullable(),
@@ -99,16 +90,19 @@ class LicensingDocumentsRelationManager extends RelationManager
                     ]),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options(fn () => VendorBusiness::query()
-                        ->where('is_active', true)
-                        ->orderBy('name')
-                        ->pluck('name', 'id')
-                        ->toArray()
-                    ),
+                    ->options($this->getBusinessFieldOptions())
             ],
 
             default => [],
         };
+    }
+
+    private function getBusinessFieldOptions(): Closure
+    {
+        return fn () => VendorBusiness::query()
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->pluck('name', 'id');
     }
 
     public function table(Table $table): Table
