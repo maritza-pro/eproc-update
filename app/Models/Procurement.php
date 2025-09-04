@@ -6,6 +6,7 @@ namespace App\Models;
 
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -72,5 +73,15 @@ class Procurement extends Model
     public function items(): HasMany
     {
         return $this->hasMany(ProcurementItem::class);
+    }
+
+    public function procurementMethod(): BelongsTo
+    {
+        return $this->belongsTo(ProcurementMethod::class);
+    }
+
+    public function procurementType(): BelongsTo
+    {
+        return $this->belongsTo(ProcurementType::class);
     }
 }
