@@ -34,7 +34,7 @@ class LicensingDocumentsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options($this->getBusinessFieldOptions())
+                    ->options($this->getBusinessFieldOptions()),
             ],
             VendorDocumentType::CompanyRegistrationTDP => [
                 Forms\Components\TextInput::make('document_number')->label('TDP Number')->nullable(),
@@ -68,7 +68,7 @@ class LicensingDocumentsRelationManager extends RelationManager
                     ]),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options($this->getBusinessFieldOptions())
+                    ->options($this->getBusinessFieldOptions()),
             ],
             VendorDocumentType::HinderOrdonantieHO => [
                 Forms\Components\TextInput::make('document_number')->label('HO Number')->nullable(),
@@ -90,19 +90,11 @@ class LicensingDocumentsRelationManager extends RelationManager
                     ]),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label('Business Field')
-                    ->options($this->getBusinessFieldOptions())
+                    ->options($this->getBusinessFieldOptions()),
             ],
 
             default => [],
         };
-    }
-
-    private function getBusinessFieldOptions(): Closure
-    {
-        return fn () => VendorBusiness::query()
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->pluck('name', 'id');
     }
 
     public function table(Table $table): Table
@@ -177,5 +169,13 @@ class LicensingDocumentsRelationManager extends RelationManager
                             ->visible(fn (Get $get) => filled($get('type'))),
                     ]),
             ]);
+    }
+
+    private function getBusinessFieldOptions(): Closure
+    {
+        return fn () => VendorBusiness::query()
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->pluck('name', 'id');
     }
 }
