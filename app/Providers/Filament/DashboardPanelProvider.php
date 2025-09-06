@@ -32,6 +32,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Rmsramos\Activitylog\ActivitylogPlugin;
+use TomatoPHP\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 
 class DashboardPanelProvider extends PanelProvider
 {
@@ -107,6 +108,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->plugins([
                 HexaLite::make(),
+                FilamentLanguageSwitcherPlugin::make(),
                 ActivitylogPlugin::make()
                     ->navigationGroup('Systems')
                     ->authorize(
