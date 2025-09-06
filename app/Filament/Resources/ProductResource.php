@@ -132,7 +132,7 @@ class ProductResource extends Resource
                                     ->numeric()
                                     ->required()
                                     ->default(0)
-                                    ->prefix(fn (Get $get): ?string => Currency::query()->find($get('currency_id'))?->symbol . ' ')
+                                    ->prefix(fn (Get $get): string => Currency::query()->find($get('currency_id'))?->symbol . ' ')
                                     ->label('Estimated Price'),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),

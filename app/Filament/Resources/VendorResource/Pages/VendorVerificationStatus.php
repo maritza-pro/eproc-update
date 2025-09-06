@@ -63,7 +63,7 @@ class VendorVerificationStatus extends Page implements HasForms
                     ->color('primary')
                     ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Draft && ! $withoutGlobalScope && ! $record->is_blacklisted)
                     ->modalHeading('')
-                    ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
+                    ->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.forms.components.statement-and-agreement'))
                     ->modalWidth('3xl')
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->form([
@@ -166,7 +166,7 @@ class VendorVerificationStatus extends Page implements HasForms
                         Forms\Components\Textarea::make('rejection_reason')
                             ->label('Rejection Reason')
                             ->rows(5)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
                             ->visible($isRejected)
                             ->required($isRejected),
                     ]),
@@ -181,7 +181,7 @@ class VendorVerificationStatus extends Page implements HasForms
                         Forms\Components\Textarea::make('blacklist_reason')
                             ->label('Blacklist Reason')
                             ->rows(5)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
                             ->visible(fn (Get $get): bool => (bool) $get('is_blacklisted'))
                             ->required(fn (Get $get): bool => (bool) $get('is_blacklisted')),
                     ]),

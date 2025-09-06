@@ -166,7 +166,7 @@ class LicensingDocumentsRelationManager extends RelationManager
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(2048)
                             ->downloadable()
-                            ->visible(fn (Get $get) => filled($get('type'))),
+                            ->visible(fn (Get $get): bool => filled($get('type'))),
                     ]),
             ]);
     }

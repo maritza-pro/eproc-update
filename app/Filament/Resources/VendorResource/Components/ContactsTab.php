@@ -21,7 +21,7 @@ class ContactsTab
                     ->collapsible()
                     ->collapsed()
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
+                    ->itemLabel(function (array $state): string {
                         $parts = [];
 
                         if (! empty($state['name'])) {

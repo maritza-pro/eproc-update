@@ -162,7 +162,7 @@ class VendorResource extends Resource
                                             ->schema([
                                                 Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->label('Business Entity Type'),
                                             ]),
-                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): ?string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
+                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
                                         Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->label('Business Field'),
                                         Forms\Components\TextInput::make('email')->email()->required(),
                                         Forms\Components\TextInput::make('phone')->tel(),
@@ -196,7 +196,7 @@ class VendorResource extends Resource
 
         ]);
 
-        return array_map(fn ($item): \Filament\Navigation\NavigationItem => $item->icon(null), $items);
+        return array_map(fn (\Filament\Navigation\NavigationItem $item): \Filament\Navigation\NavigationItem => $item->icon(null), $items);
 
     }
 

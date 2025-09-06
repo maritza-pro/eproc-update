@@ -179,7 +179,7 @@ class CodeReview extends Command
         }
 
         // Unik + rapikan
-        return array_values(array_unique(array_map(fn ($v): string => rtrim($v, '.'), $items)));
+        return array_values(array_unique(array_map(fn (string $v): string => rtrim($v, '.'), $items)));
     }
 
     private function getPrompt(): string

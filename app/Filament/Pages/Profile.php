@@ -95,7 +95,7 @@ class Profile extends Page implements HasForms
                                             ->minLength(8)
                                             ->rules(['nullable', 'different:current_password'])
                                             ->confirmed()
-                                            ->dehydrated(fn ($state) => filled($state)),
+                                            ->dehydrated(fn ($state): bool => filled($state)),
 
                                         Forms\Components\TextInput::make('new_password_confirmation')
                                             ->label('Confirm New Password')

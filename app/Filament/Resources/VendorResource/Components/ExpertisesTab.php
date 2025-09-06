@@ -21,7 +21,7 @@ class ExpertisesTab
                     ->collapsed()
                     ->columns(1)
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
+                    ->itemLabel(function (array $state): string {
                         if (! empty($state['expertise'])) {
                             return '- ' . $state['expertise'];
                         }

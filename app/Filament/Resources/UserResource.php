@@ -150,7 +150,7 @@ class UserResource extends Resource
                                     ->revealable()
                                     ->required(fn (string $context): bool => $context === 'create')
                                     ->nullable()
-                                    ->dehydrated(fn ($state) => filled($state))
+                                    ->dehydrated(fn ($state): bool => filled($state))
                                     ->hidden(! $withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
                                     ->disabled(! $withoutGlobalScope)

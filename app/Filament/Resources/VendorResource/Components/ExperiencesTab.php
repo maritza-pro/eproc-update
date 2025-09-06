@@ -20,7 +20,7 @@ class ExperiencesTab
                     ->collapsible()
                     ->collapsed()
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
+                    ->itemLabel(function (array $state): string {
                         if (! empty($state['project_name'])) {
                             return '- ' . $state['project_name'];
                         }

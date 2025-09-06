@@ -17,7 +17,7 @@ class LegalityLicensingTab
                     ->relationship(
                         'vendorDeed',
                         condition: fn (?array $state): bool => collect($state ?? [])
-                            ->filter(fn ($v) => filled($v))
+                            ->filter(fn ($v): bool => filled($v))
                             ->isNotEmpty()
                     )
                     ->schema([
