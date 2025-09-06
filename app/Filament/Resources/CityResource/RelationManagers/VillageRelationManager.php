@@ -29,9 +29,9 @@ class VillageRelationManager extends RelationManager
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
+                    ->label((string) __('Latitude')),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
+                    ->label((string) __('Longitude')),
             ])
             ->filters([
                 //
@@ -61,7 +61,7 @@ class VillageRelationManager extends RelationManager
             ->schema([
 
                 Forms\Components\Select::make('district_id')
-                    ->label('District')
+                    ->label((string) __('District'))
                     ->options(fn (RelationManager $livewire) => District::query()->where('city_id', $livewire->getOwnerRecord()->id)
                         ->pluck('name', 'id'))
                     ->required()
@@ -71,13 +71,13 @@ class VillageRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('latitude')
-                    ->label('Latitude')
+                    ->label((string) __('Latitude'))
                     ->numeric()
-                    ->helperText('e.g. -6.200000'),
+                    ->helperText((string) __('e.g. -6.200000')),
                 Forms\Components\TextInput::make('longitude')
-                    ->label('Longitude')
+                    ->label((string) __('Longitude'))
                     ->numeric()
-                    ->helperText('e.g. 106.816666'),
+                    ->helperText((string) __('e.g. 106.816666')),
             ]);
     }
 }

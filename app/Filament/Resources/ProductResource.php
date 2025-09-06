@@ -67,7 +67,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('self_estimated_price')
                     ->money(fn ($record) => $record->currency?->code)
                     ->sortable()
-                    ->label('Price'),
+                    ->label((string) __('Price')),
                 Tables\Columns\TextColumn::make('currency.name')
                     ->searchable()
                     ->badge(),
@@ -127,13 +127,13 @@ class ProductResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->live()
-                                    ->label('Currency'),
+                                    ->label((string) __('Currency')),
                                 Forms\Components\TextInput::make('self_estimated_price')
                                     ->numeric()
                                     ->required()
                                     ->default(0)
                                     ->prefix(fn (Get $get): string => Currency::query()->find($get('currency_id'))?->symbol . ' ')
-                                    ->label('Estimated Price'),
+                                    ->label((string) __('Estimated Price')),
                                 Forms\Components\Textarea::make('description')
                                     ->columnSpanFull(),
                             ]),

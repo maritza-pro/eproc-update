@@ -69,13 +69,13 @@ class DistrictResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('District')
+                    ->label((string) __('District'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
+                    ->label((string) __('Latitude')),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
+                    ->label((string) __('Longitude')),
             ])
             ->filters([
                 //
@@ -100,7 +100,7 @@ class DistrictResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('country_id')
-                                    ->label('Country')
+                                    ->label((string) __('Country'))
                                     ->reactive()
                                     ->required()
                                     ->options(Country::query()->pluck('name', 'id'))
@@ -114,7 +114,7 @@ class DistrictResource extends Resource
                                         }
                                     }),
                                 Forms\Components\Select::make('province_id')
-                                    ->label('Province')
+                                    ->label((string) __('Province'))
                                     ->reactive()
                                     ->required()
                                     ->disabled(fn (callable $get): bool => empty($get('country_id')))
@@ -130,7 +130,7 @@ class DistrictResource extends Resource
                                         }
                                     }),
                                 Forms\Components\Select::make('city_id')
-                                    ->label('City')
+                                    ->label((string) __('City'))
                                     ->reactive()
                                     ->required()
                                     ->disabled(fn (callable $get): bool => empty($get('province_id')))
@@ -147,13 +147,13 @@ class DistrictResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
-                                    ->label('Latitude')
+                                    ->label((string) __('Latitude'))
                                     ->numeric()
-                                    ->helperText('e.g. -6.200000'),
+                                    ->helperText((string) __('e.g. -6.200000')),
                                 Forms\Components\TextInput::make('longitude')
-                                    ->label('Longitude')
+                                    ->label((string) __('Longitude'))
                                     ->numeric()
-                                    ->helperText('e.g. 106.816666'),
+                                    ->helperText((string) __('e.g. 106.816666')),
                             ]),
                     ]),
             ]);

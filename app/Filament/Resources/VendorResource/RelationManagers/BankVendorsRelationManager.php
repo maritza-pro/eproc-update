@@ -51,7 +51,7 @@ class BankVendorsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('bank_id')
-                    ->label('Bank Name')
+                    ->label((string) __('Bank Name'))
                     ->relationship(
                         name: 'bank',
                         titleAttribute: 'name',
@@ -64,12 +64,12 @@ class BankVendorsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('account_name')
                     ->required()
                     ->maxLength(255)
-                    ->label('Account Name'),
+                    ->label((string) __('Account Name')),
 
                 Forms\Components\TextInput::make('account_number')
                     ->required()
                     ->maxLength(255)
-                    ->label('Account Number'),
+                    ->label((string) __('Account Number')),
 
                 Forms\Components\Toggle::make('is_active')
                     ->required()

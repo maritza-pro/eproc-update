@@ -44,7 +44,7 @@ class VendorExperiences extends ManageRelatedRecords
                     ->date('d M Y')
                     ->sortable(),
                 Tables\Columns\ViewColumn::make('vendor_experience_attachment')
-                    ->label('Attachment')
+                    ->label((string) __('Attachment'))
                     ->viewData([
                         'collectionName' => 'vendor_experience_attachment',
                         'viewLabel' => 'Experience Attachment',
@@ -56,7 +56,7 @@ class VendorExperiences extends ManageRelatedRecords
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Add Experience')
+                    ->label((string) __('Add Experience'))
                     ->modalHeading('Add Experience')
                     ->createAnother(false)
                     ->modalFooterActionsAlignment(Alignment::End),
@@ -85,37 +85,37 @@ class VendorExperiences extends ManageRelatedRecords
         return $form
             ->schema([
                 Forms\Components\TextInput::make('project_name')
-                    ->label('Project Name')
+                    ->label((string) __('Project Name'))
                     ->nullable(),
                 Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
                     ->searchable()
                     ->preload()
                     ->nullable()
-                    ->label('Business Field'),
+                    ->label((string) __('Business Field')),
 
                 Forms\Components\TextInput::make('location')
-                    ->label('Project Location')
+                    ->label((string) __('Project Location'))
                     ->nullable(),
                 Forms\Components\TextInput::make('stakeholder')
-                    ->label('Stakeholder')
+                    ->label((string) __('Stakeholder'))
                     ->nullable(),
 
                 Forms\Components\TextInput::make('contract_number')
-                    ->label('Contract Number')
+                    ->label((string) __('Contract Number'))
                     ->nullable(),
                 Forms\Components\TextInput::make('project_value')
-                    ->label('Project Value')
+                    ->label((string) __('Project Value'))
                     ->nullable(),
 
                 Forms\Components\DatePicker::make('start_date')
-                    ->label('Start Date')
+                    ->label((string) __('Start Date'))
                     ->nullable(),
                 Forms\Components\DatePicker::make('end_date')
-                    ->label('End Date')
+                    ->label((string) __('End Date'))
                     ->nullable(),
 
                 Forms\Components\Textarea::make('description')
-                    ->label('Description')
+                    ->label((string) __('Description'))
                     ->autosize()
                     ->nullable()
                     ->maxLength(100),
@@ -123,7 +123,7 @@ class VendorExperiences extends ManageRelatedRecords
                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
                     ->collection('vendor_experience_attachment')
                     ->maxFiles(1)
-                    ->label('Experience Attachment (PDF, max 2MB)')
+                    ->label((string) __('Experience Attachment (PDF, max 2MB)'))
                     ->acceptedFileTypes(['application/pdf'])
                     ->maxSize(2048)
                     ->downloadable()

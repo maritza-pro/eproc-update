@@ -77,13 +77,13 @@ class VendorResource extends Resource
             })
             ->columns([
                 Tables\Columns\TextColumn::make('is_blacklisted')
-                    ->label('Status')
+                    ->label((string) __('Status'))
                     ->badge()
                     ->formatStateUsing(fn ($record): string => $record->is_blacklisted ? 'Blacklisted' : 'Active')
                     ->color(fn ($record): string => $record->is_blacklisted ? 'gray' : 'success'),
                 Tables\Columns\TextColumn::make('company_name')->searchable(),
                 Tables\Columns\IconColumn::make('verification_status')
-                    ->label('Verification Status')
+                    ->label((string) __('Verification Status'))
                     ->icon(fn (VendorStatus $state): string => $state->getIcon())
                     ->color(fn (VendorStatus $state): string => $state->getColor())
                     ->alignCenter(),
@@ -91,7 +91,7 @@ class VendorResource extends Resource
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('bankVendors.bank.name')
-                    ->label('Bank')
+                    ->label((string) __('Bank'))
                     ->searchable(
                         query: fn (Builder $query, string $search): Builder => $query->whereHas('bankVendors.bank', function ($q) use ($search) {
                             $q->where('name', 'like', "%{$search}%");
@@ -101,7 +101,7 @@ class VendorResource extends Resource
                     )
                     ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('vendorType.name')->label('Vendor Type')->badge()->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('vendorType.name')->label((string) __('Vendor Type'))->badge()->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
@@ -144,7 +144,7 @@ class VendorResource extends Resource
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_logo_attachment')
                                         ->collection('vendor_logo_attachment')
                                         ->maxFiles(1)
-                                        ->label('Company Logo (JPEG, PNG, max 2MB)')
+                                        ->label((string) __('Company Logo (JPEG, PNG, max 2MB)'))
                                         ->acceptedFileTypes(['image/*'])
                                         ->maxSize(2048)
                                         ->downloadable()
@@ -160,13 +160,13 @@ class VendorResource extends Resource
                                         Forms\Components\Group::make()
                                             ->relationship('vendorProfile')
                                             ->schema([
-                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->label('Business Entity Type'),
+                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->label((string) __('Business Entity Type')),
                                             ]),
                                         Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
-                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->label('Business Field'),
+                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->label((string) __('Business Field')),
                                         Forms\Components\TextInput::make('email')->email()->required(),
                                         Forms\Components\TextInput::make('phone')->tel(),
-                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label('Vendor Type'),
+                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label((string) __('Vendor Type')),
                                         Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
                                     ])
                                     ->columnSpan([

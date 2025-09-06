@@ -31,7 +31,7 @@ class VendorContacts extends ManageRelatedRecords
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('position')
-                    ->label('Job Title / Position')
+                    ->label((string) __('Job Title / Position'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email'),
@@ -42,7 +42,7 @@ class VendorContacts extends ManageRelatedRecords
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Add PIC Contact')
+                    ->label((string) __('Add PIC Contact'))
                     ->modalHeading('Add PIC Contact')
                     ->createAnother(false)
                     ->modalFooterActionsAlignment(Alignment::End),
@@ -71,31 +71,31 @@ class VendorContacts extends ManageRelatedRecords
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Full Name')
+                    ->label((string) __('Full Name'))
                     ->nullable(),
 
                 Forms\Components\TextInput::make('position')
-                    ->label('Job Title / Position')
+                    ->label((string) __('Job Title / Position'))
                     ->nullable(),
 
                 Forms\Components\TextInput::make('phone_number')
-                    ->label('Phone Number')
+                    ->label((string) __('Phone Number'))
                     ->tel()
                     ->nullable(),
 
                 Forms\Components\TextInput::make('email')
-                    ->label('Email Address')
+                    ->label((string) __('Email Address'))
                     ->email()
                     ->nullable(),
 
                 Forms\Components\TextInput::make('identity_number')
-                    ->label('National ID (KTP) Number')
+                    ->label((string) __('National ID (KTP) Number'))
                     ->nullable(),
 
                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_contact_attachment')
                     ->collection('vendor_contact_attachment')
                     ->maxFiles(1)
-                    ->label('Attachment (JPEG, PNG, PDF, max 2MB)')
+                    ->label((string) __('Attachment (JPEG, PNG, PDF, max 2MB)'))
                     ->acceptedFileTypes(['image/*', 'application/pdf'])
                     ->maxSize(2048)
                     ->downloadable()

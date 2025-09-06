@@ -41,7 +41,7 @@ class VendorLegalityLicensing extends Page implements HasForms
         $vendor->save();
 
         Notification::make()
-            ->title('Legality & Licensing updated successfully')
+            ->title((string) __('Legality & Licensing updated successfully'))
             ->success()
             ->send();
     }

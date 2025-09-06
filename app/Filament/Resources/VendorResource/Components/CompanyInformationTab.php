@@ -24,37 +24,37 @@ class CompanyInformationTab
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 // Forms\Components\TextInput::make('business_entity_type')
-                                //     ->label('Business Entity Type')
+                                //     ->label((string) __('Business Entity Type'))
                                 //     ->nullable(),
 
                                 Forms\Components\TextInput::make('tax_identification_number')
-                                    ->label('Tax Identification Number (NPWP)')
+                                    ->label((string) __('Tax Identification Number (NPWP)'))
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('business_identification_number')
-                                    ->label('Business Registration Number (NIB)')
+                                    ->label((string) __('Business Registration Number (NIB)'))
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('website')
-                                    ->label('Website')
+                                    ->label((string) __('Website'))
                                     ->url()
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('established_year')
-                                    ->label('Year Established')
+                                    ->label((string) __('Year Established'))
                                     ->numeric()
                                     ->minValue(1900)
                                     ->maxValue(now()->year),
 
                                 Forms\Components\TextInput::make('employee_count')
-                                    ->label('Number of Employees')
+                                    ->label((string) __('Number of Employees'))
                                     ->numeric()
                                     ->nullable(),
                             ]),
 
                         Forms\Components\Textarea::make('head_office_address')
                             ->autosize()
-                            ->label('Head Office Address')
+                            ->label((string) __('Head Office Address'))
                             ->nullable(),
                     ]),
             ]);

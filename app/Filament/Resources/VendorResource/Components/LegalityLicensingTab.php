@@ -24,17 +24,17 @@ class LegalityLicensingTab
                         Forms\Components\Section::make('Deed Information')
                             ->schema([
                                 Forms\Components\Grid::make(2)->schema([
-                                    Forms\Components\TextInput::make('deed_number')->label('Deed Number')->nullable(),
-                                    Forms\Components\DatePicker::make('deed_date')->label('Deed Date')->nullable(),
+                                    Forms\Components\TextInput::make('deed_number')->label((string) __('Deed Number'))->nullable(),
+                                    Forms\Components\DatePicker::make('deed_date')->label((string) __('Deed Date'))->nullable(),
 
-                                    Forms\Components\TextInput::make('deed_notary_name')->label('Notary Name')->nullable(),
-                                    Forms\Components\TextInput::make('approval_number')->label('Approval Number (Kemenkumham)')->nullable(),
+                                    Forms\Components\TextInput::make('deed_notary_name')->label((string) __('Notary Name'))->nullable(),
+                                    Forms\Components\TextInput::make('approval_number')->label((string) __('Approval Number (Kemenkumham)'))->nullable(),
 
-                                    Forms\Components\TextInput::make('latest_amendment_number')->label('Latest Amendment Number')->nullable(),
-                                    Forms\Components\DatePicker::make('latest_amendment_date')->label('Latest Amendment Date')->nullable(),
+                                    Forms\Components\TextInput::make('latest_amendment_number')->label((string) __('Latest Amendment Number'))->nullable(),
+                                    Forms\Components\DatePicker::make('latest_amendment_date')->label((string) __('Latest Amendment Date'))->nullable(),
 
-                                    Forms\Components\TextInput::make('latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
-                                    Forms\Components\TextInput::make('latest_approval_number')->label('Latest Approval Number (Kemenkumham)')->nullable(),
+                                    Forms\Components\TextInput::make('latest_amendment_notary')->label((string) __('Latest Amendment Notary'))->nullable(),
+                                    Forms\Components\TextInput::make('latest_approval_number')->label((string) __('Latest Approval Number (Kemenkumham)'))->nullable(),
 
                                     Forms\Components\View::make('vendor_deed_attachment_viewer')
                                         ->viewData([
@@ -45,7 +45,7 @@ class LegalityLicensingTab
                                         ->visibleOn('view'),
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_deed_attachment')
                                         ->collection('vendor_deed_attachment')
-                                        ->label('Deed Attachment (PDF, max 2MB)')
+                                        ->label((string) __('Deed Attachment (PDF, max 2MB)'))
                                         ->acceptedFileTypes(['application/pdf'])
                                         ->maxSize(2048)
                                         ->maxFiles(1)
@@ -60,11 +60,11 @@ class LegalityLicensingTab
                         Forms\Components\Section::make('Business License Information')
                             ->schema([
                                 Forms\Components\Grid::make(2)->schema([
-                                    Forms\Components\TextInput::make('license_number')->label('License Number')->nullable(),
-                                    Forms\Components\DatePicker::make('issued_at')->label('Issued Date')->nullable(),
+                                    Forms\Components\TextInput::make('license_number')->label((string) __('License Number'))->nullable(),
+                                    Forms\Components\DatePicker::make('issued_at')->label((string) __('Issued Date'))->nullable(),
 
-                                    Forms\Components\TextInput::make('issued_by')->label('Issued By')->nullable(),
-                                    Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
+                                    Forms\Components\TextInput::make('issued_by')->label((string) __('Issued By'))->nullable(),
+                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable(),
 
                                     Forms\Components\View::make('vendor_license_attachment_viewer')
                                         ->viewData([
@@ -75,7 +75,7 @@ class LegalityLicensingTab
                                         ->visibleOn('view'),
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_license_attachment')
                                         ->collection('vendor_license_attachment')
-                                        ->label('Business License Attachment (PDF, max 2MB)')
+                                        ->label((string) __('Business License Attachment (PDF, max 2MB)'))
                                         ->acceptedFileTypes(['application/pdf'])
                                         ->maxSize(2048)
                                         ->maxFiles(1)
@@ -90,12 +90,12 @@ class LegalityLicensingTab
                         Forms\Components\Section::make('Tax Registration Certificate Information')
                             ->schema([
                                 Forms\Components\Grid::make(2)->schema([
-                                    Forms\Components\TextInput::make('name')->label('Name')->nullable(),
-                                    Forms\Components\TextInput::make('certificate_number')->label('Certificate Number')->nullable(),
+                                    Forms\Components\TextInput::make('name')->label((string) __('Name'))->nullable(),
+                                    Forms\Components\TextInput::make('certificate_number')->label((string) __('Certificate Number'))->nullable(),
 
-                                    Forms\Components\TextInput::make('confirmation_status')->label('Confirmation Status')->nullable(),
+                                    Forms\Components\TextInput::make('confirmation_status')->label((string) __('Confirmation Status'))->nullable(),
                                     Forms\Components\Select::make('tax_obligation')
-                                        ->label('Tax Obligation')
+                                        ->label((string) __('Tax Obligation'))
                                         ->options([
                                             'collecting' => 'Collecting',
                                             'depositing' => 'Depositing',
@@ -103,10 +103,10 @@ class LegalityLicensingTab
                                         ]),
 
                                     Forms\Components\TextInput::make('registered_tax_office')
-                                        ->label('Registered Tax Office')
+                                        ->label((string) __('Registered Tax Office'))
                                         ->nullable(),
                                     Forms\Components\Textarea::make('address')
-                                        ->label('Address')
+                                        ->label((string) __('Address'))
                                         ->autosize()
                                         ->nullable(),
 
@@ -119,7 +119,7 @@ class LegalityLicensingTab
                                         ->visibleOn('view'),
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_tax_registration_attachment')
                                         ->collection('vendor_tax_registration_attachment')
-                                        ->label('Tax Registration Certificate Attachment (PDF, max 2MB)')
+                                        ->label((string) __('Tax Registration Certificate Attachment (PDF, max 2MB)'))
                                         ->acceptedFileTypes(['application/pdf'])
                                         ->maxSize(2048)
                                         ->maxFiles(1)
@@ -134,13 +134,13 @@ class LegalityLicensingTab
                         Forms\Components\Section::make('Business Certificate Information')
                             ->schema([
                                 Forms\Components\Grid::make(2)->schema([
-                                    Forms\Components\TextInput::make('certificate_number')->label('Certificate Number')->nullable(),
-                                    Forms\Components\DatePicker::make('issued_at')->label('Issued Date')->nullable(),
+                                    Forms\Components\TextInput::make('certificate_number')->label((string) __('Certificate Number'))->nullable(),
+                                    Forms\Components\DatePicker::make('issued_at')->label((string) __('Issued Date'))->nullable(),
 
-                                    Forms\Components\TextInput::make('issued_by')->label('Issued By')->nullable(),
-                                    Forms\Components\DatePicker::make('expires_at')->label('Expires Date')->nullable(),
+                                    Forms\Components\TextInput::make('issued_by')->label((string) __('Issued By'))->nullable(),
+                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable(),
 
-                                    Forms\Components\TextInput::make('classification')->label('Classification')->nullable(),
+                                    Forms\Components\TextInput::make('classification')->label((string) __('Classification'))->nullable(),
                                     Forms\Components\View::make('vendor_certificate_attachment_viewer')
                                         ->viewData([
                                             'collectionName' => 'vendor_certificate_attachment',
@@ -150,7 +150,7 @@ class LegalityLicensingTab
                                         ->visibleOn('view'),
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_certificate_attachment')
                                         ->collection('vendor_certificate_attachment')
-                                        ->label('Business Certificate Attachment (PDF, max 2MB)')
+                                        ->label((string) __('Business Certificate Attachment (PDF, max 2MB)'))
                                         ->acceptedFileTypes(['application/pdf'])
                                         ->maxSize(2048)
                                         ->maxFiles(1)

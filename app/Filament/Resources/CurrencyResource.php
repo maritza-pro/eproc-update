@@ -104,7 +104,7 @@ class CurrencyResource extends Resource
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(3)
-                                    ->label('ISO Code'),
+                                    ->label((string) __('ISO Code')),
                                 Forms\Components\TextInput::make('symbol')
                                     ->required()
                                     ->unique(ignoreRecord: true)

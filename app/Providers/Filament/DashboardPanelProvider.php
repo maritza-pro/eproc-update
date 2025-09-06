@@ -82,7 +82,7 @@ class DashboardPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->userMenuItems([
                 MenuItem::make()
-                    ->label('My Profile')
+                    ->label((string) __('My Profile'))
                     ->icon('heroicon-s-user')
                     ->url(fn (): string => Profile::getUrl())
                     ->visible(fn (): bool => ! Auth::user()?->can(UserResource::getModelLabel() . '.withoutGlobalScope')),
@@ -127,17 +127,17 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make()
-                    ->label('Master Data'),
+                    ->label((string) __('Master Data')),
                 NavigationGroup::make()
-                    ->label('Procurement'),
+                    ->label((string) __('Procurement')),
                 NavigationGroup::make()
-                    ->label('Bidding'),
+                    ->label((string) __('Bidding')),
                 NavigationGroup::make()
-                    ->label('Location'),
+                    ->label((string) __('Location')),
                 NavigationGroup::make()
-                    ->label('Settings'),
+                    ->label((string) __('Settings')),
                 NavigationGroup::make()
-                    ->label('Systems'),
+                    ->label((string) __('Systems')),
             ]);
         // TODO : make sure aja pake ini yg terbaik atau bukan, atau pake tailwind class nya langsung di blade
         // ->viteTheme('resources/css/custom.css');

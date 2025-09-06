@@ -17,6 +17,7 @@ parameters:
         - identifier: property.notFound
         - identifier: binaryOp.invalid
         - identifier: larastan.noEnvCallsOutsideOfConfig
+        - identifier: cast.string
         - '#Collection.*map#'
         - '#Collection.*transform#'
         - '#Collection.*filter#'

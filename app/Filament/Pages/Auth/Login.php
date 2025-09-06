@@ -16,7 +16,7 @@ class Login extends BaseLogin
                 $this->makeForm()
                     ->schema([
                         Forms\Components\TextInput::make('email')
-                            ->label('Business Email')
+                            ->label((string) __('Business Email'))
                             ->email()
                             ->required()
                             ->autocomplete()

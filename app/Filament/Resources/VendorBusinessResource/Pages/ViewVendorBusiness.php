@@ -21,7 +21,7 @@ class ViewVendorBusiness extends ViewRecord
     {
         return [
             Actions\Action::make('back')
-                ->label('Back')
+                ->label((string) __('Back'))
                 ->icon('heroicon-m-arrow-left')
                 ->color('gray')
                 ->url(static::getResource()::getUrl('index')),
