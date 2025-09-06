@@ -17,13 +17,13 @@ trait Gate
     public function defineGates(): array
     {
         return [
-            "{$this->getModelLabel()}.viewAny" => "Allows viewing the {$this->getModelLabel()} list",
-            "{$this->getModelLabel()}.view" => "Allows viewing {$this->getModelLabel()} detail",
-            "{$this->getModelLabel()}.create" => "Allows creating a new {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.edit" => "Allows updating {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.delete" => "Allows deleting {$this->getModelLabel()}",
-            "{$this->getModelLabel()}.withoutGlobalScope" => "Allows viewing {$this->getModelLabel()} without global scope",
-            "{$this->getModelLabel()}.validate" => "Allows validating {$this->getModelLabel()}",
+            "{$this->getModelLabel()}.viewAny" => __('Allows viewing the :label list', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.view" => __('Allows viewing :label detail', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.create" => __('Allows creating a new :label', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.edit" => __('Allows updating :label', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.delete" => __('Allows deleting :label', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.withoutGlobalScope" => __('Allows viewing :label without global scope', ['label' => $this->getModelLabel()]),
+            "{$this->getModelLabel()}.validate" => __('Allows validating :label', ['label' => $this->getModelLabel()]),
         ];
     }
 
