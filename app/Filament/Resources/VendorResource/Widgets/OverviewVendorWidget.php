@@ -30,10 +30,10 @@ class OverviewVendorWidget extends BaseWidget
         $blacklisted = Vendor::query()->where('is_blacklisted', true)->count();
 
         return [
-            Stat::make('Approved', $approved),
-            Stat::make('Pending', $pending),
-            Stat::make('Rejected', $rejected),
-            Stat::make('Blacklisted', $blacklisted),
+            Stat::make((string) __('Approved'), $approved),
+            Stat::make((string) __('Pending'), $pending),
+            Stat::make((string) __('Rejected'), $rejected),
+            Stat::make((string) __('Blacklisted'), $blacklisted),
         ];
     }
 

@@ -11,7 +11,7 @@ class ExpertisesTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Expertises')
+        return Tab::make((string) __('Expertises'))
             ->schema([
                 Forms\Components\Repeater::make('vendorExpertises')
                     ->relationship()

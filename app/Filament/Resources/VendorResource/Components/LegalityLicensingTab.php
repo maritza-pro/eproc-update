@@ -11,7 +11,7 @@ class LegalityLicensingTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Legality & Licensing')
+        return Tab::make((string) __('Legality & Licensing'))
             ->schema([
                 Forms\Components\Group::make()
                     ->relationship(

@@ -12,7 +12,7 @@ class FinancialTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Financial')
+        return Tab::make((string) __('Financial'))
             ->schema([
                 Forms\Components\Repeater::make('bankVendors')
                     ->relationship()

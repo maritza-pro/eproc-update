@@ -12,7 +12,7 @@ class ContactsTab
 {
     public static function make(): Tab
     {
-        return Tab::make('PIC Contacts')
+        return Tab::make((string) __('PIC Contacts'))
             ->schema([
                 Forms\Components\Repeater::make('vendorContacts')
                     ->relationship()
