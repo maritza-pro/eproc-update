@@ -26,6 +26,20 @@ return new class extends Migration
                 ->restrictOnDelete()
                 ->comment('The ID of the procurement type associated with the procurement');
 
+            $table->foreignId('type_id')
+                ->nullable()
+                ->constrained('taxonomies')
+                ->restrictOnDelete()
+                ->comment('The ID of the procurement type associated with the procurement');
+
+            $table->decimal('value', 20, 2)
+                ->nullable()
+                ->comment('The value of the procurement');
+
+            $table->unsignedInteger('quantity')
+                ->nullable()
+                ->comment('The quantity of the procurement');
+
             $table->string('number')
                 ->nullable()
                 ->comment('The number of the procurement');
@@ -46,8 +60,9 @@ return new class extends Migration
 
             $table->dropConstrainedForeignId('business_field_id');
             $table->dropConstrainedForeignId('method_id');
+            $table->dropConstrainedForeignId('type_id');
 
-            $table->dropColumn('number');
+            $table->dropColumn(['value', 'quantity', 'number']);
         });
     }
 };

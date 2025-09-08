@@ -185,5 +185,12 @@
     "Allows deleting :label": "Memungkinkan menghapus :label",
     "Allows viewing :label without global scope": "Memungkinkan melihat :label tanpa ruang lingkup global",
     "Allows validating :label": "Memungkinkan memvalidasi :label",
-    "Branch Name (Optional)": "Nama cabang (opsional)"
+    "Branch Name (Optional)": "Nama cabang (opsional)",
+    "Procurement Number": "Nomor Pengadaan",
+    "Method": "Metode",
+    "Number": "Nomor",
+    "Title": "Judul",
+    "Coming Soon": "Segera hadir",
+    "On Going": "Sedang berlangsung",
+    "Finished": "Selesai"
 }

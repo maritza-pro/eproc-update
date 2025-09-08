@@ -12,6 +12,11 @@ class EditProcurement extends EditRecord
 {
     protected static string $resource = ProcurementResource::class;
 
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
+    
     /**
      * Get the actions for the header.
      *

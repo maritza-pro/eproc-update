@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace App\Models;
 
+use App\Enums\ProcurementStatus;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -18,21 +21,21 @@ class Procurement extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array METHODS = [
-        self::METHOD_TENDER,
-        self::METHOD_DIRECT,
-    ];
-
-    const string METHOD_DIRECT = 'direct';
-
-    const string METHOD_TENDER = 'tender';
-
     protected $fillable = [
         'title',
         'description',
         'method',
         'start_date',
         'end_date',
+        'value',
+        'number',
+        'quantity',
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'phase' => ProcurementStatus::class,
     ];
 
     /**
@@ -43,6 +46,12 @@ class Procurement extends Model
     public function bids(): HasMany
     {
         return $this->hasMany(Bid::class);
+    }
+
+
+    public function businessField(): BelongsTo
+    {
+        return $this->belongsTo(BusinessField::class);
     }
 
     /**
@@ -77,11 +86,33 @@ class Procurement extends Model
 
     public function procurementMethod(): BelongsTo
     {
-        return $this->belongsTo(ProcurementMethod::class);
+        return $this->belongsTo(ProcurementMethod::class, 'method_id');
     }
 
     public function procurementType(): BelongsTo
     {
-        return $this->belongsTo(ProcurementType::class);
+        return $this->belongsTo(ProcurementType::class, 'type_id');
     }
+
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes): ProcurementStatus {
+                $now = Carbon::now();
+                $startDate = Carbon::parse($attributes['start_date']);
+                $endDate = isset($attributes['end_date']) ? Carbon::parse($attributes['end_date']) : null;
+
+                if ($startDate->isFuture()) {
+                    return ProcurementStatus::ComingSoon;
+                }
+
+                if ($endDate && $endDate->isPast()) {
+                    return ProcurementStatus::Finished;
+                }
+
+                return ProcurementStatus::Ongoing;
+            },
+        );
+    }
+
 }

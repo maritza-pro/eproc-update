@@ -14,6 +14,11 @@ class BusinessField extends Taxonomy
 {
     use WithTaxonomy;
 
+    public function procurements(): HasMany
+    {
+        return $this->hasMany(Procurement::class);
+    } 
+
     /**
      * Get the vendor experiences.
      *
