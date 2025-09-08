@@ -21,17 +21,17 @@ class Register extends BaseRegister
                 $this->makeForm()
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label('Business Name')
+                            ->label((string) __('Business Name'))
                             ->required()
                             ->maxLength(255)
                             ->autofocus(),
                         Forms\Components\TextInput::make('email')
-                            ->label('Business Email')
+                            ->label((string) __('Business Email'))
                             ->email()
                             ->required()
                             ->maxLength(255)
                             ->unique($this->getUserModel())
-                            ->helperText('*registered email will be used as primary email'),
+                            ->helperText((string) __('*registered email will be used as primary email')),
                         $this->getPasswordFormComponent(),
                         $this->getPasswordConfirmationFormComponent(),
                     ])
@@ -64,7 +64,7 @@ class Register extends BaseRegister
             ]);
 
             Notification::make()
-                ->title('Registration Successful, please check your email to verify!')
+                ->title((string) __('Registration Successful, please check your email to verify!'))
                 ->success()
                 ->send();
 

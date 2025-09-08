@@ -56,15 +56,15 @@ class BankVendorResource extends Resource
                 Tables\Columns\TextColumn::make('bank.name')
                     ->searchable()
                     ->sortable()
-                    ->label('Nama Bank'),
+                    ->label((string) __('Nama Bank')),
 
                 Tables\Columns\TextColumn::make('account_name')
                     ->searchable()
-                    ->label('Nama Pemilik'),
+                    ->label((string) __('Nama Pemilik')),
 
                 Tables\Columns\TextColumn::make('account_number')
                     ->searchable()
-                    ->label('No. Rekening'),
+                    ->label((string) __('No. Rekening')),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
@@ -77,7 +77,7 @@ class BankVendorResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('bank_id')
                     ->relationship('bank', 'name')
-                    ->label('Filter by Bank'),
+                    ->label((string) __('Filter by Bank')),
                 Tables\Filters\TernaryFilter::make('is_active'),
             ])
             ->actions([
@@ -105,21 +105,21 @@ class BankVendorResource extends Resource
                         ->searchable()
                         ->preload()
                         ->required()
-                        ->label('Nama Bank'),
+                        ->label((string) __('Nama Bank')),
 
                     Forms\Components\TextInput::make('account_name')
                         ->required()
                         ->maxLength(255)
-                        ->label('Nama Pemilik Rekening'),
+                        ->label((string) __('Nama Pemilik Rekening')),
 
                     Forms\Components\TextInput::make('account_number')
                         ->required()
                         ->maxLength(255)
-                        ->label('Nomor Rekening'),
+                        ->label((string) __('Nomor Rekening')),
 
                     Forms\Components\TextInput::make('branch_name')
                         ->maxLength(255)
-                        ->label('Nama Cabang (Opsional)'),
+                        ->label((string) __('Nama Cabang (Opsional)')),
 
                     Forms\Components\Toggle::make('is_active')
                         ->required()

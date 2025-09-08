@@ -31,9 +31,9 @@ class VillageRelationManager extends RelationManager
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
+                    ->label((string) __('Latitude')),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
+                    ->label((string) __('Longitude')),
             ])
             ->filters([
                 //
@@ -62,7 +62,7 @@ class VillageRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('province_id')
-                    ->label('Province')
+                    ->label((string) __('Province'))
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
@@ -84,7 +84,7 @@ class VillageRelationManager extends RelationManager
                         $set('city_id', null);
                     }),
                 Forms\Components\Select::make('city_id')
-                    ->label('City')
+                    ->label((string) __('City'))
                     ->options(function (callable $get) {
                         $provinceId = $get('province_id');
 
@@ -105,7 +105,7 @@ class VillageRelationManager extends RelationManager
                     })
                     ->afterStateUpdated(fn (callable $set) => $set('district_id', null)),
                 Forms\Components\Select::make('district_id')
-                    ->label('District')
+                    ->label((string) __('District'))
                     ->options(function (callable $get) {
                         $cityId = $get('city_id');
 
@@ -129,13 +129,13 @@ class VillageRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('latitude')
-                    ->label('Latitude')
+                    ->label((string) __('Latitude'))
                     ->numeric()
-                    ->helperText('e.g. -6.200000'),
+                    ->helperText((string) __('e.g. -6.200000')),
                 Forms\Components\TextInput::make('longitude')
-                    ->label('Longitude')
+                    ->label((string) __('Longitude'))
                     ->numeric()
-                    ->helperText('e.g. 106.816666'),
+                    ->helperText((string) __('e.g. 106.816666')),
             ]);
     }
 }

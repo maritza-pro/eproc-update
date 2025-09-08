@@ -62,31 +62,31 @@ class CountryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Country Name')
+                    ->label((string) __('Country Name'))
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('code')
-                    ->label('Country Code')
+                    ->label((string) __('Country Code'))
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('iso')
-                    ->label('ISO Code'),
+                    ->label((string) __('ISO Code')),
 
                 Tables\Columns\TextColumn::make('num_code')
-                    ->label('Numeric Code'),
+                    ->label((string) __('Numeric Code')),
 
                 Tables\Columns\TextColumn::make('currency')
-                    ->label('Currency'),
+                    ->label((string) __('Currency')),
 
                 Tables\Columns\TextColumn::make('msisdn_code')
-                    ->label('MSISDN Code'),
+                    ->label((string) __('MSISDN Code')),
 
                 Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
+                    ->label((string) __('Latitude')),
 
                 Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
+                    ->label((string) __('Longitude')),
             ])
             ->filters([
                 //
@@ -115,8 +115,8 @@ class CountryResource extends Resource
 
                                 Forms\Components\TextInput::make('code')
                                     ->maxLength(2)
-                                    ->label('Country Code')
-                                    ->helperText('2-letter country code (e.g. ID, US)')
+                                    ->label((string) __('Country Code'))
+                                    ->helperText((string) __('2-letter country code (e.g. ID, US)'))
                                     ->extraAttributes(['style' => 'text-transform: uppercase']),
 
                                 Forms\Components\TextInput::make('currency')
@@ -124,29 +124,29 @@ class CountryResource extends Resource
 
                                 Forms\Components\TextInput::make('iso')
                                     ->maxLength(3)
-                                    ->helperText('3-letter ISO code (e.g. IDN, USA)'),
+                                    ->helperText((string) __('3-letter ISO code (e.g. IDN, USA)')),
 
                                 Forms\Components\TextInput::make('num_code')
                                     ->numeric()
                                     ->maxLength(3)
-                                    ->label('Numeric Code')
-                                    ->helperText('Numeric country code (e.g. 360 for Indonesia)'),
+                                    ->label((string) __('Numeric Code'))
+                                    ->helperText((string) __('Numeric country code (e.g. 360 for Indonesia)')),
 
                                 Forms\Components\TextInput::make('msisdn_code')
                                     ->numeric()
                                     ->maxLength(5)
-                                    ->label('MSISDN Code')
-                                    ->helperText('e.g. 62 for Indonesia'),
+                                    ->label((string) __('MSISDN Code'))
+                                    ->helperText((string) __('e.g. 62 for Indonesia')),
 
                                 Forms\Components\TextInput::make('latitude')
-                                    ->label('Latitude')
+                                    ->label((string) __('Latitude'))
                                     ->numeric()
-                                    ->helperText('e.g. -6.200000'),
+                                    ->helperText((string) __('e.g. -6.200000')),
 
                                 Forms\Components\TextInput::make('longitude')
-                                    ->label('Longitude')
+                                    ->label((string) __('Longitude'))
                                     ->numeric()
-                                    ->helperText('e.g. 106.816666'),
+                                    ->helperText((string) __('e.g. 106.816666')),
                             ]),
                     ]),
             ]);

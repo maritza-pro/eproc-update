@@ -11,7 +11,7 @@ class ExpertisesTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Expertises')
+        return Tab::make((string) __('Expertises'))
             ->schema([
                 Forms\Components\Repeater::make('vendorExpertises')
                     ->relationship()
@@ -21,7 +21,7 @@ class ExpertisesTab
                     ->collapsed()
                     ->columns(1)
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
+                    ->itemLabel(function (array $state): string {
                         if (! empty($state['expertise'])) {
                             return '- ' . $state['expertise'];
                         }
@@ -30,11 +30,11 @@ class ExpertisesTab
                     })
                     ->schema([
                         Forms\Components\TextInput::make('expertise')
-                            ->label('Expertise')
+                            ->label((string) __('Expertise'))
                             ->nullable(),
 
                         Forms\Components\Select::make('expertise_level')
-                            ->label('Expertise Level')
+                            ->label((string) __('Expertise Level'))
                             ->nullable()
                             ->options([
                                 'basic' => 'Basic',
@@ -43,7 +43,7 @@ class ExpertisesTab
                             ]),
 
                         Forms\Components\Textarea::make('description')
-                            ->label('Description')
+                            ->label((string) __('Description'))
                             ->autosize()
                             ->nullable()
                             ->maxLength(100),
@@ -59,7 +59,7 @@ class ExpertisesTab
                         Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_expertise_attachment')
                             ->collection('vendor_expertise_attachment')
                             ->maxFiles(1)
-                            ->label('Expertise Attachment (PDF, max 2MB)')
+                            ->label((string) __('Expertise Attachment (PDF, max 2MB)'))
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(2048)
                             ->downloadable()

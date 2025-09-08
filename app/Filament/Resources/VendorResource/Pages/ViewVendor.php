@@ -27,7 +27,7 @@ class ViewVendor extends ViewRecord
 
         return [
             Actions\Action::make('back')
-                ->label('Back')
+                ->label((string) __('Back'))
                 ->icon('heroicon-m-arrow-left')
                 ->color('gray')
                 ->url(static::getResource()::getUrl('index'))
@@ -36,7 +36,7 @@ class ViewVendor extends ViewRecord
             Actions\EditAction::make(),
 
             Actions\Action::make('resubmit')
-                ->label('Resubmit Verification')
+                ->label((string) __('Resubmit Verification'))
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')
                 ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $isSuper && ! $record->is_blacklisted)
@@ -50,13 +50,13 @@ class ViewVendor extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('Your vendor verification has been resubmitted.')
+                        ->title((string) __('Your vendor verification has been resubmitted.'))
                         ->success()
                         ->send();
                 }),
 
             Actions\Action::make('blacklist')
-                ->label('Blacklist Vendor')
+                ->label((string) __('Blacklist Vendor'))
                 ->icon('heroicon-o-no-symbol')
                 ->color('blacklist')
                 ->visible(fn ($record): bool => $isSuper && ! $record->is_blacklisted)
@@ -66,7 +66,7 @@ class ViewVendor extends ViewRecord
                 ->modalSubmitActionLabel('Yes, Blacklist')
                 ->form([
                     Textarea::make('blacklist_reason')
-                        ->label('Reason for Blacklisting')
+                        ->label((string) __('Reason for Blacklisting'))
                         ->required()
                         ->rows(5)
                         ->maxLength(500),
@@ -82,13 +82,13 @@ class ViewVendor extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('Vendor has been blacklisted.')
+                        ->title((string) __('Vendor has been blacklisted.'))
                         ->warning()
                         ->send();
                 }),
 
             Actions\Action::make('unblacklist')
-                ->label('Unblacklist Vendor')
+                ->label((string) __('Unblacklist Vendor'))
                 ->icon('heroicon-o-lock-open')
                 ->color('success')
                 ->visible(fn ($record): bool => $isSuper && $record->is_blacklisted)
@@ -103,14 +103,14 @@ class ViewVendor extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('Vendor has been removed from blacklist.')
+                        ->title((string) __('Vendor has been removed from blacklist.'))
                         ->success()
                         ->send();
 
                 }),
 
             Actions\Action::make('reject')
-                ->label('Reject')
+                ->label((string) __('Reject'))
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Pending && $isSuper)
@@ -120,7 +120,7 @@ class ViewVendor extends ViewRecord
                 ->modalSubmitActionLabel('Yes, Reject')
                 ->form([
                     Textarea::make('rejection_reason')
-                        ->label('Reason for Rejection')
+                        ->label((string) __('Reason for Rejection'))
                         ->required()
                         ->rows(5)
                         ->maxLength(500),
@@ -136,13 +136,13 @@ class ViewVendor extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('Vendor has been rejected.')
+                        ->title((string) __('Vendor has been rejected.'))
                         ->success()
                         ->send();
                 }),
 
             Actions\Action::make('approve')
-                ->label('Approve')
+                ->label((string) __('Approve'))
                 ->icon('heroicon-o-check-circle')
                 ->color('success')
                 ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Pending && $isSuper)
@@ -156,7 +156,7 @@ class ViewVendor extends ViewRecord
                     ]);
 
                     Notification::make()
-                        ->title('Vendor has been approved successfully.')
+                        ->title((string) __('Vendor has been approved successfully.'))
                         ->success()
                         ->send();
                 }),

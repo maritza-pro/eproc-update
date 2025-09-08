@@ -39,13 +39,13 @@ class VendorVerificationStatus extends Page implements HasForms
 
         return [
             FormActions\Action::make('cancel')
-                ->label('Cancel')
+                ->label((string) __('Cancel'))
                 ->color('gray')
                 ->outlined()
                 ->url(fn () => static::getResource()::getUrl('view', ['record' => $this->getRecord()]))
                 ->visible($withoutGlobalScope),
             FormActions\Action::make('save')
-                ->label('Save')
+                ->label((string) __('Save'))
                 ->submit('save')
                 ->visible($withoutGlobalScope),
         ];
@@ -58,17 +58,17 @@ class VendorVerificationStatus extends Page implements HasForms
         return
             [
                 Actions\Action::make('submit')
-                    ->label('Submit Verification')
+                    ->label((string) __('Submit Verification'))
                     ->icon('heroicon-o-paper-airplane')
                     ->color('primary')
                     ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Draft && ! $withoutGlobalScope && ! $record->is_blacklisted)
                     ->modalHeading('')
-                    ->modalContent(fn () => view('filament.forms.components.statement-and-agreement'))
+                    ->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.forms.components.statement-and-agreement'))
                     ->modalWidth('3xl')
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->form([
                         Forms\Components\Checkbox::make('agreement')
-                            ->label('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.')
+                            ->label((string) __('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.'))
                             ->accepted()
                             ->required(),
                     ])
@@ -78,13 +78,13 @@ class VendorVerificationStatus extends Page implements HasForms
                         ]);
 
                         Notification::make()
-                            ->title('Your vendor verification has been submitted.')
+                            ->title((string) __('Your vendor verification has been submitted.'))
                             ->success()
                             ->send();
                     }),
 
                 Actions\Action::make('resubmit')
-                    ->label('Resubmit Verification')
+                    ->label((string) __('Resubmit Verification'))
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $withoutGlobalScope && ! $record->is_blacklisted)
@@ -98,7 +98,7 @@ class VendorVerificationStatus extends Page implements HasForms
                         ]);
 
                         Notification::make()
-                            ->title('Your vendor verification has been resubmitted.')
+                            ->title((string) __('Your vendor verification has been resubmitted.'))
                             ->success()
                             ->send();
                     }),
@@ -123,7 +123,7 @@ class VendorVerificationStatus extends Page implements HasForms
                     ->hidden($withoutGlobalScope)
                     ->schema([
                         Forms\Components\Textarea::make('blacklist_reason')
-                            ->label('ⓘ Vendor is BLACKLISTED')
+                            ->label((string) __('ⓘ Vendor is BLACKLISTED'))
                             ->disabled()
                             ->hidden(fn (?Vendor $record): bool => ! $record?->is_blacklisted)
                             ->autosize(),
@@ -137,7 +137,7 @@ class VendorVerificationStatus extends Page implements HasForms
                                     ->disabled()
                                     ->autosize()
                                     ->columnSpanFull()
-                                    ->helperText('Please check the notes above and update your details before resubmitting.')
+                                    ->helperText((string) __('Please check the notes above and update your details before resubmitting.'))
                                     ->visible(fn (?Vendor $record): bool => $record !== null && $record->verification_status === VendorStatus::Rejected && ! $record->is_blacklisted),
                             ])
                             ->hidden(fn (?Vendor $record) => $record?->is_blacklisted)
@@ -164,9 +164,9 @@ class VendorVerificationStatus extends Page implements HasForms
                             ]),
 
                         Forms\Components\Textarea::make('rejection_reason')
-                            ->label('Rejection Reason')
+                            ->label((string) __('Rejection Reason'))
                             ->rows(5)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
                             ->visible($isRejected)
                             ->required($isRejected),
                     ]),
@@ -174,14 +174,14 @@ class VendorVerificationStatus extends Page implements HasForms
                     ->hidden(! $withoutGlobalScope)
                     ->schema([
                         Forms\Components\Toggle::make('is_blacklisted')
-                            ->label('⚠️ Blacklist Vendor')
+                            ->label((string) __('⚠️ Blacklist Vendor'))
                             ->live()
-                            ->helperText('Marking this vendor as *blacklisted* will block them from participating in all procurements.')
+                            ->helperText((string) __('Marking this vendor as *blacklisted* will block them from participating in all procurements.'))
                             ->onColor('danger'),
                         Forms\Components\Textarea::make('blacklist_reason')
-                            ->label('Blacklist Reason')
+                            ->label((string) __('Blacklist Reason'))
                             ->rows(5)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
                             ->visible(fn (Get $get): bool => (bool) $get('is_blacklisted'))
                             ->required(fn (Get $get): bool => (bool) $get('is_blacklisted')),
                     ]),
@@ -202,7 +202,7 @@ class VendorVerificationStatus extends Page implements HasForms
         $vendor->save();
 
         Notification::make()
-            ->title('Verification Status updated successfully')
+            ->title((string) __('Verification Status updated successfully'))
             ->success()
             ->send();
     }

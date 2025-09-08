@@ -11,7 +11,7 @@ class ExperiencesTab
 {
     public static function make(): Tab
     {
-        return Forms\Components\Tabs\Tab::make('Experiences')
+        return Forms\Components\Tabs\Tab::make((string) __('Experiences'))
             ->schema([
                 Forms\Components\Repeater::make('vendorExperiences')
                     ->relationship()
@@ -20,7 +20,7 @@ class ExperiencesTab
                     ->collapsible()
                     ->collapsed()
                     ->defaultItems(0)
-                    ->itemLabel(function (array $state): ?string {
+                    ->itemLabel(function (array $state): string {
                         if (! empty($state['project_name'])) {
                             return '- ' . $state['project_name'];
                         }
@@ -31,37 +31,37 @@ class ExperiencesTab
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('project_name')
-                                    ->label('Project Name')
+                                    ->label((string) __('Project Name'))
                                     ->nullable(),
                                 Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->nullable()
-                                    ->label('Business Field'),
+                                    ->label((string) __('Business Field')),
 
                                 Forms\Components\TextInput::make('location')
-                                    ->label('Project Location')
+                                    ->label((string) __('Project Location'))
                                     ->nullable(),
                                 Forms\Components\TextInput::make('stakeholder')
-                                    ->label('Stakeholder')
+                                    ->label((string) __('Stakeholder'))
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('contract_number')
-                                    ->label('Contract Number')
+                                    ->label((string) __('Contract Number'))
                                     ->nullable(),
                                 Forms\Components\TextInput::make('project_value')
-                                    ->label('Project Value')
+                                    ->label((string) __('Project Value'))
                                     ->nullable(),
 
                                 Forms\Components\DatePicker::make('start_date')
-                                    ->label('Start Date')
+                                    ->label((string) __('Start Date'))
                                     ->nullable(),
                                 Forms\Components\DatePicker::make('end_date')
-                                    ->label('End Date')
+                                    ->label((string) __('End Date'))
                                     ->nullable(),
 
                                 Forms\Components\Textarea::make('description')
-                                    ->label('Description')
+                                    ->label((string) __('Description'))
                                     ->autosize()
                                     ->nullable()
                                     ->maxLength(100),
@@ -76,7 +76,7 @@ class ExperiencesTab
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_experience_attachment')
                                     ->collection('vendor_experience_attachment')
                                     ->maxFiles(1)
-                                    ->label('Experience Attachment (PDF, max 2MB)')
+                                    ->label((string) __('Experience Attachment (PDF, max 2MB)'))
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->maxSize(2048)
                                     ->downloadable()

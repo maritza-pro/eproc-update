@@ -68,18 +68,18 @@ class Profile extends Page implements HasForms
                                     ->disabled(),
                                 Forms\Components\Select::make('roles')
                                     ->disabled()
-                                    ->label('Role Name')
+                                    ->label((string) __('Role Name'))
                                     ->relationship('roles', 'name')
-                                    ->placeholder('Superuser'),
+                                    ->placeholder((string) __('Superuser')),
                                 Forms\Components\DateTimePicker::make('updated_at')
-                                    ->label('Last Updated')
+                                    ->label((string) __('Last Updated'))
                                     ->disabled(),
                                 Forms\Components\Section::make('Change Password')
                                     ->collapsible()
                                     ->collapsed()
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
-                                            ->label('Current Password')
+                                            ->label((string) __('Current Password'))
                                             ->password()
                                             ->revealable()
                                             ->dehydrated(false)
@@ -89,16 +89,16 @@ class Profile extends Page implements HasForms
                                             ]),
 
                                         Forms\Components\TextInput::make('new_password')
-                                            ->label('New Password')
+                                            ->label((string) __('New Password'))
                                             ->password()
                                             ->revealable()
                                             ->minLength(8)
                                             ->rules(['nullable', 'different:current_password'])
                                             ->confirmed()
-                                            ->dehydrated(fn ($state) => filled($state)),
+                                            ->dehydrated(fn ($state): bool => filled($state)),
 
                                         Forms\Components\TextInput::make('new_password_confirmation')
-                                            ->label('Confirm New Password')
+                                            ->label((string) __('Confirm New Password'))
                                             ->password()
                                             ->revealable()
                                             ->dehydrated(false)
@@ -143,7 +143,7 @@ class Profile extends Page implements HasForms
             $this->form->fill($user->getAttributes());
 
             Notification::make()
-                ->title('Profile updated successfully')
+                ->title((string) __('Profile updated successfully'))
                 ->success()
                 ->send();
         });

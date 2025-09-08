@@ -28,9 +28,9 @@ class CityRelationManager extends RelationManager
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->label('Latitude'),
+                    ->label((string) __('Latitude')),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->label('Longitude'),
+                    ->label((string) __('Longitude')),
             ])
             ->filters([
                 //
@@ -62,13 +62,13 @@ class CityRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('latitude')
-                    ->label('Latitude')
+                    ->label((string) __('Latitude'))
                     ->numeric()
-                    ->helperText('e.g. -6.200000'),
+                    ->helperText((string) __('e.g. -6.200000')),
                 Forms\Components\TextInput::make('longitude')
-                    ->label('Longitude')
+                    ->label((string) __('Longitude'))
                     ->numeric()
-                    ->helperText('e.g. 106.816666'),
+                    ->helperText((string) __('e.g. 106.816666')),
             ]);
     }
 }

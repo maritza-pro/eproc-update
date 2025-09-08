@@ -71,11 +71,11 @@ class SurveyResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('vendorType.name')
-                    ->label('Vendor Type')
+                    ->label((string) __('Vendor Type'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vendorBusiness.name')
-                    ->label('Vendor Business')
+                    ->label((string) __('Vendor Business'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -120,7 +120,7 @@ class SurveyResource extends Resource
                                     ->relationship('category', 'name')
                                     ->searchable(),
                                 Forms\Components\Select::make('type')
-                                    ->label('Type')
+                                    ->label((string) __('Type'))
                                     ->options([
                                         'vendor' => 'Vendor',
                                         'procurement' => 'Procurement',
@@ -128,13 +128,13 @@ class SurveyResource extends Resource
                                     ->required()
                                     ->reactive(),
                                 Forms\Components\Select::make('properties.vendor_type')
-                                    ->label('Vendor Type')
+                                    ->label((string) __('Vendor Type'))
                                     ->options(fn () => VendorType::query()->pluck('name', 'id'))
                                     ->required(fn ($get): bool => $get('type') === 'vendor')
                                     ->visible(fn ($get): bool => $get('type') === 'vendor')
                                     ->searchable(),
                                 Forms\Components\Select::make('properties.vendor_business')
-                                    ->label('Vendor Business')
+                                    ->label((string) __('Vendor Business'))
                                     ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
                                     ->required(fn ($get): bool => $get('type') === 'vendor')
                                     ->visible(fn ($get): bool => $get('type') === 'vendor')

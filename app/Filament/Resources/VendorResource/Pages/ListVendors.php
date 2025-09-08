@@ -65,23 +65,23 @@ class ListVendors extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make('All')
+            'all' => Tab::make((string) __('All'))
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query
                     ->where('verification_status', '!=', VendorStatus::Draft)
                     ->where('is_blacklisted', false)),
-            'approved' => Tab::make('Approved')
+            'approved' => Tab::make((string) __('Approved'))
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query
                     ->where('verification_status', VendorStatus::Approved)
                     ->where('is_blacklisted', false)),
-            'pending' => Tab::make('Pending')
+            'pending' => Tab::make((string) __('Pending'))
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query
                     ->where('verification_status', VendorStatus::Pending)
                     ->where('is_blacklisted', false)),
-            'rejected' => Tab::make('Rejected')
+            'rejected' => Tab::make((string) __('Rejected'))
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query
                     ->where('verification_status', VendorStatus::Rejected)
                     ->where('is_blacklisted', false)),
-            'blacklisted' => Tab::make('Blacklisted')
+            'blacklisted' => Tab::make((string) __('Blacklisted'))
                 ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('is_blacklisted', true)),
         ];
     }

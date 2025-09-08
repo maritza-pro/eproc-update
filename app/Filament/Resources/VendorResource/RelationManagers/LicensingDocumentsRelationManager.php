@@ -28,38 +28,38 @@ class LicensingDocumentsRelationManager extends RelationManager
 
         return match ($type) {
             VendorDocumentType::TradingBusinessLicenseSIUP => [
-                Forms\Components\TextInput::make('document_number')->label('SIUP Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('SIUP Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\Select::make('properties.business_field_id')
-                    ->label('Business Field')
+                    ->label((string) __('Business Field'))
                     ->options($this->getBusinessFieldOptions()),
             ],
             VendorDocumentType::CompanyRegistrationTDP => [
-                Forms\Components\TextInput::make('document_number')->label('TDP Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
-                Forms\Components\TextInput::make('properties.company_name')->label('Company Name')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('TDP Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
+                Forms\Components\TextInput::make('properties.company_name')->label((string) __('Company Name'))->nullable(),
             ],
             VendorDocumentType::BusinessDomicileLetterSKDU => [
-                Forms\Components\TextInput::make('document_number')->label('SKDU Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
-                Forms\Components\TextInput::make('properties.business_address')->label('Business Address')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('SKDU Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
+                Forms\Components\TextInput::make('properties.business_address')->label((string) __('Business Address'))->nullable(),
             ],
             VendorDocumentType::TaxableEntrepreneurSPPKP => [
-                Forms\Components\TextInput::make('document_number')->label('SPPKP Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Confirmation Date')->nullable(),
-                Forms\Components\TextInput::make('properties.company_name')->label('Company Name')->nullable(),
-                Forms\Components\TextInput::make('properties.address')->label('Address')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('SPPKP Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Confirmation Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.company_name')->label((string) __('Company Name'))->nullable(),
+                Forms\Components\TextInput::make('properties.address')->label((string) __('Address'))->nullable(),
             ],
             VendorDocumentType::BusinessIdentificationNumberNIB => [
-                Forms\Components\TextInput::make('document_number')->label('NIB Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\Select::make('properties.risk_level')->label('Risk Level')->nullable()
+                Forms\Components\TextInput::make('document_number')->label((string) __('NIB Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\Select::make('properties.risk_level')->label((string) __('Risk Level'))->nullable()
                     ->options([
                         'low' => 'Low',
                         'low-medium' => 'Low to Medium',
@@ -67,29 +67,29 @@ class LicensingDocumentsRelationManager extends RelationManager
                         'high' => 'High',
                     ]),
                 Forms\Components\Select::make('properties.business_field_id')
-                    ->label('Business Field')
+                    ->label((string) __('Business Field'))
                     ->options($this->getBusinessFieldOptions()),
             ],
             VendorDocumentType::HinderOrdonantieHO => [
-                Forms\Components\TextInput::make('document_number')->label('HO Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
-                Forms\Components\TextInput::make('properties.business_location')->label('Business Location')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('HO Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
+                Forms\Components\TextInput::make('properties.business_location')->label((string) __('Business Location'))->nullable(),
             ],
             VendorDocumentType::BusinessEntityCertificateSBU => [
-                Forms\Components\TextInput::make('document_number')->label('Certificate Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label('Expiry Date')->nullable(),
-                Forms\Components\TextInput::make('properties.issuing_authority')->label('Issuing Authority')->nullable(),
-                Forms\Components\Select::make('properties.qualification')->label('Qualification')->nullable()
+                Forms\Components\TextInput::make('document_number')->label((string) __('Certificate Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
+                Forms\Components\Select::make('properties.qualification')->label((string) __('Qualification'))->nullable()
                     ->options([
                         'Small' => 'Small',
                         'Medium' => 'Medium',
                         'Large' => 'Large',
                     ]),
                 Forms\Components\Select::make('properties.business_field_id')
-                    ->label('Business Field')
+                    ->label((string) __('Business Field'))
                     ->options($this->getBusinessFieldOptions()),
             ],
 
@@ -103,12 +103,12 @@ class LicensingDocumentsRelationManager extends RelationManager
             ->modifyQueryUsing(fn (Builder $query) => $query->where('category', 'licensing'))
             ->recordTitleAttribute('type')
             ->columns([
-                Tables\Columns\TextColumn::make('document_number')->label('Document Number'),
-                Tables\Columns\TextColumn::make('type')->label('Document Type'),
-                Tables\Columns\TextColumn::make('issue_date')->label('Issue Date')->date('d M Y'),
-                Tables\Columns\TextColumn::make('expiry_date')->label('Expiry Date')->date('d M Y'),
+                Tables\Columns\TextColumn::make('document_number')->label((string) __('Document Number')),
+                Tables\Columns\TextColumn::make('type')->label((string) __('Document Type')),
+                Tables\Columns\TextColumn::make('issue_date')->label((string) __('Issue Date'))->date('d M Y'),
+                Tables\Columns\TextColumn::make('expiry_date')->label((string) __('Expiry Date'))->date('d M Y'),
                 Tables\Columns\ViewColumn::make('vendor_document_attachment')
-                    ->label('Attachment')
+                    ->label((string) __('Attachment'))
                     ->viewData([
                         'collectionName' => 'vendor_document_attachment',
                     ])
@@ -119,7 +119,7 @@ class LicensingDocumentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Add')
+                    ->label((string) __('Add'))
                     ->modalHeading('Add Licensing Document')
                     ->icon('heroicon-m-plus')
                     ->createAnother(false)
@@ -146,7 +146,7 @@ class LicensingDocumentsRelationManager extends RelationManager
                 Forms\Components\Grid::make(2)
                     ->schema(fn (Get $get): array => [
                         Forms\Components\Select::make('type')
-                            ->label('Type')
+                            ->label((string) __('Type'))
                             ->options(VendorDocumentType::options('licensing'))
                             ->searchable()
                             ->preload()
@@ -162,11 +162,11 @@ class LicensingDocumentsRelationManager extends RelationManager
                         Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_document_attachment')
                             ->collection('vendor_document_attachment')
                             ->maxFiles(1)
-                            ->label('Attachment (PDF, max 2MB)')
+                            ->label((string) __('Attachment (PDF, max 2MB)'))
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(2048)
                             ->downloadable()
-                            ->visible(fn (Get $get) => filled($get('type'))),
+                            ->visible(fn (Get $get): bool => filled($get('type'))),
                     ]),
             ]);
     }

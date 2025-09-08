@@ -26,16 +26,16 @@ class LegalityDocumentsRelationManager extends RelationManager
 
         return match ($type) {
             VendorDocumentType::DeedInformation => [
-                Forms\Components\TextInput::make('document_number')->label('Deed Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Deed Date')->nullable(),
-                Forms\Components\TextInput::make('properties.notary_name')->label('Notary Name')->nullable(),
-                Forms\Components\TextInput::make('properties.latest_amendment_number')->label('Latest Amendment Number')->nullable(),
-                Forms\Components\DatePicker::make('properties.latest_amendment_date')->label('Latest Amendment Date')->nullable(),
-                Forms\Components\TextInput::make('properties.latest_amendment_notary')->label('Latest Amendment Notary')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('Deed Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Deed Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.notary_name')->label((string) __('Notary Name'))->nullable(),
+                Forms\Components\TextInput::make('properties.latest_amendment_number')->label((string) __('Latest Amendment Number'))->nullable(),
+                Forms\Components\DatePicker::make('properties.latest_amendment_date')->label((string) __('Latest Amendment Date'))->nullable(),
+                Forms\Components\TextInput::make('properties.latest_amendment_notary')->label((string) __('Latest Amendment Notary'))->nullable(),
             ],
             VendorDocumentType::PengesahanKemenkumham => [
-                Forms\Components\TextInput::make('document_number')->label('Approval Number')->nullable(),
-                Forms\Components\DatePicker::make('issue_date')->label('Issue Date')->nullable(),
+                Forms\Components\TextInput::make('document_number')->label((string) __('Approval Number'))->nullable(),
+                Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
             ],
 
             default => [],
@@ -48,11 +48,11 @@ class LegalityDocumentsRelationManager extends RelationManager
             ->modifyQueryUsing(fn (Builder $query) => $query->where('category', 'legality'))
             ->recordTitleAttribute('type')
             ->columns([
-                Tables\Columns\TextColumn::make('document_number')->label('Document Number'),
-                Tables\Columns\TextColumn::make('type')->label('Document Type'),
-                Tables\Columns\TextColumn::make('issue_date')->label('Issue Date')->date('d M Y'),
+                Tables\Columns\TextColumn::make('document_number')->label((string) __('Document Number')),
+                Tables\Columns\TextColumn::make('type')->label((string) __('Document Type')),
+                Tables\Columns\TextColumn::make('issue_date')->label((string) __('Issue Date'))->date('d M Y'),
                 Tables\Columns\ViewColumn::make('vendor_document_attachment')
-                    ->label('Attachment')
+                    ->label((string) __('Attachment'))
                     ->viewData([
                         'collectionName' => 'vendor_document_attachment',
                     ])
@@ -63,7 +63,7 @@ class LegalityDocumentsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->label('Add')
+                    ->label((string) __('Add'))
                     ->modalHeading('Add Legality Document')
                     ->icon('heroicon-m-plus')
                     ->createAnother(false)
@@ -90,7 +90,7 @@ class LegalityDocumentsRelationManager extends RelationManager
                 Forms\Components\Grid::make(2)
                     ->schema(fn (Get $get): array => [
                         Forms\Components\Select::make('type')
-                            ->label('Type')
+                            ->label((string) __('Type'))
                             ->options(VendorDocumentType::options('legality'))
                             ->searchable()
                             ->preload()
@@ -106,11 +106,11 @@ class LegalityDocumentsRelationManager extends RelationManager
                         Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_document_attachment')
                             ->collection('vendor_document_attachment')
                             ->maxFiles(1)
-                            ->label('Attachment (PDF, max 2MB)')
+                            ->label((string) __('Attachment (PDF, max 2MB)'))
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(2048)
                             ->downloadable()
-                            ->visible(fn (Get $get) => filled($get('type'))),
+                            ->visible(fn (Get $get): bool => filled($get('type'))),
                     ]),
             ]);
     }

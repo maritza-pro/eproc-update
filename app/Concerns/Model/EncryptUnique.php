@@ -16,7 +16,7 @@ trait EncryptUnique
      *
      * Returns the encrypted ID of the model.
      */
-    public function getEncryptedIdAttribute(): ?string
+    protected function getEncryptedIdAttribute(): ?string
     {
         return $this->encrypt($this->attributes['id']);
     }

@@ -85,7 +85,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('verifyEmail')
-                    ->label('Verify Email')
+                    ->label((string) __('Verify Email'))
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
@@ -96,7 +96,7 @@ class UserResource extends Resource
                         $record->email_verified_at = now();
                         $record->save();
                         Notification::make()
-                            ->title('Email verified.')
+                            ->title((string) __('Email verified.'))
                             ->success()
                             ->send();
                     }),
@@ -104,7 +104,7 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
                 ActivityLogTimelineTableAction::make('Activities'),
                 Tables\Actions\Action::make('resend_verification_email')
-                    ->label('Resend Verification Email')
+                    ->label((string) __('Resend Verification Email'))
                     ->icon('heroicon-o-envelope')
                     ->authorize(fn (User $record): bool => ! $record->hasVerifiedEmail())
                     ->action(function (User $record) {
@@ -114,7 +114,7 @@ class UserResource extends Resource
                         $record->notify($notification);
 
                         Notification::make()
-                            ->title('Verification email has been resent.')
+                            ->title((string) __('Verification email has been resent.'))
                             ->send();
                     })
                     ->requiresConfirmation(),
@@ -150,20 +150,20 @@ class UserResource extends Resource
                                     ->revealable()
                                     ->required(fn (string $context): bool => $context === 'create')
                                     ->nullable()
-                                    ->dehydrated(fn ($state) => filled($state))
+                                    ->dehydrated(fn ($state): bool => filled($state))
                                     ->hidden(! $withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
                                     ->disabled(! $withoutGlobalScope)
-                                    ->label('Role Name')
+                                    ->label((string) __('Role Name'))
                                     ->relationship('roles', 'name')
-                                    ->placeholder('Superuser'),
+                                    ->placeholder((string) __('Superuser')),
                                 Forms\Components\Section::make('Change Password')
                                     ->collapsible()
                                     ->collapsed()
                                     ->hidden(fn (string $context): bool => $context === 'view' || $withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
-                                            ->label('Current Password')
+                                            ->label((string) __('Current Password'))
                                             ->password()
                                             ->revealable()
                                             ->dehydrated(false)
@@ -173,7 +173,7 @@ class UserResource extends Resource
                                             ]),
 
                                         Forms\Components\TextInput::make('new_password')
-                                            ->label('New Password')
+                                            ->label((string) __('New Password'))
                                             ->password()
                                             ->revealable()
                                             ->minLength(8)
@@ -182,7 +182,7 @@ class UserResource extends Resource
                                             ->dehydrated(false),
 
                                         Forms\Components\TextInput::make('new_password_confirmation')
-                                            ->label('Confirm New Password')
+                                            ->label((string) __('Confirm New Password'))
                                             ->password()
                                             ->revealable()
                                             ->dehydrated(false)

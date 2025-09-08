@@ -56,7 +56,7 @@ class VendorInformation extends Page implements HasForms
                                     Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_logo_attachment')
                                         ->collection('vendor_logo_attachment')
                                         ->maxFiles(1)
-                                        ->label('Company Logo (JPEG, PNG, max 2MB)')
+                                        ->label((string) __('Company Logo (JPEG, PNG, max 2MB)'))
                                         ->acceptedFileTypes(['image/*'])
                                         ->maxSize(2048)
                                         ->downloadable()
@@ -72,13 +72,13 @@ class VendorInformation extends Page implements HasForms
                                         Forms\Components\Group::make()
                                             ->relationship('vendorProfile')
                                             ->schema([
-                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->required()->label('Business Entity Type'),
+                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->required()->label((string) __('Business Entity Type')),
                                             ]),
-                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): ?string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
-                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label('Business Field'),
+                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
+                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->required()->label((string) __('Business Field')),
                                         Forms\Components\TextInput::make('email')->email()->required(),
                                         Forms\Components\TextInput::make('phone')->tel(),
-                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label('Vendor Type'),
+                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label((string) __('Vendor Type')),
                                         Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
                                     ])
                                     ->columnSpan([
@@ -104,7 +104,7 @@ class VendorInformation extends Page implements HasForms
         $vendor->save();
 
         Notification::make()
-            ->title('Company Information updated successfully')
+            ->title((string) __('Company Information updated successfully'))
             ->success()
             ->send();
     }

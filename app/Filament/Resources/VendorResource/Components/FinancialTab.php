@@ -12,7 +12,7 @@ class FinancialTab
 {
     public static function make(): Tab
     {
-        return Tab::make('Financial')
+        return Tab::make((string) __('Financial'))
             ->schema([
                 Forms\Components\Repeater::make('bankVendors')
                     ->relationship()
@@ -30,13 +30,13 @@ class FinancialTab
                                     ->searchable()
                                     ->preload()
                                     ->nullable()
-                                    ->label('Bank Name'),
+                                    ->label((string) __('Bank Name')),
                                 Forms\Components\TextInput::make('account_name')
-                                    ->label('Account Name')
+                                    ->label((string) __('Account Name'))
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('account_number')
-                                    ->label('Account Number')
+                                    ->label((string) __('Account Number'))
                                     ->nullable(),
                                 Forms\Components\View::make('recent_financial_report_attachment_viewer')
                                     ->viewData([
@@ -47,7 +47,7 @@ class FinancialTab
                                     ->visibleOn('view'),
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('recent_financial_report_attachment')
                                     ->collection('recent_financial_report_attachment')
-                                    ->label('Recent Financial Report (PDF, max 2MB)')
+                                    ->label((string) __('Recent Financial Report (PDF, max 2MB)'))
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->maxSize(2048)
                                     ->maxFiles(1)

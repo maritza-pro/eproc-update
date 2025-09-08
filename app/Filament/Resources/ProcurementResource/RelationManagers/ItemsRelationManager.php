@@ -26,7 +26,7 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('product.name')
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Product')
+                    ->label((string) __('Product'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->sortable(),
@@ -60,7 +60,7 @@ class ItemsRelationManager extends RelationManager
     {
         return $form->schema([
             Forms\Components\Select::make('product_id')
-                ->label('Product')
+                ->label((string) __('Product'))
                 ->options(Product::query()->pluck('name', 'id'))
                 ->searchable()
                 ->required(),

@@ -18,7 +18,7 @@ class ViewLog extends BaseViewLog
     {
         return array_merge(parent::getHeaderActions(), [
             Action::make('export')
-                ->label('Export to CSV')
+                ->label((string) __('Export to CSV'))
                 ->icon('heroicon-o-arrow-down-tray'),
         ]);
     }

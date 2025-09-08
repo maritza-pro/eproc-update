@@ -39,7 +39,7 @@ class VendorFinancial extends Page implements HasForms
                 Forms\Components\SpatieMediaLibraryFileUpload::make('vendor_financial_report_attachment')
                     ->collection('vendor_financial_report_attachment')
                     ->maxFiles(1)
-                    ->label('Last Financial Report Attachment (PDF, max 2MB)')
+                    ->label((string) __('Last Financial Report Attachment (PDF, max 2MB)'))
                     ->acceptedFileTypes(['application/pdf'])
                     ->maxSize(2048)
                     ->downloadable(),
@@ -60,7 +60,7 @@ class VendorFinancial extends Page implements HasForms
         $vendor->save();
 
         Notification::make()
-            ->title('Financial Report updated successfully')
+            ->title((string) __('Financial Report updated successfully'))
             ->success()
             ->send();
     }
