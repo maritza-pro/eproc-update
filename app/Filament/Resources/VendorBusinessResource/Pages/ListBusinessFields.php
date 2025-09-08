@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Filament\Resources\VendorBusinessResource\Pages;
+namespace App\Filament\Resources\BusinessFieldResource\Pages;
 
-use App\Filament\Resources\VendorBusinessResource;
+use App\Filament\Resources\BusinessFieldResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListVendorBusinesses extends ListRecords
+class ListBusinessFields extends ListRecords
 {
-    protected static string $resource = VendorBusinessResource::class;
+    protected static string $resource = BusinessFieldResource::class;
 
     /**
      * Get the header actions.

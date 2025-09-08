@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
-use App\Filament\Resources\VendorBusinessResource\Pages;
-use App\Models\VendorBusiness;
+use App\Filament\Resources\BusinessFieldResource\Pages;
+use App\Models\BusinessField;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,22 +15,21 @@ use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
-class VendorBusinessResource extends Resource
+class BusinessFieldResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
     }
     use HasHexaLite;
 
-    protected static ?string $model = VendorBusiness::class;
+    protected static ?string $model = BusinessField::class;
 
-    protected static ?string $modelLabel = 'Business';
+    protected static ?string $modelLabel = 'Business Field';
 
-    protected static ?string $navigationGroup = 'Vendors';
+    protected static ?string $navigationGroup = 'Master Data';
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
@@ -39,10 +38,10 @@ class VendorBusinessResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVendorBusinesses::route('/'),
-            'create' => Pages\CreateVendorBusiness::route('/create'),
-            'view' => Pages\ViewVendorBusiness::route('/{record}'),
-            'edit' => Pages\EditVendorBusiness::route('/{record}/edit'),
+            'index' => Pages\ListBusinessFields::route('/'),
+            'create' => Pages\CreateBusinessField::route('/create'),
+            'view' => Pages\ViewBusinessField::route('/{record}'),
+            'edit' => Pages\EditBusinessField::route('/{record}/edit'),
         ];
     }
 

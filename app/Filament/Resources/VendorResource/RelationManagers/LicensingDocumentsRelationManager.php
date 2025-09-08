@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace App\Filament\Resources\VendorResource\RelationManagers;
 
 use App\Enums\VendorDocumentType;
-use App\Models\VendorBusiness;
+use App\Models\BusinessField;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -173,7 +173,7 @@ class LicensingDocumentsRelationManager extends RelationManager
 
     private function getBusinessFieldOptions(): Closure
     {
-        return fn () => VendorBusiness::query()
+        return fn () => BusinessField::query()
             ->where('is_active', true)
             ->orderBy('name')
             ->pluck('name', 'id');
