@@ -82,9 +82,11 @@ class ProcurementResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->label((string) __('Start Date'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->label((string) __('End Date'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('status')
@@ -167,9 +169,11 @@ class ProcurementResource extends Resource
                                     ->preload()
                                     ->label((string) __('Business Field')),
                                 Forms\Components\DatePicker::make('start_date')
+                                    ->label((string) __('Start Date'))
                                     ->required()
                                     ->beforeOrEqual('end_date'),
                                 Forms\Components\DatePicker::make('end_date')
+                                    ->label((string) __('End Date'))
                                     ->afterOrEqual('start_date'),
                                 Forms\Components\TextInput::make('value')
                                     ->label((string) __('Project Value'))
@@ -178,6 +182,7 @@ class ProcurementResource extends Resource
                                     ->numeric()
                                     ->columnSpanFull(),
                                 Forms\Components\Textarea::make('description')
+                                    ->label((string) __('Description'))
                                     ->columnSpanFull(),
                             ]),
                     ]),
