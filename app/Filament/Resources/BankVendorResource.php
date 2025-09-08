@@ -56,15 +56,15 @@ class BankVendorResource extends Resource
                 Tables\Columns\TextColumn::make('bank.name')
                     ->searchable()
                     ->sortable()
-                    ->label((string) __('Nama Bank')),
+                    ->label((string) __('Bank Name')),
 
                 Tables\Columns\TextColumn::make('account_name')
                     ->searchable()
-                    ->label((string) __('Nama Pemilik')),
+                    ->label((string) __('Account Name')),
 
                 Tables\Columns\TextColumn::make('account_number')
                     ->searchable()
-                    ->label((string) __('No. Rekening')),
+                    ->label((string) __('Account Number')),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
@@ -105,21 +105,21 @@ class BankVendorResource extends Resource
                         ->searchable()
                         ->preload()
                         ->required()
-                        ->label((string) __('Nama Bank')),
+                        ->label((string) __('Bank Name')),
 
                     Forms\Components\TextInput::make('account_name')
                         ->required()
                         ->maxLength(255)
-                        ->label((string) __('Nama Pemilik Rekening')),
+                        ->label((string) __('Account Name')),
 
                     Forms\Components\TextInput::make('account_number')
                         ->required()
                         ->maxLength(255)
-                        ->label((string) __('Nomor Rekening')),
+                        ->label((string) __('Account Number')),
 
                     Forms\Components\TextInput::make('branch_name')
                         ->maxLength(255)
-                        ->label((string) __('Nama Cabang (Opsional)')),
+                        ->label((string) __('Branch Name (Optional)')),
 
                     Forms\Components\Toggle::make('is_active')
                         ->required()

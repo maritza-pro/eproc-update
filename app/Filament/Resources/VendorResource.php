@@ -81,15 +81,22 @@ class VendorResource extends Resource
                     ->badge()
                     ->formatStateUsing(fn ($record): string => $record->is_blacklisted ? 'Blacklisted' : 'Active')
                     ->color(fn ($record): string => $record->is_blacklisted ? 'gray' : 'success'),
-                Tables\Columns\TextColumn::make('company_name')->searchable(),
+                Tables\Columns\TextColumn::make('company_name')
+                    ->label((string) __('Company Name'))
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('verification_status')
                     ->label((string) __('Verification Status'))
                     ->icon(fn (VendorStatus $state): string => $state->getIcon())
                     ->color(fn (VendorStatus $state): string => $state->getColor())
                     ->alignCenter(),
-                Tables\Columns\TextColumn::make('businessField.name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('businessField.name')
+                    ->label((string) __('Business Field'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('phone')->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label((string) __('Phone Number'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('bankVendors.bank.name')
                     ->label((string) __('Bank'))
                     ->searchable(
