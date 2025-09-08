@@ -191,6 +191,7 @@
     "Number": "Nomor",
     "Title": "Judul",
     "Coming Soon": "Segera hadir",
-    "On Going": "Sedang berlangsung",
-    "Finished": "Selesai"
+    "Finished": "Selesai",
+    "Ongoing": "Sedang berlangsung",
+    "Quantity": "Kuantitas"
 }

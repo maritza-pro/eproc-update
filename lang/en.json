@@ -197,6 +197,7 @@
     "Number": "Number",
     "Title": "Title",
     "Coming Soon": "Coming Soon",
-    "On Going": "On Going",
-    "Finished": "Finished"
+    "Finished": "Finished",
+    "Ongoing": "Ongoing",
+    "Quantity": "Quantity"
 }

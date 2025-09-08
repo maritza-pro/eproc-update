@@ -7,17 +7,8 @@ namespace App\Enums;
 enum ProcurementStatus: string
 {
     case ComingSoon = 'coming_soon';
-    case Ongoing = 'ongoing';
     case Finished = 'finished';
-
-    public function getLabel(): string
-    {
-        return match ($this) {
-            self::ComingSoon => (string) __('Coming Soon'),
-            self::Ongoing => (string) __('On Going'),
-            self::Finished => (string) __('Finished'),
-        };
-    }
+    case Ongoing = 'ongoing';
 
     public function getColor(): string
     {
@@ -34,6 +25,15 @@ enum ProcurementStatus: string
             self::ComingSoon => 'heroicon-o-clock',
             self::Ongoing => 'heroicon-o-bolt',
             self::Finished => 'heroicon-o-check-circle',
+        };
+    }
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::ComingSoon => (string) __('Coming Soon'),
+            self::Ongoing => (string) __('Ongoing'),
+            self::Finished => (string) __('Finished'),
         };
     }
 }

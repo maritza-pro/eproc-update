@@ -21,6 +21,11 @@ class Procurement extends Model
         LogsActivity,
         SoftDeletes;
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
     protected $fillable = [
         'title',
         'description',
@@ -32,11 +37,26 @@ class Procurement extends Model
         'quantity',
     ];
 
-    protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
-        'phase' => ProcurementStatus::class,
-    ];
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes): ProcurementStatus {
+                $now = Carbon::now();
+                $startDate = Carbon::parse($attributes['start_date']);
+                $endDate = isset($attributes['end_date']) ? Carbon::parse($attributes['end_date']) : null;
+
+                if ($startDate->isFuture()) {
+                    return ProcurementStatus::ComingSoon;
+                }
+
+                if ($endDate && $endDate->isPast()) {
+                    return ProcurementStatus::Finished;
+                }
+
+                return ProcurementStatus::Ongoing;
+            },
+        );
+    }
 
     /**
      * Get the bids for the procurement.
@@ -47,7 +67,6 @@ class Procurement extends Model
     {
         return $this->hasMany(Bid::class);
     }
-
 
     public function businessField(): BelongsTo
     {
@@ -93,26 +112,4 @@ class Procurement extends Model
     {
         return $this->belongsTo(ProcurementType::class, 'type_id');
     }
-
-    protected function status(): Attribute
-    {
-        return Attribute::make(
-            get: function (mixed $value, array $attributes): ProcurementStatus {
-                $now = Carbon::now();
-                $startDate = Carbon::parse($attributes['start_date']);
-                $endDate = isset($attributes['end_date']) ? Carbon::parse($attributes['end_date']) : null;
-
-                if ($startDate->isFuture()) {
-                    return ProcurementStatus::ComingSoon;
-                }
-
-                if ($endDate && $endDate->isPast()) {
-                    return ProcurementStatus::Finished;
-                }
-
-                return ProcurementStatus::Ongoing;
-            },
-        );
-    }
-
 }

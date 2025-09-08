@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Clusters\MasterProcurements\Resources;
 
+use App\Concerns\Resource\Gate;
 use App\Filament\Clusters\MasterProcurements;
 use App\Filament\Clusters\MasterProcurements\Resources\ProcurementTypeResource\Pages;
 use App\Models\ProcurementType;
@@ -12,7 +13,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Concerns\Resource\Gate;
 use Hexters\HexaLite\HasHexaLite;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -25,11 +25,11 @@ class ProcurementTypeResource extends Resource
     }
     use HasHexaLite;
 
-    protected static ?string $modelLabel = 'Type';
+    protected static ?string $cluster = MasterProcurements::class;
 
     protected static ?string $model = ProcurementType::class;
 
-    protected static ?string $cluster = MasterProcurements::class;
+    protected static ?string $modelLabel = 'Type';
 
     public static function getPages(): array
     {
@@ -38,33 +38,12 @@ class ProcurementTypeResource extends Resource
         ];
     }
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required(),
-                        Forms\Components\Textarea::make('description'),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\TextInput::make('code'),
-                                Forms\Components\Toggle::make('is_active')
-                                    ->inline(false)
-                                    ->required()
-                                    ->default(true),
-                            ]),
-                    ]),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         // $withoutGlobalScope = ! Auth::user()?->can(static::getModelLabel() . '.withoutGlobalScope');
 
         return $table
-            //->deferLoading()
+            // ->deferLoading()
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('type')
@@ -112,6 +91,27 @@ class ProcurementTypeResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
 
                 ]),
+            ]);
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\Textarea::make('description'),
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\TextInput::make('code'),
+                                Forms\Components\Toggle::make('is_active')
+                                    ->inline(false)
+                                    ->required()
+                                    ->default(true),
+                            ]),
+                    ]),
             ]);
     }
 

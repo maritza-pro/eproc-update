@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ScopedBy([TaxonomyScope::class])]
 class ProcurementType extends Taxonomy
 {
-
     use WithTaxonomy;
 
     public function procurements(): HasMany

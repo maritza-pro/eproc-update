@@ -145,7 +145,7 @@ class ProcurementResource extends Resource
                                     ->required()
                                     ->label((string) __('Type')),
                                 Forms\Components\TextInput::make('quantity')
-                                    ->label('Quantity')
+                                    ->label((string) __('Quantity'))
                                     ->numeric()
                                     ->rule('integer')
                                     ->minValue(0),
@@ -186,11 +186,11 @@ class ProcurementResource extends Resource
 
     public static function canViewAny(): bool
     {
-        if (Auth::user()->can(static::getModelLabel().'.withoutGlobalScope') && Auth::user()->can(static::getModelLabel().'.viewAny')) {
+        if (Auth::user()->can(static::getModelLabel() . '.withoutGlobalScope') && Auth::user()->can(static::getModelLabel() . '.viewAny')) {
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel().'.viewAny') && Auth::user()?->vendor?->is_blacklisted === false;
+        return Auth::user()->can(static::getModelLabel() . '.viewAny') && Auth::user()?->vendor?->is_blacklisted === false;
     }
 
     public static function getEloquentQuery(): Builder

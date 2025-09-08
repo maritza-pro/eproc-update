@@ -17,7 +17,7 @@ class BusinessField extends Taxonomy
     public function procurements(): HasMany
     {
         return $this->hasMany(Procurement::class);
-    } 
+    }
 
     /**
      * Get the vendor experiences.
