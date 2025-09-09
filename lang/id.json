@@ -10,6 +10,7 @@
     "Add Experience": "Tambahkan pengalaman",
     "Add PIC Contact": "Tambahkan kontak pic",
     "Address": "Alamat",
+    "Agenda": "Agenda",
     "All": "Semua",
     "Allows creating a new :label": "Memungkinkan membuat :label baru",
     "Allows deleting :label": "Memungkinkan menghapus :label",
@@ -81,8 +82,8 @@
     "Document Number": "Nomor dokumen",
     "Document Type": "Jenis Dokumen",
     "e.g. -6.200000": "misalnya -6.200000",
-    "e.g. 62 for Indonesia": "misalnya 62 untuk Indonesia",
     "e.g. 106.816666": "misalnya 106.816666",
+    "e.g. 62 for Indonesia": "misalnya 62 untuk Indonesia",
     "Email Address": "Alamat email",
     "Email Verified At": "Tanggal verifikasi email",
     "Email verified.": "Email diverifikasi.",
@@ -143,6 +144,7 @@
     "National ID (KTP) Number": "Nomor ID Nasional (KTP)",
     "New Password": "Kata sandi baru",
     "NIB Number": "Nomor nib",
+    "No": "No",
     "Notary Name": "Nama Notaris",
     "Notes": "Catatan",
     "Number": "Nomor",
@@ -193,6 +195,7 @@
     "Stakeholder": "Pemangku kepentingan",
     "Start Date": "Tanggal mulai",
     "Status": "Status",
+    "Submission Needed": "Pengajuan diperlukan",
     "Submit Verification": "Kirim verifikasi",
     "Superuser": "Superuser",
     "Symbol": "Simbol",
@@ -228,7 +231,5 @@
     "Website": "Situs web",
     "Year Established": "Tahun ditetapkan",
     "Your vendor verification has been resubmitted.": "Verifikasi vendor Anda telah dikirim kembali.",
-    "Your vendor verification has been submitted.": "Verifikasi vendor Anda telah diajukan.",
-    "Agenda": "Agenda",
-    "Submission Needed": "Pengajuan diperlukan"
+    "Your vendor verification has been submitted.": "Verifikasi vendor Anda telah diajukan."
 }

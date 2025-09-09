@@ -20,7 +20,7 @@ class AgendaProcurementsRelationManager extends RelationManager
             ->recordTitleAttribute('agenda_id')
             ->columns([
                 Tables\Columns\TextColumn::make('no')
-                    ->label('No')
+                    ->label((string) __('No'))
                     ->rowIndex()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('agenda.name')
@@ -86,6 +86,7 @@ class AgendaProcurementsRelationManager extends RelationManager
                     ->label((string) __('End Date'))
                     ->required(),
                 Forms\Components\Toggle::make('is_submission_needed')
+                    ->label((string) __('Submission Needed'))
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->label((string) __('Description'))

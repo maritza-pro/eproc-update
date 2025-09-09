@@ -41,7 +41,6 @@ class AgendaProcurement extends Model
     {
         return Attribute::make(
             get: function (mixed $value, array $attributes): ProcurementStatus {
-                $now = Carbon::now();
                 $startDate = Carbon::parse($attributes['start_date']);
                 $endDate = isset($attributes['end_date']) ? Carbon::parse($attributes['end_date']) : null;
 
