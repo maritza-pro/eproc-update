@@ -40,7 +40,7 @@ class VendorExperience extends Model implements HasMedia
      */
     public function businessField(): BelongsTo
     {
-        return $this->belongsTo(VendorBusiness::class);
+        return $this->belongsTo(BusinessField::class);
     }
 
     /**

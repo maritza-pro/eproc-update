@@ -11,6 +11,7 @@ use App\Models\Procurement;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
@@ -61,16 +62,38 @@ class ProcurementResource extends Resource
             // ->deferLoading()
             ->striped()
             ->columns([
+                Tables\Columns\TextColumn::make('number')
+                    ->label((string) __('Number'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->label((string) __('Title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('method')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('procurementType.name')
+                    ->label((string) __('Type'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('procurementType.name')
+                    ->label((string) __('Type'))
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('businessField.name')
+                    ->label((string) __('Business Field'))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->label((string) __('Start Date'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->label((string) __('End Date'))
                     ->date()
                     ->sortable(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn ($state) => $state->getLabel())
+                    ->color(fn ($state) => $state->getColor())
+                    ->icon(fn ($state) => $state->getIcon()),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -109,18 +132,57 @@ class ProcurementResource extends Resource
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
+                                Forms\Components\TextInput::make('number')
+                                    ->label((string) __('Procurement Number'))
+                                    ->required(),
                                 Forms\Components\TextInput::make('title')
                                     ->required(),
-                                Forms\Components\Select::make('method')
+                                Forms\Components\Select::make('type_id')
+                                    ->relationship(
+                                        name: 'procurementType',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                    ->searchable()
+                                    ->preload()
                                     ->required()
-                                    ->options(array_combine(Procurement::METHODS, Procurement::METHODS))
-                                    ->searchable(),
+                                    ->label((string) __('Type')),
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label((string) __('Quantity'))
+                                    ->numeric()
+                                    ->rule('integer')
+                                    ->minValue(0),
+                                Forms\Components\Select::make('method_id')
+                                    ->relationship(
+                                        name: 'procurementMethod',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->label((string) __('Method')),
+                                Forms\Components\Select::make('business_field_id')
+                                    ->relationship(
+                                        name: 'businessField',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                    ->searchable()
+                                    ->preload()
+                                    ->label((string) __('Business Field')),
                                 Forms\Components\DatePicker::make('start_date')
+                                    ->label((string) __('Start Date'))
                                     ->required()
                                     ->beforeOrEqual('end_date'),
                                 Forms\Components\DatePicker::make('end_date')
+                                    ->label((string) __('End Date'))
                                     ->afterOrEqual('start_date'),
+                                Forms\Components\TextInput::make('value')
+                                    ->label((string) __('Project Value'))
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->numeric()
+                                    ->columnSpanFull(),
                                 Forms\Components\Textarea::make('description')
+                                    ->label((string) __('Description'))
                                     ->columnSpanFull(),
                             ]),
                     ]),

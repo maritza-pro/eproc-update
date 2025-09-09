@@ -10,9 +10,14 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ScopedBy([TaxonomyScope::class])]
-class VendorBusiness extends Taxonomy
+class BusinessField extends Taxonomy
 {
     use WithTaxonomy;
+
+    public function procurements(): HasMany
+    {
+        return $this->hasMany(Procurement::class);
+    }
 
     /**
      * Get the vendor experiences.

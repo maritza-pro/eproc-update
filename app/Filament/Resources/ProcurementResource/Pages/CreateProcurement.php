@@ -10,4 +10,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProcurement extends CreateRecord
 {
     protected static string $resource = ProcurementResource::class;
+
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
 }

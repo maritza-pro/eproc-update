@@ -7,8 +7,8 @@ namespace App\Filament\Resources;
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\SurveyResource\Pages;
 use App\Filament\Resources\SurveyResource\RelationManagers\QuestionsRelationManager;
+use App\Models\BusinessField;
 use App\Models\Survey;
-use App\Models\VendorBusiness;
 use App\Models\VendorType;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -135,7 +135,7 @@ class SurveyResource extends Resource
                                     ->searchable(),
                                 Forms\Components\Select::make('properties.vendor_business')
                                     ->label((string) __('Vendor Business'))
-                                    ->options(fn () => VendorBusiness::query()->pluck('name', 'id'))
+                                    ->options(fn () => BusinessField::query()->pluck('name', 'id'))
                                     ->required(fn ($get): bool => $get('type') === 'vendor')
                                     ->visible(fn ($get): bool => $get('type') === 'vendor')
                                     ->searchable(),

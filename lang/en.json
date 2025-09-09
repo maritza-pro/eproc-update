@@ -190,5 +190,14 @@
     "Allows updating :label": "Allows updating :label",
     "Allows deleting :label": "Allows deleting :label",
     "Allows viewing :label without global scope": "Allows viewing :label without global scope",
-    "Allows validating :label": "Allows validating :label"
+    "Allows validating :label": "Allows validating :label",
+    "Branch Name (Optional)": "Branch Name (Optional)",
+    "Procurement Number": "Procurement Number",
+    "Method": "Method",
+    "Number": "Number",
+    "Title": "Title",
+    "Coming Soon": "Coming Soon",
+    "Finished": "Finished",
+    "Ongoing": "Ongoing",
+    "Quantity": "Quantity"
 }

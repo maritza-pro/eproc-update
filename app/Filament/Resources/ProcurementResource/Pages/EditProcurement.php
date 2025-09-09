@@ -26,4 +26,9 @@ class EditProcurement extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    public function getFormActionsAlignment(): string
+    {
+        return 'right';
+    }
 }

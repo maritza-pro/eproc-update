@@ -86,7 +86,7 @@ class Survey extends Model
      */
     public function vendorBusiness(): Belongsto
     {
-        return $this->belongsTo(VendorBusiness::class, 'properties->vendor_business');
+        return $this->belongsTo(BusinessField::class, 'properties->vendor_business');
     }
 
     /**
