@@ -21,11 +21,6 @@ class Procurement extends Model
         LogsActivity,
         SoftDeletes;
 
-    protected $casts = [
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
-    ];
-
     protected $fillable = [
         'title',
         'description',
@@ -36,6 +31,14 @@ class Procurement extends Model
         'number',
         'quantity',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'datetime',
+            'end_date' => 'datetime',
+        ];
+    }
 
     protected function status(): Attribute
     {

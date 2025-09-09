@@ -17,7 +17,7 @@ return new class extends Migration
                 ->where('model', 'App\Models\VendorBusiness')
                 ->where('type', 'vendor-business')
                 ->update([
-                    'model' => 'App\Models\BusinessField',
+                    'model' => \App\Models\BusinessField::class,
                     'type' => 'business-field',
                     'updated_at' => now(),
                 ]);
@@ -31,7 +31,7 @@ return new class extends Migration
     {
         DB::transaction(function () {
             DB::table('taxonomies')
-                ->where('model', 'App\Models\BusinessField')
+                ->where('model', \App\Models\BusinessField::class)
                 ->where('type', 'business-field')
                 ->update([
                     'model' => 'App\Models\VendorBusiness',
