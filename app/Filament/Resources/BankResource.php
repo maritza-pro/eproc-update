@@ -42,7 +42,7 @@ class BankResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
@@ -54,7 +54,7 @@ class BankResource extends Resource
             Tables\Columns\IconColumn::make('is_active')->boolean(),
         ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

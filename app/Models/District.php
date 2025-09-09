@@ -13,7 +13,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class District extends Model
 {
-    //
     use LogsActivity,
         SoftDeletes;
 

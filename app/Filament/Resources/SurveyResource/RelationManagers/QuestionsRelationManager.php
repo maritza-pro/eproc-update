@@ -31,7 +31,7 @@ class QuestionsRelationManager extends RelationManager
                     ->alignCenter(),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

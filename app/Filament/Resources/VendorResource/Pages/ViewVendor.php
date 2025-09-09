@@ -106,7 +106,6 @@ class ViewVendor extends ViewRecord
                         ->title((string) __('Vendor has been removed from blacklist.'))
                         ->success()
                         ->send();
-
                 }),
 
             Actions\Action::make('reject')

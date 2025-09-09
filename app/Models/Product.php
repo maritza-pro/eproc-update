@@ -18,14 +18,14 @@ class Product extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array TYPES = [
+    public const array TYPES = [
         self::TYPE_GOODS,
         self::TYPE_SERVICES,
     ];
 
-    const string TYPE_GOODS = 'goods';
+    public const string TYPE_GOODS = 'goods';
 
-    const string TYPE_SERVICES = 'services';
+    public const string TYPE_SERVICES = 'services';
 
     protected $fillable = [
         'name',

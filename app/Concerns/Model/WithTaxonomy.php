@@ -14,7 +14,6 @@ trait WithTaxonomy
         self::creating(function (Model $model): void {
             $modelClass = static::class;
             $model->setAttribute('model', $modelClass);
-
         });
 
         self::saving(function (Model $model): void {

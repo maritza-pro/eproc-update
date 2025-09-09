@@ -16,7 +16,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VendorContact extends Model implements HasMedia
 {
-    //
     use Cachable,
         InteractsWithMedia,
         LogsActivity,

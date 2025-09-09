@@ -15,7 +15,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Country extends Model
 {
-    //
     use HasRelationships,
         LogsActivity,
         SoftDeletes;

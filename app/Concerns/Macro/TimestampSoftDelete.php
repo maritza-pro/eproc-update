@@ -21,7 +21,7 @@ trait TimestampSoftDelete
             $this->timestamp('deleted_at')->nullable();
 
             if ($index) {
-                if (config('database.default') == 'mysql') {
+                if (config('database.default') === 'mysql') {
                     $this->index('created_at', 'created_at');
                     $this->index('updated_at', 'updated_at');
                     $this->index('deleted_at', 'deleted_at');
@@ -31,7 +31,6 @@ trait TimestampSoftDelete
                     $this->index('deleted_at');
                 }
             }
-
         });
     }
 }

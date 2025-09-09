@@ -28,7 +28,7 @@ class BankVendorsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('account_number'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
@@ -55,7 +55,8 @@ class BankVendorsRelationManager extends RelationManager
                     ->relationship(
                         name: 'bank',
                         titleAttribute: 'name',
-                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true)
+                    )
                     ->searchable()
                     ->preload()
                     ->required()

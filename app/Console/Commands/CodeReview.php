@@ -228,7 +228,6 @@ Definisi **critical** (hanya keluarkan ini):
 Kode:
 
 PROMPT;
-
     }
 
     private function insertOkMarker(string $code): string

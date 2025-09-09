@@ -44,7 +44,6 @@ class EditVendor extends EditRecord
             if ($record->verification_status === VendorStatus::Pending &&
                 isset($data['verification_status']) &&
                 $data['verification_status'] === VendorStatus::Approved->value) {
-
                 $data['verified_by'] = Auth::id();
 
                 $data['verified_at'] = now();

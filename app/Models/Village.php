@@ -12,7 +12,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Village extends Model
 {
-    //
     use LogsActivity,
         SoftDeletes;
 

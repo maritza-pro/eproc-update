@@ -15,7 +15,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class VendorTaxRegistration extends Model implements HasMedia
 {
-    //
     use Cachable,
         InteractsWithMedia,
         LogsActivity,

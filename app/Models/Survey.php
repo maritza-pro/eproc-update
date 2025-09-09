@@ -20,14 +20,14 @@ class Survey extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array TYPES = [
+    public const array TYPES = [
         self::TYPE_VENDOR,
         self::TYPE_PROCUREMENT,
     ];
 
-    const string TYPE_PROCUREMENT = 'procurement';
+    public const string TYPE_PROCUREMENT = 'procurement';
 
-    const string TYPE_VENDOR = 'vendor';
+    public const string TYPE_VENDOR = 'vendor';
 
     protected $fillable = [
         'title',

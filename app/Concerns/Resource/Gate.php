@@ -42,7 +42,7 @@ trait Gate
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.delete') && $record->user_id == Auth::id();
+        return Auth::user()->can(static::getModelLabel() . '.delete') && $record->user_id === Auth::id();
     }
 
     public static function canEdit(Model $record): bool
@@ -51,7 +51,7 @@ trait Gate
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->user_id == Auth::id();
+        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->user_id === Auth::id();
     }
 
     public static function canView(Model $record): bool
@@ -60,7 +60,7 @@ trait Gate
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.view') && $record->user_id == Auth::id();
+        return Auth::user()->can(static::getModelLabel() . '.view') && $record->user_id === Auth::id();
     }
 
     public static function canViewAny(): bool

@@ -35,7 +35,7 @@ class DistrictRelationManager extends RelationManager
                     ->label((string) __('Longitude')),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
@@ -65,13 +65,12 @@ class DistrictRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
-                        if ($country == null) {
+                        if ($country === null) {
                             return [];
                         }
 
                         return Province::query()->where('country_id', $country->id)
                             ->pluck('name', 'id');
-
                     })
                     ->required()
                     ->reactive()

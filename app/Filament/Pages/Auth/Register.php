@@ -48,7 +48,6 @@ class Register extends BaseRegister
     public function register(): ?RegistrationResponse
     {
         return DB::transaction(function (): ?RegistrationResponse {
-
             $data = $this->form->getState();
             $user = $this->handleRegistration($data);
             $roleId = HexaRole::query()->where('name', 'User')->value('id');

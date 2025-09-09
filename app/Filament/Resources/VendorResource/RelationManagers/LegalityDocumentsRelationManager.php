@@ -59,7 +59,7 @@ class LegalityDocumentsRelationManager extends RelationManager
                     ->view('filament.forms.components.table-attachment-viewer'),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()

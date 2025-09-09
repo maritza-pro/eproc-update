@@ -146,7 +146,8 @@ class ProcurementResource extends Resource
                                     ->relationship(
                                         name: 'procurementType',
                                         titleAttribute: 'name',
-                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true)
+                                    )
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -160,7 +161,8 @@ class ProcurementResource extends Resource
                                     ->relationship(
                                         name: 'procurementMethod',
                                         titleAttribute: 'name',
-                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true)
+                                    )
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -169,7 +171,8 @@ class ProcurementResource extends Resource
                                     ->relationship(
                                         name: 'businessField',
                                         titleAttribute: 'name',
-                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
+                                        modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true)
+                                    )
                                     ->searchable()
                                     ->preload(),
                                 Forms\Components\DatePicker::make('start_date')

@@ -208,7 +208,7 @@ class UserResource extends Resource
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->id == Auth::id();
+        return Auth::user()->can(static::getModelLabel() . '.edit') && $record->id === Auth::id();
     }
 
     public static function canView(Model $record): bool
@@ -217,7 +217,7 @@ class UserResource extends Resource
             return true;
         }
 
-        return Auth::user()->can(static::getModelLabel() . '.view') && $record->id == Auth::id();
+        return Auth::user()->can(static::getModelLabel() . '.view') && $record->id === Auth::id();
     }
 
     public static function getEloquentQuery(): Builder

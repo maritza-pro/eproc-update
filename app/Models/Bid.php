@@ -19,7 +19,7 @@ class Bid extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array STATUSES = [
+    public const array STATUSES = [
         self::STATUS_DRAFT,
         self::STATUS_SUBMITTED,
         self::STATUS_EVALUATED,
@@ -27,15 +27,15 @@ class Bid extends Model
         self::STATUS_ACCEPTED,
     ];
 
-    const string STATUS_ACCEPTED = 'accepted';
+    public const string STATUS_ACCEPTED = 'accepted';
 
-    const string STATUS_DRAFT = 'draft';
+    public const string STATUS_DRAFT = 'draft';
 
-    const string STATUS_EVALUATED = 'evaluated';
+    public const string STATUS_EVALUATED = 'evaluated';
 
-    const string STATUS_REJECTED = 'rejected';
+    public const string STATUS_REJECTED = 'rejected';
 
-    const string STATUS_SUBMITTED = 'submitted';
+    public const string STATUS_SUBMITTED = 'submitted';
 
     protected $fillable = [
         'vendor_id',

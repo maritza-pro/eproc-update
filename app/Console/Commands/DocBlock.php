@@ -132,7 +132,6 @@ class DocBlock extends Command
                                 $this->error('  [!] No DocBlock returned from LLM');
                             }
                         }
-
                     }
                 }
             }

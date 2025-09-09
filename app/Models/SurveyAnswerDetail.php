@@ -13,7 +13,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class SurveyAnswerDetail extends Model
 {
-    //
     use Cachable,
         LogsActivity,
         SoftDeletes;

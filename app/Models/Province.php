@@ -16,7 +16,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Province extends Model
 {
-    //
     use HasRelationships,
         LogsActivity,
         SoftDeletes;

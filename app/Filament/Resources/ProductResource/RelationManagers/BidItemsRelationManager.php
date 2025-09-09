@@ -30,7 +30,7 @@ class BidItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at'),
             ])
             ->filters([
-                //
+
             ]);
     }
 }

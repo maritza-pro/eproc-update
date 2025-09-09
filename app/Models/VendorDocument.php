@@ -16,7 +16,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class VendorDocument extends Model implements HasMedia
 {
-    //
     use Cachable,
         InteractsWithMedia,
         LogsActivity,

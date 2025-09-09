@@ -17,7 +17,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Hexters\HexaLite\HasHexaLite;
-use Illuminate\Support\Facades\Auth;
 
 class CountryResource extends Resource
 {
@@ -89,7 +88,7 @@ class CountryResource extends Resource
                     ->label((string) __('Longitude')),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

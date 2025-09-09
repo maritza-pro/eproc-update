@@ -15,7 +15,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class VendorBusinessLicense extends Model implements HasMedia
 {
-    //
     use Cachable,
         InteractsWithMedia,
         LogsActivity,

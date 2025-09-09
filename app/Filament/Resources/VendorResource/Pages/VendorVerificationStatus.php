@@ -55,54 +55,53 @@ class VendorVerificationStatus extends Page implements HasForms
     {
         $withoutGlobalScope = Auth::user()?->can(VendorResource::getModelLabel() . '.withoutGlobalScope');
 
-        return
-            [
-                Actions\Action::make('submit')
-                    ->label((string) __('Submit Verification'))
-                    ->icon('heroicon-o-paper-airplane')
-                    ->color('primary')
-                    ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Draft && ! $withoutGlobalScope && ! $record->is_blacklisted)
-                    ->modalHeading('')
-                    ->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.forms.components.statement-and-agreement'))
-                    ->modalWidth('3xl')
-                    ->modalFooterActionsAlignment(Alignment::End)
-                    ->form([
-                        Forms\Components\Checkbox::make('agreement')
-                            ->label((string) __('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.'))
-                            ->accepted()
-                            ->required(),
-                    ])
-                    ->action(function ($record) {
-                        $record->update([
-                            'verification_status' => VendorStatus::Pending,
-                        ]);
+        return [
+            Actions\Action::make('submit')
+                ->label((string) __('Submit Verification'))
+                ->icon('heroicon-o-paper-airplane')
+                ->color('primary')
+                ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Draft && ! $withoutGlobalScope && ! $record->is_blacklisted)
+                ->modalHeading('')
+                ->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.forms.components.statement-and-agreement'))
+                ->modalWidth('3xl')
+                ->modalFooterActionsAlignment(Alignment::End)
+                ->form([
+                    Forms\Components\Checkbox::make('agreement')
+                        ->label((string) __('By checking this box, you acknowledge that you have read, understood, and agree to the Statement & Agreement above.'))
+                        ->accepted()
+                        ->required(),
+                ])
+                ->action(function ($record) {
+                    $record->update([
+                        'verification_status' => VendorStatus::Pending,
+                    ]);
 
-                        Notification::make()
-                            ->title((string) __('Your vendor verification has been submitted.'))
-                            ->success()
-                            ->send();
-                    }),
+                    Notification::make()
+                        ->title((string) __('Your vendor verification has been submitted.'))
+                        ->success()
+                        ->send();
+                }),
 
-                Actions\Action::make('resubmit')
-                    ->label((string) __('Resubmit Verification'))
-                    ->icon('heroicon-o-arrow-path')
-                    ->color('warning')
-                    ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $withoutGlobalScope && ! $record->is_blacklisted)
-                    ->requiresConfirmation()
-                    ->modalHeading('Resubmit Vendor Verification?')
-                    ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
-                    ->modalSubmitActionLabel('Yes, Resubmit')
-                    ->action(function ($record) {
-                        $record->update([
-                            'verification_status' => VendorStatus::Pending,
-                        ]);
+            Actions\Action::make('resubmit')
+                ->label((string) __('Resubmit Verification'))
+                ->icon('heroicon-o-arrow-path')
+                ->color('warning')
+                ->visible(fn ($record): bool => $record->verification_status === VendorStatus::Rejected && ! $withoutGlobalScope && ! $record->is_blacklisted)
+                ->requiresConfirmation()
+                ->modalHeading('Resubmit Vendor Verification?')
+                ->modalDescription('Your vendor information will be reopened for updates and sent for review again. Do you want to continue?')
+                ->modalSubmitActionLabel('Yes, Resubmit')
+                ->action(function ($record) {
+                    $record->update([
+                        'verification_status' => VendorStatus::Pending,
+                    ]);
 
-                        Notification::make()
-                            ->title((string) __('Your vendor verification has been resubmitted.'))
-                            ->success()
-                            ->send();
-                    }),
-            ];
+                    Notification::make()
+                        ->title((string) __('Your vendor verification has been resubmitted.'))
+                        ->success()
+                        ->send();
+                }),
+        ];
     }
 
     public function mount(int|string $record): void

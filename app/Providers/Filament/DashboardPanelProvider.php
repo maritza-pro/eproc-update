@@ -46,7 +46,6 @@ class DashboardPanelProvider extends PanelProvider
         FilamentAsset::register([
             Js::make('custom-script', asset('js/custom.js')),
         ]);
-
     }
 
     /**

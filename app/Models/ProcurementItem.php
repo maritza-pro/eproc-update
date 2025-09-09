@@ -14,7 +14,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class ProcurementItem extends Model
 {
-    //
     use Cachable,
         LogsActivity,
         SoftDeletes;

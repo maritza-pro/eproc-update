@@ -34,7 +34,7 @@ class VillageRelationManager extends RelationManager
                     ->label((string) __('Longitude')),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

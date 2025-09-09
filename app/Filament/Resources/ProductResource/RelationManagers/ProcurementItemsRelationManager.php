@@ -28,7 +28,7 @@ class ProcurementItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('quantity'),
             ])
             ->filters([
-                //
+
             ]);
     }
 }

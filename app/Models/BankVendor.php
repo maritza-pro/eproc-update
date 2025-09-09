@@ -16,7 +16,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class BankVendor extends Model implements HasMedia
 {
-    //
     use Cachable,
         HasFactory,
         InteractsWithMedia,

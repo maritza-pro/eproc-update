@@ -230,7 +230,6 @@ class VendorResource extends Resource
         ]);
 
         return array_map(fn (\Filament\Navigation\NavigationItem $item): \Filament\Navigation\NavigationItem => $item->icon(null), $items);
-
     }
 
     public static function getWidgets(): array

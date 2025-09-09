@@ -14,7 +14,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class VendorProfile extends Model
 {
-    //
     use Cachable,
         LogsActivity,
         SoftDeletes;

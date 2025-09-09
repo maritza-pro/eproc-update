@@ -18,7 +18,7 @@ class SurveyQuestion extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array TYPES = [
+    public const array TYPES = [
         self::TYPE_TEXT,
         self::TYPE_RADIO,
         self::TYPE_CHECKBOX,
@@ -27,17 +27,17 @@ class SurveyQuestion extends Model
         self::TYPE_FILE,
     ];
 
-    const string TYPE_CHECKBOX = 'checkbox';
+    public const string TYPE_CHECKBOX = 'checkbox';
 
-    const string TYPE_DATE = 'date';
+    public const string TYPE_DATE = 'date';
 
-    const string TYPE_FILE = 'file';
+    public const string TYPE_FILE = 'file';
 
-    const string TYPE_RADIO = 'radio';
+    public const string TYPE_RADIO = 'radio';
 
-    const string TYPE_SELECT = 'select';
+    public const string TYPE_SELECT = 'select';
 
-    const string TYPE_TEXT = 'text';
+    public const string TYPE_TEXT = 'text';
 
     protected $fillable = [
         'survey_id',

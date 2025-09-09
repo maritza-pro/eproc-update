@@ -17,20 +17,20 @@ class Contract extends Model
         LogsActivity,
         SoftDeletes;
 
-    const array STATUSES = [
+    public const array STATUSES = [
         self::STATUS_DRAFT,
         self::STATUS_ACTIVE,
         self::STATUS_COMPLETED,
         self::STATUS_TERMINATED,
     ];
 
-    const string STATUS_ACTIVE = 'active';
+    public const string STATUS_ACTIVE = 'active';
 
-    const string STATUS_COMPLETED = 'completed';
+    public const string STATUS_COMPLETED = 'completed';
 
-    const string STATUS_DRAFT = 'draft';
+    public const string STATUS_DRAFT = 'draft';
 
-    const string STATUS_TERMINATED = 'terminated';
+    public const string STATUS_TERMINATED = 'terminated';
 
     protected $fillable = [
         'procurement_id',

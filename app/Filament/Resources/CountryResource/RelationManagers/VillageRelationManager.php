@@ -36,7 +36,7 @@ class VillageRelationManager extends RelationManager
                     ->label((string) __('Longitude')),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
@@ -66,7 +66,7 @@ class VillageRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
-                        if ($country == null) {
+                        if ($country === null) {
                             return [];
                         }
 

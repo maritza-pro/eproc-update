@@ -33,7 +33,7 @@ class ProvinceRelationManager extends RelationManager
                     ->label((string) __('Longitude')),
             ])
             ->filters([
-                //
+
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

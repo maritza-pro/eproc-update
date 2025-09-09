@@ -39,7 +39,6 @@ class Profile extends Page implements HasForms
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $this->form->fill($user->getAttributes());
-
     }
 
     /**
@@ -119,11 +118,9 @@ class Profile extends Page implements HasForms
      */
     public function save(): void
     {
-
         $data = $this->form->getState();
 
         DB::transaction(function () use ($data): void {
-
             /** @var \App\Models\User $user */
             $user = Auth::user();
 
@@ -149,6 +146,5 @@ class Profile extends Page implements HasForms
                 ->success()
                 ->send();
         });
-
     }
 }
