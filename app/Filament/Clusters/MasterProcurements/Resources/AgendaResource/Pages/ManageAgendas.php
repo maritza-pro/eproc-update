@@ -8,6 +8,7 @@ use App\Filament\Clusters\MasterProcurements\Resources\AgendaResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
+// TODO : @rizkyxp Agenda / Agendas coba diskus sama maup yee
 class ManageAgendas extends ManageRecords
 {
     protected static string $resource = AgendaResource::class;
