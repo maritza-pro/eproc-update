@@ -13,7 +13,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // TODO : jangan pakai singkatan untuk nama table, contoh : vendor_contacts
         Schema::create('vendor_contacts', function (Blueprint $table) {
             $table->id();
 
@@ -22,7 +21,6 @@ return new class extends Migration
             $table->string('position')->nullable()->comment('Job title or position of the PIC');
             $table->string('phone_number')->nullable()->comment('Phone number of the PIC');
             $table->string('email')->nullable()->comment('Email address of the PIC');
-            // TODO : jangan pakai singkatan untuk nama table, contoh : identity_number dari pada ktp_number
             $table->string('identity_number')->nullable()->comment('National ID (KTP) number of the PIC');
 
             $table->timestampSoftDelete();
