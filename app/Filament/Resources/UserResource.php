@@ -162,9 +162,8 @@ class UserResource extends Resource
                                     ->dehydrated(fn ($state): bool => filled($state))
                                     ->hidden(! $withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
-                                    ->label((string) __('Roles'))
-                                    ->disabled(! $withoutGlobalScope)
                                     ->label((string) __('Role Name'))
+                                    ->disabled(! $withoutGlobalScope)
                                     ->relationship('roles', 'name')
                                     ->placeholder((string) __('Superuser')),
                                 Forms\Components\Section::make((string) __('Change Password'))
