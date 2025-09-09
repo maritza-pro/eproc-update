@@ -61,6 +61,7 @@ class ProvinceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('country.name')
+                    ->label((string) __('Country'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -95,9 +96,11 @@ class ProvinceResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('country_id')
+                                    ->label((string) __('Country'))
                                     ->relationship('country', 'name')
                                     ->required(),
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Province'))
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
                                     ->label((string) __('Latitude'))

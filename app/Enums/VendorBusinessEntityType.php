@@ -8,7 +8,6 @@ use Filament\Support\Contracts\HasLabel;
 
 enum VendorBusinessEntityType: string implements HasLabel
 {
-    // TODO : Make sure aja nanti bisa multi bahasa
     case CV = 'cv';
     case PT = 'pt';
     case Perseorangan = 'perseorangan';

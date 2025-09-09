@@ -59,25 +59,33 @@ class DocumentResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('documentable_type')
+                    ->label((string) __('Document Type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('documentable_id')
+                    ->label((string) __('Document ID'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('filename')
+                    ->label((string) __('Filename'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('path')
+                    ->label((string) __('Path'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label((string) __('Type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -108,15 +116,20 @@ class DocumentResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('documentable_type')
+                                    ->label((string) __('Document Type'))
                                     ->required(),
                                 Forms\Components\TextInput::make('documentable_id')
+                                    ->label((string) __('Document ID'))
                                     ->required()
                                     ->numeric(),
                                 Forms\Components\TextInput::make('filename')
+                                    ->label((string) __('Filename'))
                                     ->required(),
                                 Forms\Components\TextInput::make('path')
+                                    ->label((string) __('Path'))
                                     ->required(),
-                                Forms\Components\TextInput::make('type'),
+                                Forms\Components\TextInput::make('type')
+                                    ->label((string) __('Type')),
                             ]),
                     ]),
             ]);

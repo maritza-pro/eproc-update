@@ -59,30 +59,39 @@ class ContractResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('procurement.title')
+                    ->label((string) __('Procurement'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('vendor.id')
+                    ->label((string) __('Vendor'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('contract_number')
+                    ->label((string) __('Contract Number'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('signed_date')
+                    ->label((string) __('Signed Date'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('value')
+                    ->label((string) __('Value'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label((string) __('Status'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -113,21 +122,27 @@ class ContractResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('procurement_id')
+                                    ->label((string) __('Procurement'))
                                     ->relationship('procurement', 'title')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Select::make('vendor_id')
+                                    ->label((string) __('Vendor'))
                                     ->relationship('vendor', 'id')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\TextInput::make('contract_number')
+                                    ->label((string) __('Contract Number'))
                                     ->required(),
                                 Forms\Components\DatePicker::make('signed_date')
+                                    ->label((string) __('Signed Date'))
                                     ->required(),
                                 Forms\Components\TextInput::make('value')
+                                    ->label((string) __('Value'))
                                     ->required()
                                     ->numeric(),
                                 Forms\Components\TextInput::make('status')
+                                    ->label((string) __('Status'))
                                     ->required(),
                             ]),
                     ]),

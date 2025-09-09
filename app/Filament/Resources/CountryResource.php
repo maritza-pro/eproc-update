@@ -114,28 +114,30 @@ class CountryResource extends Resource
                                     ->required(),
 
                                 Forms\Components\TextInput::make('code')
-                                    ->maxLength(2)
                                     ->label((string) __('Country Code'))
+                                    ->maxLength(2)
                                     ->helperText((string) __('2-letter country code (e.g. ID, US)'))
                                     ->extraAttributes(['style' => 'text-transform: uppercase']),
 
                                 Forms\Components\TextInput::make('currency')
+                                    ->label((string) __('Currency'))
                                     ->maxLength(10),
 
                                 Forms\Components\TextInput::make('iso')
+                                    ->label((string) __('ISO Code'))
                                     ->maxLength(3)
                                     ->helperText((string) __('3-letter ISO code (e.g. IDN, USA)')),
 
                                 Forms\Components\TextInput::make('num_code')
+                                    ->label((string) __('Numeric Code'))
                                     ->numeric()
                                     ->maxLength(3)
-                                    ->label((string) __('Numeric Code'))
                                     ->helperText((string) __('Numeric country code (e.g. 360 for Indonesia)')),
 
                                 Forms\Components\TextInput::make('msisdn_code')
+                                    ->label((string) __('MSISDN Code'))
                                     ->numeric()
                                     ->maxLength(5)
-                                    ->label((string) __('MSISDN Code'))
                                     ->helperText((string) __('e.g. 62 for Indonesia')),
 
                                 Forms\Components\TextInput::make('latitude')

@@ -127,7 +127,7 @@ class VendorVerificationStatus extends Page implements HasForms
                             ->disabled()
                             ->hidden(fn (?Vendor $record): bool => ! $record?->is_blacklisted)
                             ->autosize(),
-                        Forms\Components\Fieldset::make('ⓘ Verification Status')
+                        Forms\Components\Fieldset::make((string) __('ⓘ Verification Status'))
                             ->schema([
                                 Forms\Components\View::make('verification_status')
                                     ->view('filament.forms.components.status-badge')

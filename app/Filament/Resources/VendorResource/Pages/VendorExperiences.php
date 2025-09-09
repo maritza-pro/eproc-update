@@ -29,25 +29,30 @@ class VendorExperiences extends ManageRelatedRecords
             ->defaultSort('start_date', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('project_name')
+                    ->label((string) __('Project Name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('businessField.name')
+                    ->label((string) __('Business Field'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stakeholder')
+                    ->label((string) __('Stakeholder'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->label((string) __('Start Date'))
                     ->date('d M Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->label((string) __('End Date'))
                     ->date('d M Y')
                     ->sortable(),
                 Tables\Columns\ViewColumn::make('vendor_experience_attachment')
                     ->label((string) __('Attachment'))
                     ->viewData([
                         'collectionName' => 'vendor_experience_attachment',
-                        'viewLabel' => 'Experience Attachment',
+                        'viewLabel' => (string) __('Experience Attachment'),
                     ])
                     ->view('filament.forms.components.table-attachment-viewer'),
             ])
@@ -88,10 +93,10 @@ class VendorExperiences extends ManageRelatedRecords
                     ->label((string) __('Project Name'))
                     ->nullable(),
                 Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')
+                    ->label((string) __('Business Field'))
                     ->searchable()
                     ->preload()
-                    ->nullable()
-                    ->label((string) __('Business Field')),
+                    ->nullable(),
 
                 Forms\Components\TextInput::make('location')
                     ->label((string) __('Project Location'))

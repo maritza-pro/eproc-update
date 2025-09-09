@@ -60,25 +60,31 @@ class UserResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label((string) __('Name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
+                    ->label((string) __('Email Verified At'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('roles.name'),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label((string) __('Roles')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -139,13 +145,16 @@ class UserResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Name'))
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
                                     ->required(),
                                 Forms\Components\DateTimePicker::make('email_verified_at')
+                                    ->label((string) __('Email Verified At'))
                                     ->disabled(! $withoutGlobalScope),
                                 Forms\Components\TextInput::make('password')
+                                    ->label((string) __('Password'))
                                     ->password()
                                     ->revealable()
                                     ->required(fn (string $context): bool => $context === 'create')
@@ -153,11 +162,11 @@ class UserResource extends Resource
                                     ->dehydrated(fn ($state): bool => filled($state))
                                     ->hidden(! $withoutGlobalScope),
                                 Forms\Components\Select::make('roles')
-                                    ->disabled(! $withoutGlobalScope)
                                     ->label((string) __('Role Name'))
+                                    ->disabled(! $withoutGlobalScope)
                                     ->relationship('roles', 'name')
                                     ->placeholder((string) __('Superuser')),
-                                Forms\Components\Section::make('Change Password')
+                                Forms\Components\Section::make((string) __('Change Password'))
                                     ->collapsible()
                                     ->collapsed()
                                     ->hidden(fn (string $context): bool => $context === 'view' || $withoutGlobalScope)

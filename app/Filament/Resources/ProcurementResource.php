@@ -95,14 +95,17 @@ class ProcurementResource extends Resource
                     ->color(fn ($state) => $state->getColor())
                     ->icon(fn ($state) => $state->getIcon()),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -136,38 +139,39 @@ class ProcurementResource extends Resource
                                     ->label((string) __('Procurement Number'))
                                     ->required(),
                                 Forms\Components\TextInput::make('title')
+                                    ->label((string) __('Title'))
                                     ->required(),
                                 Forms\Components\Select::make('type_id')
+                                    ->label((string) __('Type'))
                                     ->relationship(
                                         name: 'procurementType',
                                         titleAttribute: 'name',
                                         modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                                     ->searchable()
                                     ->preload()
-                                    ->required()
-                                    ->label((string) __('Type')),
+                                    ->required(),
                                 Forms\Components\TextInput::make('quantity')
                                     ->label((string) __('Quantity'))
                                     ->numeric()
                                     ->rule('integer')
                                     ->minValue(0),
                                 Forms\Components\Select::make('method_id')
+                                    ->label((string) __('Method'))
                                     ->relationship(
                                         name: 'procurementMethod',
                                         titleAttribute: 'name',
                                         modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                                     ->searchable()
                                     ->preload()
-                                    ->required()
-                                    ->label((string) __('Method')),
+                                    ->required(),
                                 Forms\Components\Select::make('business_field_id')
+                                    ->label((string) __('Business Field'))
                                     ->relationship(
                                         name: 'businessField',
                                         titleAttribute: 'name',
                                         modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                                     ->searchable()
-                                    ->preload()
-                                    ->label((string) __('Business Field')),
+                                    ->preload(),
                                 Forms\Components\DatePicker::make('start_date')
                                     ->label((string) __('Start Date'))
                                     ->required()

@@ -8,7 +8,6 @@ use Filament\Support\Contracts\HasLabel;
 
 enum VendorDocumentType: string implements HasLabel
 {
-    // TODO : Make sure aja nanti bisa multi bahasa
     case BusinessDomicileLetterSKDU = 'business_domicile_letter_skdu';
     case BusinessEntityCertificateSBU = 'business_entity_certificate_sbu';
     case BusinessIdentificationNumberNIB = 'business_identification_number_nib';

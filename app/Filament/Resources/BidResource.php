@@ -64,22 +64,28 @@ class BidResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('vendor.company_name')
+                    ->label((string) __('Vendor'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('procurement.title')
+                    ->label((string) __('Procurement'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label((string) __('Status'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -114,18 +120,22 @@ class BidResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('vendor_id')
+                                    ->label((string) __('Vendor'))
                                     ->relationship('vendor', 'id')
                                     ->options($vendorOptions)
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Select::make('procurement_id')
+                                    ->label((string) __('Procurement'))
                                     ->relationship('procurement', 'title')
                                     ->options(Procurement::query()->pluck('title', 'id'))
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Textarea::make('notes')
+                                    ->label((string) __('Notes'))
                                     ->columnSpanFull(),
                                 Forms\Components\Select::make('status')
+                                    ->label((string) __('Status'))
                                     ->required()
                                     ->options(array_combine(Bid::STATUSES, Bid::STATUSES))
                                     ->default('draft')

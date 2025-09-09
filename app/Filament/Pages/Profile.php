@@ -59,22 +59,24 @@ class Profile extends Page implements HasForms
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Name'))
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
                                     ->email()
                                     ->readOnly()
                                     ->required(),
                                 Forms\Components\DateTimePicker::make('email_verified_at')
+                                    ->label((string) __('Email Verified At'))
                                     ->disabled(),
                                 Forms\Components\Select::make('roles')
-                                    ->disabled()
                                     ->label((string) __('Role Name'))
+                                    ->disabled()
                                     ->relationship('roles', 'name')
                                     ->placeholder((string) __('Superuser')),
                                 Forms\Components\DateTimePicker::make('updated_at')
                                     ->label((string) __('Last Updated'))
                                     ->disabled(),
-                                Forms\Components\Section::make('Change Password')
+                                Forms\Components\Section::make((string) __('Change Password'))
                                     ->collapsible()
                                     ->collapsed()
                                     ->schema([

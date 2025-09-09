@@ -60,15 +60,19 @@ class VillageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('district.city.province.country.name')
+                    ->label((string) __('Country'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('district.city.province.name')
+                    ->label((string) __('Province'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('district.city.name')
+                    ->label((string) __('City'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('district.name')
+                    ->label((string) __('District'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -168,6 +172,7 @@ class VillageResource extends Resource
                                         }
                                     }),
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Village'))
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
                                     ->label((string) __('Latitude'))

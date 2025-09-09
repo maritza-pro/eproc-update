@@ -109,9 +109,9 @@ class VendorResource extends Resource
                     ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('vendorType.name')->label((string) __('Vendor Type'))->badge()->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('user.name')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('user.name')->label((string) __('User'))->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->label((string) __('Created At'))->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->label((string) __('Updated At'))->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -144,7 +144,7 @@ class VendorResource extends Resource
                                     Forms\Components\View::make('vendor_logo_attachment_viewer')
                                         ->viewData([
                                             'collectionName' => 'vendor_logo_attachment',
-                                            'viewLabel' => 'Company Logo',
+                                            'viewLabel' => (string) __('Company Logo'),
                                         ])
                                         ->view('filament.forms.components.logo-viewer')
                                         ->visibleOn('view'),
@@ -167,14 +167,40 @@ class VendorResource extends Resource
                                         Forms\Components\Group::make()
                                             ->relationship('vendorProfile')
                                             ->schema([
-                                                Forms\Components\Select::make('business_entity_type')->options(VendorBusinessEntityType::class)->searchable()->preload()->live()->label((string) __('Business Entity Type')),
+                                                Forms\Components\Select::make('business_entity_type')
+                                                    ->label((string) __('Business Entity Type'))
+                                                    ->options(VendorBusinessEntityType::class)
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->live(),
                                             ]),
-                                        Forms\Components\TextInput::make('company_name')->required()->prefix(fn (Get $get): string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
-                                        Forms\Components\Select::make('business_field_id')->relationship('businessField', 'name')->searchable()->preload()->label((string) __('Business Field')),
-                                        Forms\Components\TextInput::make('email')->email()->required(),
-                                        Forms\Components\TextInput::make('phone')->tel(),
-                                        Forms\Components\Select::make('vendor_type_id')->visible($withoutGlobalScope)->relationship('vendorType', 'name')->searchable()->preload()->label((string) __('Vendor Type')),
-                                        Forms\Components\Select::make('user_id')->visible($withoutGlobalScope)->relationship('user', 'name')->required()->searchable(),
+                                        Forms\Components\TextInput::make('company_name')
+                                            ->label((string) __('Company Name'))
+                                            ->required()
+                                            ->prefix(fn (Get $get): string => VendorBusinessEntityType::fromMixed($get('vendorProfile.business_entity_type'))?->prefix() ?? ''),
+                                        Forms\Components\Select::make('business_field_id')
+                                            ->label((string) __('Business Field'))
+                                            ->relationship('businessField', 'name')
+                                            ->searchable()
+                                            ->preload(),
+                                        Forms\Components\TextInput::make('email')
+                                            ->email()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('phone')
+                                            ->label((string) __('Phone Number'))
+                                            ->tel(),
+                                        Forms\Components\Select::make('vendor_type_id')
+                                            ->label((string) __('Vendor Type'))
+                                            ->visible($withoutGlobalScope)
+                                            ->relationship('vendorType', 'name')
+                                            ->searchable()
+                                            ->preload(),
+                                        Forms\Components\Select::make('user_id')
+                                            ->label((string) __('User'))
+                                            ->visible($withoutGlobalScope)
+                                            ->relationship('user', 'name')
+                                            ->required()
+                                            ->searchable(),
                                     ])
                                     ->columnSpan([
                                         'default' => 12,

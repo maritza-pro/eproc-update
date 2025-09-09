@@ -59,23 +59,29 @@ class ProcurementItemResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('procurement.title')
+                    ->label((string) __('Procurement'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product.name')
+                    ->label((string) __('Product'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity')
+                    ->label((string) __('Quantity'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -106,14 +112,17 @@ class ProcurementItemResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('procurement_id')
+                                    ->label((string) __('Procurement'))
                                     ->relationship('procurement', 'title')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Select::make('product_id')
+                                    ->label((string) __('Product'))
                                     ->relationship('product', 'name')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\TextInput::make('quantity')
+                                    ->label((string) __('Quantity'))
                                     ->required()
                                     ->numeric(),
                             ]),

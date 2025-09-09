@@ -66,8 +66,10 @@ class SurveyResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label((string) __('Title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name')
+                    ->label((string) __('Category'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('vendorType.name')
@@ -79,14 +81,17 @@ class SurveyResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -117,6 +122,7 @@ class SurveyResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('category_id')
+                                    ->label((string) __('Category'))
                                     ->relationship('category', 'name')
                                     ->searchable(),
                                 Forms\Components\Select::make('type')
@@ -140,9 +146,11 @@ class SurveyResource extends Resource
                                     ->visible(fn ($get): bool => $get('type') === 'vendor')
                                     ->searchable(),
                                 Forms\Components\TextInput::make('title')
+                                    ->label((string) __('Title'))
                                     ->required()
                                     ->columnSpanFull(),
                                 Forms\Components\Textarea::make('description')
+                                    ->label((string) __('Description'))
                                     ->columnSpanFull(),
                             ]),
                     ]),

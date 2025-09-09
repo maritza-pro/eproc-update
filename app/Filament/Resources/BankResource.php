@@ -74,15 +74,18 @@ class BankResource extends Resource
             Forms\Components\Card::make()
                 ->schema([
                     Forms\Components\TextInput::make('name')
+                        ->label((string) __('Name'))
                         ->required()
                         ->maxLength(255),
 
                     Forms\Components\TextInput::make('code')
+                        ->label((string) __('Code'))
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->maxLength(255),
 
                     Forms\Components\Toggle::make('is_active')
+                        ->label((string) __('Active'))
                         ->required(),
                 ]),
         ]);

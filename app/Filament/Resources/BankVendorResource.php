@@ -54,30 +54,32 @@ class BankVendorResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('bank.name')
+                    ->label((string) __('Bank Name'))
                     ->searchable()
-                    ->sortable()
-                    ->label((string) __('Bank Name')),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('account_name')
-                    ->searchable()
-                    ->label((string) __('Account Name')),
+                    ->label((string) __('Account Name'))
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('account_number')
-                    ->searchable()
-                    ->label((string) __('Account Number')),
+                    ->label((string) __('Account Number'))
+                    ->searchable(),
 
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label((string) __('Active'))
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('bank_id')
-                    ->relationship('bank', 'name')
-                    ->label((string) __('Filter by Bank')),
+                    ->label((string) __('Filter by Bank'))
+                    ->relationship('bank', 'name'),
                 Tables\Filters\TernaryFilter::make('is_active'),
             ])
             ->actions([
@@ -98,30 +100,31 @@ class BankVendorResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\Select::make('bank_id')
+                        ->label((string) __('Bank Name'))
                         ->relationship(
                             name: 'bank',
                             titleAttribute: 'name',
                             modifyQueryUsing: fn (Builder $query): Builder => $query->where('is_active', true))
                         ->searchable()
                         ->preload()
-                        ->required()
-                        ->label((string) __('Bank Name')),
+                        ->required(),
 
                     Forms\Components\TextInput::make('account_name')
+                        ->label((string) __('Account Name'))
                         ->required()
-                        ->maxLength(255)
-                        ->label((string) __('Account Name')),
+                        ->maxLength(255),
 
                     Forms\Components\TextInput::make('account_number')
+                        ->label((string) __('Account Number'))
                         ->required()
-                        ->maxLength(255)
-                        ->label((string) __('Account Number')),
+                        ->maxLength(255),
 
                     Forms\Components\TextInput::make('branch_name')
-                        ->maxLength(255)
-                        ->label((string) __('Branch Name (Optional)')),
+                        ->label((string) __('Branch Name (Optional)'))
+                        ->maxLength(255),
 
                     Forms\Components\Toggle::make('is_active')
+                        ->label((string) __('Active'))
                         ->required()
                         ->default(true),
                 ])->columns(2),

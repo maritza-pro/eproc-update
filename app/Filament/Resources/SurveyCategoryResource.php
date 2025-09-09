@@ -62,38 +62,50 @@ class SurveyCategoryResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('type')
+                    ->label((string) __('Type'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('code')
+                    ->label((string) __('Code'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label((string) __('Name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
+                    ->label((string) __('Description'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('parent.name')
+                    ->label((string) __('Parent'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ColorColumn::make('text_color')
+                    ->label((string) __('Text Color'))
                     ->alignCenter(),
                 Tables\Columns\ColorColumn::make('background_color')
+                    ->label((string) __('Background Color'))
                     ->alignCenter(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label((string) __('Active'))
                     ->boolean()
                     ->alignCenter(),
                 Tables\Columns\IconColumn::make('is_system')
+                    ->label((string) __('System'))
                     ->boolean()
                     ->alignCenter()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -122,20 +134,28 @@ class SurveyCategoryResource extends Resource
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label((string) __('Name'))
                             ->required(),
-                        Forms\Components\Textarea::make('description'),
+                        Forms\Components\Textarea::make('description')
+                            ->label((string) __('Description')),
                         Forms\Components\Grid::make(3)
                             ->schema([
-                                Forms\Components\TextInput::make('type'),
-                                Forms\Components\TextInput::make('code'),
+                                Forms\Components\TextInput::make('type')
+                                    ->label((string) __('Type')),
+                                Forms\Components\TextInput::make('code')
+                                    ->label((string) __('Code')),
                                 Forms\Components\Select::make('parent_id')
+                                    ->label((string) __('Parent'))
                                     ->relationship('parent', 'name'),
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
-                                Forms\Components\ColorPicker::make('text_color'),
-                                Forms\Components\ColorPicker::make('background_color'),
+                                Forms\Components\ColorPicker::make('text_color')
+                                    ->label((string) __('Text Color')),
+                                Forms\Components\ColorPicker::make('background_color')
+                                    ->label((string) __('Background Color')),
                                 Forms\Components\Toggle::make('is_active')
+                                    ->label((string) __('Active'))
                                     ->inline(false)
                                     ->required()
                                     ->default(true),
