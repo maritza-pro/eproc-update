@@ -61,6 +61,11 @@ class Procurement extends Model
         );
     }
 
+    public function agendaProcurements(): HasMany
+    {
+        return $this->hasMany(AgendaProcurement::class);
+    }
+
     /**
      * Get the bids for the procurement.
      *
