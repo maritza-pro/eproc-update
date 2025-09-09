@@ -59,23 +59,29 @@ class EvaluationResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('bid.id')
+                    ->label((string) __('Bid'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('technical_score')
+                    ->label((string) __('Technical Score'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price_score')
+                    ->label((string) __('Price Score'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -106,14 +112,18 @@ class EvaluationResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('bid_id')
+                                    ->label((string) __('Bid'))
                                     ->relationship('bid', 'id')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\TextInput::make('technical_score')
+                                    ->label((string) __('Technical Score'))
                                     ->numeric(),
                                 Forms\Components\TextInput::make('price_score')
+                                    ->label((string) __('Price Score'))
                                     ->numeric(),
                                 Forms\Components\Textarea::make('notes')
+                                    ->label((string) __('Notes'))
                                     ->columnSpanFull(),
                             ]),
                     ]),

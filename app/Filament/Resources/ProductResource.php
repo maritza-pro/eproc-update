@@ -63,27 +63,34 @@ class ProductResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label((string) __('Name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('self_estimated_price')
+                    ->label((string) __('Price'))
                     ->money(fn ($record) => $record->currency?->code)
-                    ->sortable()
-                    ->label((string) __('Price')),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('currency.name')
+                    ->label((string) __('Currency'))
                     ->searchable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label((string) __('Type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('unit')
+                    ->label((string) __('Unit'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -114,27 +121,31 @@ class ProductResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Name'))
                                     ->required()
                                     ->columnSpanFull(),
                                 Forms\Components\Select::make('type')
+                                    ->label((string) __('Type'))
                                     ->required()
                                     ->options(array_combine(Product::TYPES, Product::TYPES))
                                     ->searchable(),
-                                Forms\Components\TextInput::make('unit'),
+                                Forms\Components\TextInput::make('unit')
+                                    ->label((string) __('Unit')),
                                 Forms\Components\Select::make('currency_id')
+                                    ->label((string) __('Currency'))
                                     ->relationship('currency', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->live()
-                                    ->label((string) __('Currency')),
+                                    ->live(),
                                 Forms\Components\TextInput::make('self_estimated_price')
+                                    ->label((string) __('Estimated Price'))
                                     ->numeric()
                                     ->required()
                                     ->default(0)
-                                    ->prefix(fn (Get $get): string => Currency::query()->find($get('currency_id'))?->symbol . ' ')
-                                    ->label((string) __('Estimated Price')),
+                                    ->prefix(fn (Get $get): string => Currency::query()->find($get('currency_id'))?->symbol . ' '),
                                 Forms\Components\Textarea::make('description')
+                                    ->label((string) __('Description'))
                                     ->columnSpanFull(),
                             ]),
                     ]),

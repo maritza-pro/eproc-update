@@ -54,22 +54,27 @@ class CurrencyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label((string) __('Name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('code')
+                    ->label((string) __('Code'))
                     ->searchable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('symbol')
+                    ->label((string) __('Symbol'))
                     ->searchable(),
-
                 Tables\Columns\TextColumn::make('decimals')
+                    ->label((string) __('Decimals'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('symbol_position')
+                    ->label((string) __('Symbol Position'))
                     ->badge()
                     ->sortable(),
-
                 Tables\Columns\IconColumn::make('is_default')
+                    ->label((string) __('Default'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -98,24 +103,28 @@ class CurrencyResource extends Resource
                         Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('Name'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('code')
+                                    ->label((string) __('ISO Code'))
                                     ->required()
                                     ->unique(ignoreRecord: true)
-                                    ->maxLength(3)
-                                    ->label((string) __('ISO Code')),
+                                    ->maxLength(3),
                                 Forms\Components\TextInput::make('symbol')
+                                    ->label((string) __('Symbol'))
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(5),
                                 Forms\Components\TextInput::make('decimals')
+                                    ->label((string) __('Decimals'))
                                     ->required()
                                     ->numeric()
                                     ->default(2)
                                     ->minValue(0)
                                     ->maxValue(6),
                                 Forms\Components\Select::make('symbol_position')
+                                    ->label((string) __('Symbol Position'))
                                     ->options([
                                         'left' => 'Left',
                                         'right' => 'Right',
@@ -123,6 +132,7 @@ class CurrencyResource extends Resource
                                     ->required()
                                     ->default('left'),
                                 Forms\Components\Toggle::make('is_default')
+                                    ->label((string) __('Default'))
                                     ->required(),
                             ]),
                     ]),

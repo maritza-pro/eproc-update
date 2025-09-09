@@ -28,6 +28,7 @@ class VendorContacts extends ManageRelatedRecords
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label((string) __('Name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('position')
@@ -35,7 +36,8 @@ class VendorContacts extends ManageRelatedRecords
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('phone_number'),
+                Tables\Columns\TextColumn::make('phone_number')
+                    ->label((string) __('Phone Number')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

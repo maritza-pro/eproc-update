@@ -61,9 +61,11 @@ class CityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('province.country.name')
+                    ->label((string) __('Country'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('province.name')
+                    ->label((string) __('Province'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -122,6 +124,7 @@ class CityResource extends Resource
                                             : []
                                     ),
                                 Forms\Components\TextInput::make('name')
+                                    ->label((string) __('City'))
                                     ->required(),
                                 Forms\Components\TextInput::make('latitude')
                                     ->label((string) __('Latitude'))

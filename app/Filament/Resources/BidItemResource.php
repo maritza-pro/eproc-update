@@ -59,29 +59,37 @@ class BidItemResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('bid.vendor.company_name')
+                    ->label((string) __('Vendor'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('bid.procurement.title')
+                    ->label((string) __('Procurement'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('procurementItem.product.name')
+                    ->label((string) __('Product'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit_price')
+                    ->label((string) __('Unit Price'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('offered_quantity')
+                    ->label((string) __('Offered Quantity'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label((string) __('Created At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label((string) __('Updated At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->label((string) __('Deleted At'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -112,19 +120,24 @@ class BidItemResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('bid_id')
+                                    ->label((string) __('Bid'))
                                     ->relationship('bid', 'id')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Select::make('procurement_item_id')
+                                    ->label((string) __('Procurement Item'))
                                     ->relationship('procurementItem', 'id')
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\TextInput::make('unit_price')
+                                    ->label((string) __('Unit Price'))
                                     ->required()
                                     ->numeric(),
                                 Forms\Components\TextInput::make('offered_quantity')
+                                    ->label((string) __('Offered Quantity'))
                                     ->numeric(),
                                 Forms\Components\Textarea::make('notes')
+                                    ->label((string) __('Notes'))
                                     ->columnSpanFull(),
                             ]),
                     ]),
