@@ -67,6 +67,8 @@ class AgendaProcurementsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
+        $procurement = $this->getOwnerRecord();
+
         return $form
             ->schema([
                 Forms\Components\Select::make('agenda_id')
@@ -81,10 +83,15 @@ class AgendaProcurementsRelationManager extends RelationManager
                     ->disabledOn('edit'),
                 Forms\Components\DatePicker::make('start_date')
                     ->label((string) __('Start Date'))
-                    ->required(),
+                    ->required()
+                    ->minDate($procurement->start_date)
+                    ->maxDate($procurement->end_date),
                 Forms\Components\DatePicker::make('end_date')
                     ->label((string) __('End Date'))
-                    ->required(),
+                    ->required()
+                    ->afterOrEqual('start_date')
+                    ->minDate($procurement->start_date)
+                    ->maxDate($procurement->end_date),
                 Forms\Components\Toggle::make('is_submission_needed')
                     ->label((string) __('Submission Needed'))
                     ->required(),

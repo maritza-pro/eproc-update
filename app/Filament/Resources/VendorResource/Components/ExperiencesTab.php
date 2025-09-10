@@ -58,7 +58,8 @@ class ExperiencesTab
                                     ->nullable(),
                                 Forms\Components\DatePicker::make('end_date')
                                     ->label((string) __('End Date'))
-                                    ->nullable(),
+                                    ->nullable()
+                                    ->afterOrEqual('start_date'),
 
                                 Forms\Components\Textarea::make('description')
                                     ->label((string) __('Description'))
