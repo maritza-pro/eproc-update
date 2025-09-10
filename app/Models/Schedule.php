@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ScopedBy([TaxonomyScope::class])]
-class Agenda extends Taxonomy
+class Schedule extends Taxonomy
 {
     use WithTaxonomy;
 
-    public function agendaProcurements(): HasMany
+    public function procurementSchedules(): HasMany
     {
-        return $this->hasMany(AgendaProcurement::class);
+        return $this->hasMany(ProcurementSchedule::class);
     }
 }

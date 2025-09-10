@@ -14,14 +14,14 @@ use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class AgendaProcurement extends Model
+class ProcurementSchedule extends Model
 {
     use Cachable,
         LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
-        'agenda_id',
+        'schedule_id',
         'procurement_id',
         'is_submission_needed',
         'start_date',
@@ -57,9 +57,9 @@ class AgendaProcurement extends Model
         );
     }
 
-    public function agenda(): BelongsTo
+    public function schedule(): BelongsTo
     {
-        return $this->belongsTo(Agenda::class);
+        return $this->belongsTo(Schedule::class);
     }
 
     public function getActivitylogOptions(): LogOptions

@@ -6,7 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\ProcurementResource\Pages;
-use App\Filament\Resources\ProcurementResource\RelationManagers\AgendaProcurementsRelationManager;
+use App\Filament\Resources\ProcurementResource\RelationManagers\ProcurementSchedulesRelationManager;
 use App\Filament\Resources\ProcurementResource\RelationManagers\ItemsRelationManager;
 use App\Models\Procurement;
 use Filament\Forms;
@@ -52,7 +52,7 @@ class ProcurementResource extends Resource
     public static function getRelations(): array
     {
         return [
-            AgendaProcurementsRelationManager::class,
+            ProcurementSchedulesRelationManager::class,
             ItemsRelationManager::class,
             ActivitylogRelationManager::class,
         ];

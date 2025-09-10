@@ -10,21 +10,23 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class AgendaProcurementsRelationManager extends RelationManager
+class ProcurementSchedulesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'agendaProcurements';
+    protected static string $relationship = 'procurementSchedules';
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('agenda_id')
+            ->recordTitleAttribute('schedule_id')
+            ->reorderable('sequence')
+            ->defaultSort('sequence', 'asc')
             ->columns([
                 Tables\Columns\TextColumn::make('no')
                     ->label((string) __('No'))
                     ->rowIndex()
                     ->alignCenter(),
-                Tables\Columns\TextColumn::make('agenda.name')
-                    ->label((string) __('Agenda'))
+                Tables\Columns\TextColumn::make('schedule.name')
+                    ->label((string) __('Schedule'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
                     ->label((string) __('Start Date'))
@@ -45,7 +47,6 @@ class AgendaProcurementsRelationManager extends RelationManager
                     ->icon(fn ($state) => $state->getIcon()),
 
             ])
-            ->defaultSort('start_date', 'asc')
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
@@ -71,10 +72,10 @@ class AgendaProcurementsRelationManager extends RelationManager
 
         return $form
             ->schema([
-                Forms\Components\Select::make('agenda_id')
-                    ->label((string) __('Agenda'))
+                Forms\Components\Select::make('schedule_id')
+                    ->label((string) __('Schedule'))
                     ->relationship(
-                        name: 'agenda',
+                        name: 'schedule',
                         titleAttribute: 'name',
                     )
                     ->searchable()
@@ -95,9 +96,8 @@ class AgendaProcurementsRelationManager extends RelationManager
                 Forms\Components\Toggle::make('is_submission_needed')
                     ->label((string) __('Submission Needed'))
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label((string) __('Description'))
-                    ->autosize()
                     ->columnSpanFull(),
             ]);
     }

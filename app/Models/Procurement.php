@@ -60,9 +60,9 @@ class Procurement extends Model
         );
     }
 
-    public function agendaProcurements(): HasMany
+    public function procurementSchedules(): HasMany
     {
-        return $this->hasMany(AgendaProcurement::class);
+        return $this->hasMany(ProcurementSchedule::class);
     }
 
     /**
