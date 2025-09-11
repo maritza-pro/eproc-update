@@ -6,8 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Resources\ProcurementResource\Pages;
-use App\Filament\Resources\ProcurementResource\RelationManagers\ProcurementSchedulesRelationManager;
 use App\Filament\Resources\ProcurementResource\RelationManagers\ItemsRelationManager;
+use App\Filament\Resources\ProcurementResource\RelationManagers\ProcurementSchedulesRelationManager;
 use App\Models\Procurement;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -46,6 +46,7 @@ class ProcurementResource extends Resource
             'create' => Pages\CreateProcurement::route('/create'),
             'view' => Pages\ViewProcurement::route('/{record}'),
             'edit' => Pages\EditProcurement::route('/{record}/edit'),
+            'edit-schedule' => Pages\EditProcurementSchedule::route('/{ownerRecord}/schedules/{record}/edit'),
         ];
     }
 

@@ -57,11 +57,6 @@ class ProcurementSchedule extends Model
         );
     }
 
-    public function schedule(): BelongsTo
-    {
-        return $this->belongsTo(Schedule::class);
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
@@ -70,5 +65,10 @@ class ProcurementSchedule extends Model
     public function procurement(): BelongsTo
     {
         return $this->belongsTo(Procurement::class);
+    }
+
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
     }
 }

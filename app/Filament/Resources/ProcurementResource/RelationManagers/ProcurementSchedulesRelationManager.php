@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Filament\Resources\ProcurementResource\RelationManagers;
 
+use App\Filament\Resources\ProcurementResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -17,7 +18,6 @@ class ProcurementSchedulesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('schedule_id')
             ->reorderable('sequence')
             ->defaultSort('sequence', 'asc')
             ->columns([
@@ -47,6 +47,10 @@ class ProcurementSchedulesRelationManager extends RelationManager
                     ->icon(fn ($state) => $state->getIcon()),
 
             ])
+            ->recordUrl(fn ($record) => ProcurementResource::getUrl('edit-schedule', [
+                'record' => $record,
+                'ownerRecord' => $this->getOwnerRecord(),
+            ]))
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
