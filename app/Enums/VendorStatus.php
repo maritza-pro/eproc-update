@@ -46,10 +46,10 @@ enum VendorStatus: string
     public function getLabel(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-            self::Draft => 'Draft',
+            self::Pending => (string) __('Pending'),
+            self::Approved => (string) __('Approved'),
+            self::Rejected => (string) __('Rejected'),
+            self::Draft => (string) __('Draft'),
         };
     }
 }

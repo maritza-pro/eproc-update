@@ -9,19 +9,20 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class AgendaProcurement extends Model
+class ProcurementSchedule extends Model
 {
     use Cachable,
         LogsActivity,
         SoftDeletes;
 
     protected $fillable = [
-        'agenda_id',
+        'schedule_id',
         'procurement_id',
         'is_submission_needed',
         'start_date',
@@ -57,11 +58,6 @@ class AgendaProcurement extends Model
         );
     }
 
-    public function agenda(): BelongsTo
-    {
-        return $this->belongsTo(Agenda::class);
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults();
@@ -70,5 +66,15 @@ class AgendaProcurement extends Model
     public function procurement(): BelongsTo
     {
         return $this->belongsTo(Procurement::class);
+    }
+
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(Requirement::class);
+    }
+
+    public function schedule(): BelongsTo
+    {
+        return $this->belongsTo(Schedule::class);
     }
 }

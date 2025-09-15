@@ -14,7 +14,7 @@ return [
     'locals' => [
         'en' => [
             'label' => 'English',
-            'flag' => 'us',
+            'flag' => 'gb',
         ],
         // 'ar' => [
         //     'label' => 'Arabic',

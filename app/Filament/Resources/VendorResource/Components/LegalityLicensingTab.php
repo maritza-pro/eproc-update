@@ -64,7 +64,7 @@ class LegalityLicensingTab
                                     Forms\Components\DatePicker::make('issued_at')->label((string) __('Issued Date'))->nullable(),
 
                                     Forms\Components\TextInput::make('issued_by')->label((string) __('Issued By'))->nullable(),
-                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable(),
+                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable()->afterOrEqual('issued_at'),
 
                                     Forms\Components\View::make('vendor_license_attachment_viewer')
                                         ->viewData([
@@ -138,7 +138,7 @@ class LegalityLicensingTab
                                     Forms\Components\DatePicker::make('issued_at')->label((string) __('Issued Date'))->nullable(),
 
                                     Forms\Components\TextInput::make('issued_by')->label((string) __('Issued By'))->nullable(),
-                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable(),
+                                    Forms\Components\DatePicker::make('expires_at')->label((string) __('Expires Date'))->nullable()->afterOrEqual('issued_at'),
 
                                     Forms\Components\TextInput::make('classification')->label((string) __('Classification'))->nullable(),
                                     Forms\Components\View::make('vendor_certificate_attachment_viewer')

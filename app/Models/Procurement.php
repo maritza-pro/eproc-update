@@ -15,6 +15,9 @@ use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+/**
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
 class Procurement extends Model
 {
     use Cachable,
@@ -58,11 +61,6 @@ class Procurement extends Model
                 return ProcurementStatus::Ongoing;
             },
         );
-    }
-
-    public function agendaProcurements(): HasMany
-    {
-        return $this->hasMany(AgendaProcurement::class);
     }
 
     /**
@@ -113,6 +111,11 @@ class Procurement extends Model
     public function procurementMethod(): BelongsTo
     {
         return $this->belongsTo(ProcurementMethod::class, 'method_id');
+    }
+
+    public function procurementSchedules(): HasMany
+    {
+        return $this->hasMany(ProcurementSchedule::class);
     }
 
     public function procurementType(): BelongsTo

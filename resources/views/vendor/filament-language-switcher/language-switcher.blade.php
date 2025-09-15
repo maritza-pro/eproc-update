@@ -36,8 +36,8 @@ if(!function_exists('try_svg')) {
                 theme: $store.theme,
             }"
             @class([
-                'flex items-center justify-center rounded-sm bg-cover bg-center rounded-md',
-                'w-11 h-8 bg-gray-200 dark:bg-gray-900 border border-gray-200 dark:border-gray-700'
+                'flex items-center justify-center rounded-full bg-cover bg-center rounded-full',
+                'w-8 h-8 bg-gray-200 dark:bg-gray-900 border border-gray-200 dark:border-gray-700'
             ])
             style="background-image: url('https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/{{config('filament-language-switcher.locals')[app()->getLocale()]['flag']?:null}}.svg')"
         >

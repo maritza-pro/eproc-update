@@ -6,8 +6,8 @@ namespace App\Filament\Clusters\MasterProcurements\Resources;
 
 use App\Concerns\Resource\Gate;
 use App\Filament\Clusters\MasterProcurements;
-use App\Filament\Clusters\MasterProcurements\Resources\AgendaResource\Pages;
-use App\Models\Agenda;
+use App\Filament\Clusters\MasterProcurements\Resources\ScheduleResource\Pages;
+use App\Models\Schedule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
-class AgendaResource extends Resource
+class ScheduleResource extends Resource
 {
     use Gate {
         Gate::defineGates insteadof HasHexaLite;
@@ -27,14 +27,14 @@ class AgendaResource extends Resource
 
     protected static ?string $cluster = MasterProcurements::class;
 
-    protected static ?string $model = Agenda::class;
+    protected static ?string $model = Schedule::class;
 
-    protected static ?string $modelLabel = 'Agenda';
+    protected static ?string $modelLabel = 'Schedule';
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAgendas::route('/'),
+            'index' => Pages\ManageSchedules::route('/'),
         ];
     }
 

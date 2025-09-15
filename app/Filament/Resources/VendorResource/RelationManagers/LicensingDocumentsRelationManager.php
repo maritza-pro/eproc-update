@@ -30,7 +30,7 @@ class LicensingDocumentsRelationManager extends RelationManager
             VendorDocumentType::TradingBusinessLicenseSIUP => [
                 Forms\Components\TextInput::make('document_number')->label((string) __('SIUP Number'))->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable()->afterOrEqual('issue_date'),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\Select::make('properties.business_field_id')
                     ->label((string) __('Business Field'))
@@ -39,14 +39,14 @@ class LicensingDocumentsRelationManager extends RelationManager
             VendorDocumentType::CompanyRegistrationTDP => [
                 Forms\Components\TextInput::make('document_number')->label((string) __('TDP Number'))->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable()->afterOrEqual('issue_date'),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\TextInput::make('properties.company_name')->label((string) __('Company Name'))->nullable(),
             ],
             VendorDocumentType::BusinessDomicileLetterSKDU => [
                 Forms\Components\TextInput::make('document_number')->label((string) __('SKDU Number'))->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable()->afterOrEqual('issue_date'),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\TextInput::make('properties.business_address')->label((string) __('Business Address'))->nullable(),
             ],
@@ -73,14 +73,14 @@ class LicensingDocumentsRelationManager extends RelationManager
             VendorDocumentType::HinderOrdonantieHO => [
                 Forms\Components\TextInput::make('document_number')->label((string) __('HO Number'))->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable()->afterOrEqual('issue_date'),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\TextInput::make('properties.business_location')->label((string) __('Business Location'))->nullable(),
             ],
             VendorDocumentType::BusinessEntityCertificateSBU => [
                 Forms\Components\TextInput::make('document_number')->label((string) __('Certificate Number'))->nullable(),
                 Forms\Components\DatePicker::make('issue_date')->label((string) __('Issue Date'))->nullable(),
-                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable(),
+                Forms\Components\DatePicker::make('expiry_date')->label((string) __('Expiry Date'))->nullable()->afterOrEqual('issue_date'),
                 Forms\Components\TextInput::make('properties.issuing_authority')->label((string) __('Issuing Authority'))->nullable(),
                 Forms\Components\Select::make('properties.qualification')->label((string) __('Qualification'))->nullable()
                     ->options([
