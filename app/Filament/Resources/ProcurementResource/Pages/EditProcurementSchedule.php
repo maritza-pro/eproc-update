@@ -121,7 +121,7 @@ class EditProcurementSchedule extends Page implements HasForms
                                     ->dehydrated(fn (Get $get) => ! (self::typeEnum($get)?->isChoice() ?? false)),
 
                                 Forms\Components\Toggle::make('is_required')
-                                    ->label((string) __('is_required'))
+                                    ->label((string) __('Is Required?'))
                                     ->default(false),
 
                                 Forms\Components\Textarea::make('description')
@@ -152,7 +152,7 @@ class EditProcurementSchedule extends Page implements HasForms
                                             ->columnSpan(1),
 
                                         Forms\Components\Toggle::make('is_correct')
-                                            ->label((string) __('is_correct'))
+                                            ->label((string) __('Is Correct?'))
                                             ->inline(false),
                                     ])
                                     ->helperText((string) __('At least two options are required')),
