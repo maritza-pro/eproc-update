@@ -40,7 +40,7 @@ class Requirement extends Model
         return LogOptions::defaults();
     }
 
-    public function procurement_schedule(): BelongsTo
+    public function procurementSchedule(): BelongsTo
     {
         return $this->belongsTo(ProcurementSchedule::class);
     }
