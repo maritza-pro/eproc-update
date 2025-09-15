@@ -92,8 +92,8 @@ class EditProcurementSchedule extends Page implements HasForms
                     ->label((string) __('Description'))
                     ->columnSpanFull(),
                 Forms\Components\Section::make((string) __('Requirements'))
-                    ->visible(fn (Get $get) => $get('is_submission_needed'))
-                    ->dehydrated(fn (Get $get) => $get('is_submission_needed'))
+                    ->visible(fn (Get $get): mixed => $get('is_submission_needed'))
+                    ->dehydrated(fn (Get $get): mixed => $get('is_submission_needed'))
                     ->schema([
                         Forms\Components\Repeater::make('requirements')
                             ->relationship()
@@ -117,8 +117,8 @@ class EditProcurementSchedule extends Page implements HasForms
                                     ->numeric()
                                     ->minValue(0)
                                     ->default(0)
-                                    ->visible(fn (Get $get) => ! (self::typeEnum($get)?->isChoice() ?? false))
-                                    ->dehydrated(fn (Get $get) => ! (self::typeEnum($get)?->isChoice() ?? false)),
+                                    ->visible(fn (Get $get): bool => ! ($this->typeEnum($get)?->isChoice() ?? false))
+                                    ->dehydrated(fn (Get $get): bool => ! ($this->typeEnum($get)?->isChoice() ?? false)),
 
                                 Forms\Components\Toggle::make('is_required')
                                     ->label((string) __('Is Required?'))
@@ -133,8 +133,8 @@ class EditProcurementSchedule extends Page implements HasForms
                                 Forms\Components\Repeater::make('requirementOptions')
                                     ->label((string) __('Options'))
                                     ->relationship('requirementOptions')
-                                    ->visible(fn (Get $get) => (self::typeEnum($get)?->isChoice() ?? false))
-                                    ->dehydrated(fn (Get $get) => (self::typeEnum($get)?->isChoice() ?? false))
+                                    ->visible(fn (Get $get): bool => ($this->typeEnum($get)?->isChoice() ?? false))
+                                    ->dehydrated(fn (Get $get): bool => ($this->typeEnum($get)?->isChoice() ?? false))
                                     ->minItems(2)
                                     ->addActionLabel((string) __('Add option'))
                                     ->columns(3)
@@ -176,7 +176,7 @@ class EditProcurementSchedule extends Page implements HasForms
             ->send();
     }
 
-    private static function typeEnum(Get $get): ?RequirementType
+    private function typeEnum(Get $get): ?RequirementType
     {
         $type = $get('type');
 

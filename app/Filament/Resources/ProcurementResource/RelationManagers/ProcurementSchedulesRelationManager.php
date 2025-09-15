@@ -47,7 +47,7 @@ class ProcurementSchedulesRelationManager extends RelationManager
                     ->icon(fn ($state) => $state->getIcon()),
 
             ])
-            ->recordUrl(fn ($record) => ProcurementResource::getUrl('edit-schedule', [
+            ->recordUrl(fn ($record): string => ProcurementResource::getUrl('edit-schedule', [
                 'record' => $record,
                 'ownerRecord' => $this->getOwnerRecord(),
             ]))

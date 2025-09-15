@@ -50,7 +50,7 @@ class VendorInformation extends Page implements HasForms
                                     ->view('filament.forms.components.blacklist-badge')
                                     ->columnSpanFull(),
                             ])
-                            ->hidden(fn (?Vendor $record) => ! $record?->is_blacklisted)
+                            ->hidden(fn (?Vendor $record): bool => ! $record?->is_blacklisted)
                             ->columnSpanFull(),
                         Forms\Components\Fieldset::make((string) __('ⓘ Verification Status'))
                             ->schema([
