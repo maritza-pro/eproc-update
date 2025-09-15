@@ -13,7 +13,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class RequirementOption extends Model
 {
-    //
     use Cachable,
         LogsActivity,
         SoftDeletes;

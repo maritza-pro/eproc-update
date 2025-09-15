@@ -52,7 +52,7 @@ class EditProcurementSchedule extends Page implements HasForms
 
         $this->record = $record;
 
-        abort_unless($this->record->procurement_id == $this->ownerRecord->id, 404);
+        abort_unless($this->record->procurement_id === $this->ownerRecord->id, 404);
 
         $this->form->fill($this->record->attributesToArray());
     }

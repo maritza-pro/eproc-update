@@ -65,7 +65,7 @@ class VillageRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $province = $livewire->getOwnerRecord();
 
-                        if ($province == null) {
+                        if ($province === null) {
                             return [];
                         }
 

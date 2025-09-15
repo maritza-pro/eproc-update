@@ -65,7 +65,7 @@ class DistrictRelationManager extends RelationManager
                     ->options(function (RelationManager $livewire) {
                         $country = $livewire->getOwnerRecord();
 
-                        if ($country == null) {
+                        if ($country === null) {
                             return [];
                         }
 
