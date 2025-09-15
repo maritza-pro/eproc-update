@@ -31,15 +31,6 @@ enum RequirementType: string implements HasLabel
         };
     }
 
-    public function hasOptions(): bool
-    {
-        return in_array($this, [
-            self::Radio,
-            self::Checkbox,
-            self::Select,
-        ]);
-    }
-
     public function isChoice(): bool
     {
         return in_array($this, [self::Checkbox, self::Radio, self::Select], true);
