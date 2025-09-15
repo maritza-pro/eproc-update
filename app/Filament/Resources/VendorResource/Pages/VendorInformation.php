@@ -6,6 +6,7 @@ namespace App\Filament\Resources\VendorResource\Pages;
 
 use App\Enums\VendorBusinessEntityType;
 use App\Filament\Resources\VendorResource;
+use App\Models\Vendor;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -43,6 +44,22 @@ class VendorInformation extends Page implements HasForms
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
+                        Forms\Components\Fieldset::make((string) __('ⓘ Vendor Status'))
+                            ->schema([
+                                Forms\Components\View::make('blacklist_flag')
+                                    ->view('filament.forms.components.blacklist-badge')
+                                    ->columnSpanFull(),
+                            ])
+                            ->hidden(fn (?Vendor $record) => ! $record?->is_blacklisted)
+                            ->columnSpanFull(),
+                        Forms\Components\Fieldset::make((string) __('ⓘ Verification Status'))
+                            ->schema([
+                                Forms\Components\View::make('verification_status')
+                                    ->view('filament.forms.components.status-badge')
+                                    ->columnSpanFull(),
+                            ])
+                            ->hidden(fn (?Vendor $record) => $record?->is_blacklisted)
+                            ->columnSpanFull(),
                         Forms\Components\Grid::make(12)
                             ->schema([
                                 Forms\Components\Group::make([
