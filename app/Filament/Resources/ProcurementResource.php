@@ -191,7 +191,7 @@ class ProcurementResource extends Resource
                                     ->stripCharacters(',')
                                     ->numeric()
                                     ->columnSpanFull(),
-                                Forms\Components\Textarea::make('description')
+                                Forms\Components\RichEditor::make('description')
                                     ->label((string) __('Description'))
                                     ->columnSpanFull(),
                             ]),
