@@ -9,6 +9,7 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
@@ -65,6 +66,11 @@ class ProcurementSchedule extends Model
     public function procurement(): BelongsTo
     {
         return $this->belongsTo(Procurement::class);
+    }
+
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(Requirement::class);
     }
 
     public function schedule(): BelongsTo

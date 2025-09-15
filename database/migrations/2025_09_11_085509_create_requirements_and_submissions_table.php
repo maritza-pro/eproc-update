@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -81,9 +81,9 @@ return new class extends Migration
         Schema::dropIfExists('submission_answers');
 
         Schema::dropIfExists('submissions');
-        
+
         Schema::dropIfExists('requirement_options');
-        
+
         Schema::dropIfExists('requirements');
     }
 };
