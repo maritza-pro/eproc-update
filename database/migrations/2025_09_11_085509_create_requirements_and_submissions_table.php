@@ -61,7 +61,7 @@ return new class extends Migration
             $table->timestampSoftDelete();
         });
 
-        Schema::create('submission_answers_options', function (Blueprint $table) {
+        Schema::create('submission_answer_options', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('submission_answer_id')->constrained('submission_answers')->cascadeOnDelete()->comment('The submission answer this detail belongs to');
