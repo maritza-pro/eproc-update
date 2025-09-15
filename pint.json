@@ -155,7 +155,7 @@
 		},
 		"control_structure_braces": true,
 		"declare_equal_normalize": {
-			"space": "single"
+			"space": "none"
 		},
 		"declare_parentheses": true,
 		"elseif": true,
