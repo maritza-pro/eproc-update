@@ -165,14 +165,14 @@ class UserResource extends Resource
                                     ->label((string) __('Role Name'))
                                     ->disabled(! $withoutGlobalScope)
                                     ->relationship('roles', 'name')
-                                    ->placeholder((string) __('Superuser')),
+                                    ->placeholder((string)('Superuser')),
                                 Forms\Components\Section::make((string) __('Change Password'))
                                     ->collapsible()
                                     ->collapsed()
                                     ->hidden(fn (string $context): bool => $context === 'view' || $withoutGlobalScope)
                                     ->schema([
                                         Forms\Components\TextInput::make('current_password')
-                                            ->label((string) __('Current Password'))
+                                            ->label((string)('Current Password'))
                                             ->password()
                                             ->revealable()
                                             ->dehydrated(false)
